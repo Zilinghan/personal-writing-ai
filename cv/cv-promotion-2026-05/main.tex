@@ -1,5 +1,4 @@
-\documentclass[A4,11pt]{article}
-% \documentclass[letterpaper,11pt]{article} %For use in US
+\documentclass[letterpaper,11pt]{article}
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
 \usepackage{titlesec}
@@ -10,69 +9,34 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[english]{babel}
 \usepackage{tabularx}
-\usepackage{tikz}
-\usepackage{academicons}
-\usepackage{xcolor}      % For text color
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{palatino}
+
+\definecolor{darkmaroon}{RGB}{80, 0, 0}
 
 \input{glyphtounicode}
 
-%-----FONT OPTIONS-------------------------------------------------------------
-\begin{comment}
-The font of the document will impact not just how readable it is, but how it is
-perceived. In the "The Craft of Scientific Writing" by Michael Alley, shares a
-common fonts for publication as well as their use. I have chosen to use
-Palatino for its legibility, some others are given below. There is far too much
-about typography to discuss here. Note: serif fonts have short projecting
-strokes, sans-serif fonts are sans (without) these strokes.
-\end{comment}
-
-% serif
-\usepackage{palatino}
-% \usepackage{times} %This is the default as well
-% \usepackage{charter}
-
-% sans-serif
-% \usepackage{helvet}
-% \usepackage[sfdefault]{noto-sans}
-% \usepackage[default]{sourcesanspro}
-
-%-----PAGE SETUP---------------------------------------------------------------
-
-% Adjust margins
 \addtolength{\oddsidemargin}{-0.75cm}
 \addtolength{\evensidemargin}{-0.75cm}
 \addtolength{\textwidth}{1.5cm}
 \addtolength{\topmargin}{-1cm}
 \addtolength{\textheight}{2.5cm}
 
-% Margins for US Letter size
-%\addtolength{\oddsidemargin}{-0.5in}
-%\addtolength{\evensidemargin}{-0.5in}
-%\addtolength{\textwidth}{1in}
-%\addtolength{\topmargin}{-.5in}
-%\addtolength{\textheight}{1.0in}
-
 \urlstyle{same}
-
 \raggedbottom
 \raggedright
 \setlength{\tabcolsep}{0cm}
 
-% Sections formatting
 \titleformat{\section}{
   \vspace{-4pt}\scshape\raggedright\large
 }{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
 
-% Ensure that .pdf is machine readable/ATS parsable
 \pdfgentounicode=1
 
-%-----CUSTOM COMMANDS FOR FORMATTING SECTIONS----------------------------------
 \newcommand{\CVItem}[1]{
-  \item\small{
-    {#1 \vspace{-2pt}}
-  }
+  \item\small{{#1 \vspace{-2pt}}}
 }
-
 \newcommand{\CVSubheading}[4]{
   \vspace{-2pt}\item
     \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
@@ -80,314 +44,284 @@ strokes, sans-serif fonts are sans (without) these strokes.
       \small#3 & \small #4 \\
     \end{tabular*}\vspace{-7pt}
 }
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcommand{\CVSubHeadingListStart}{\begin{itemize}[leftmargin=0.5cm, label={}]}
+\newcommand{\CVSubHeadingListEnd}{\end{itemize}}
 
-\newcommand{\CVSubSubheading}[2]{
-    \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \text{\small#1} & \text{\small #2} \\
-    \end{tabular*}\vspace{-7pt}
+% Subsection header within Publications section
+\newcommand{\PubSection}[1]{%
+  \vspace{6pt}\noindent\textbf{#1}\vspace{3pt}%
 }
 
-\newcommand{\CVSubItem}[1]{\CVItem{#1}\vspace{-4pt}}
-
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
-
-\newcommand{\CVSubHeadingListStart}{\begin{itemize}[leftmargin=0.5cm, label={}]}
-% \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]} % Uncomment for US
-\newcommand{\CVSubHeadingListEnd}{\end{itemize}}
-\newcommand{\CVItemListStart}{\begin{itemize}}
-\newcommand{\CVItemListEnd}{\end{itemize}\vspace{-5pt}}
-
-%for social icons
-\usepackage{fontawesome5}
-
-%------------------------------------------------------------------------------
-% CV STARTS HERE  %
 %------------------------------------------------------------------------------
 \begin{document}
 
-%-----HEADING------------------------------------------------------------------
-\begin{minipage}[c]{\textwidth}
-  \begin{center}
-    \textbf{\Huge \scshape{Zilinghan Li}} \\
-    \vspace{10pt}
-    % \faIcon{map-marker-alt}\ 618 Corey Ln, Champaign, IL \ $|$ \ 
-    \href{mailto:zilinghanli@gmail.com}{\faEnvelope\ zilinghanli@gmail.com} \ $|$ \ 
-    \faIcon{mobile-alt}\ 447-902-1841 \ $|$ \ 
-    % \href{https://github.com/Zilinghan}{\faGithub\ Zilinghan} \ $|$ \ 
-    \href{https://www.linkedin.com/in/zilinghanli/}{\faLinkedin\ LinkedIn} \ $|$ \ 
-    \href{https://scholar.google.com/citations?user=4JbL29YAAAAJ&hl=en&oi=ao}{\faGraduationCap\ Google Scholar}
-  \end{center}
+%--HEADER----------------------------------------------------------------------
+\begin{minipage}[t]{\textwidth}
+  {\LARGE\textbf{\scshape Zilinghan Li}} \\[2pt]
+  \textit{Machine Learning Engineer} \\[8pt]
+  \normalsize
+  Argonne National Laboratory \\
+  Data Science and Learning Division \\
+  9700 South Cass Ave, Building 240 \\
+  Lemont, IL 60439-4844 \\
+  Tel: 447-902-1841 \\
+  \textbf{Email}: \href{mailto:zilinghan.li@anl.gov}{\underline{zilinghan.li@anl.gov}}
 \end{minipage}
-\vspace{-12pt}
 
-\section{Summary}
-Zilinghan Li is a machine learning engineer at the Data Science Learning Division at Argonne National Laboratory with extensive experience in privacy-preserving federated learning, AI for biomedicine, and large language models. He currently leads the research and development of the federated learning framework at Argonne and develops scalable, and efficient distributed computing solutions for cloud and supercomputing environments. He demonstrates research impact through 10+ publications in top-tier venues and has proven ability to build impactful AI solutions to advance healthcare and broader scientific research.
+\vspace{8pt}
+\noindent{\color{darkmaroon}\rule{\linewidth}{0.5pt}}\\[-4pt]
+\noindent{\color{darkmaroon}\rule{\linewidth}{2pt}}
+\vspace{6pt}
+
+\begin{center}
+  {\large\textbf{\scshape Curriculum Vitae}} \\[2pt]
+  (05/17/2026)
+\end{center}
 \vspace{-4pt}
 
-%-----EDUCATION----------------------------------------------------------------
-\section{Education}
+%--DEGREES---------------------------------------------------------------------
+\section{Degrees Attained}
+\begin{itemize}[leftmargin=1cm, label={}, itemsep=1pt]
+  \small
+  \item M.S., Computer Science, University of Illinois at Urbana-Champaign, May 2024 \hfill GPA: 4.0/4.0
+  \item B.S., Computer Engineering, University of Illinois at Urbana-Champaign, May 2022 \hfill GPA: 3.89/4.0
+  \item B.E., Computer Engineering, Zhejiang University, June 2022 \hfill GPA: 3.97/4.0
+\end{itemize}
+
+%--POSITIONS HELD--------------------------------------------------------------
+\section{Positions Held}
 \CVSubHeadingListStart
-\CVSubheading
-{\normalsize{University of Illinois at Urbana–Champaign}}
-{\small{Champaign, IL}}
-{\textit{Master of Science in Computer Science} $|$ GPA: 4.0/4.0}
-{\small{Aug. 2022 -- May. 2024}}
-\vspace{-17pt}
-\CVSubheading
-{{}}{}
-{\textit{Bachelor of Science in Computer Engineering} $|$ GPA: 3.89/4.0}{\small{Sep. 2018 -- May. 2022}}
-\CVSubheading
-{\normalsize{Zhejiang University}}
-{\small{Hangzhou, China}}
-{\textit{Bachelor of Engineering in Computer Engineering} $|$ GPA: 3.97/4.0}{\small{Sep. 2018 -- Jun. 2022}}
-% \vspace{-2pt}
-% \CVItem{$\bullet$ Selected Honors: UIUC {Highest} Honor at Graduation (2022), National Scholarship ($<1\%$, 2019).}
-\vspace{-5pt}
-\CVSubHeadingListEnd
 
-%-----SKILLS----------------------------------------------------
-% \section{Skills}
-% \begin{itemize}[leftmargin=0.5cm, label={}]
-% \small
-% {\item{
-% \textbf{Programming Languages}{: Python, C++, C, JavaScript, Dart, Java} \\ 
-% \vspace{2.6pt}
-% \textbf{Tools}{: PyTorch, AWS, gRPC, Docker, React, Git, CUDA, SQL, NoSQL} \\ 
-% }}
-% \end{itemize}
-% \vspace{-20pt}
-
-% -----WORK EXPERIENCE------
-\section{Work Experience}
-
-\CVSubHeadingListStart
-%-----Experience (1)----------
 \CVSubheading
-{\normalsize{Argonne National Laboratory - Data Science and Learning Division}}
-{\small{Lemont, IL}}
-{\textit{\textbf{Machine Learning Engineer}}}
-{\small{May. 2024 - present}}
-\CVItem{$\bullet$ Led the research and development effort of the Advanced Privacy-Preserving Federated Learning (APPFL) framework, \textbf{funded by the U.S. Department of Energy (DOE)}, to enable the secure and privacy-preserving training of more robust and well-performed artificial intelligence (AI) models for biomedicine and general science. Authored \textbf{10+ research manuscripts} accepted or under review at top-tier conferences and journals in AI, distributed computing, and biomedicine.
-}
-\vspace{-2.5pt}
-\CVItem{
-\small{$\bullet$ Developed AI-driven solutions to improve patient outcomes in biomedicine, including automated pipelines for early screening of rare genetic diseases, advanced foundation models for precisely extracting information from digital histopathology images to enhance cancer outcome predictions, and accurate multi-ancestry polygenic risk prediction tools across diverse populations.} 
-}
-\vspace{-2.5pt}
-\CVItem{
-\small{$\bullet$ Contributed to the evaluation and post pretraining efforts of large language models (LLMs) as part of the {{AuroraGPT}} project, aiming to advance the integration of AI capabilities into scientific research workflows by leveraging DOE supercomputing resources.} 
-}
-\vspace{-2.5pt}
-\CVItem{
-\small{$\bullet$ Designed cost-effective and energy-efficient algorithms for distributed computing tasks across cloud platforms and DOE supercomputing resources, improving energy utilization and reducing operational costs by more than 70\%.} 
-}
+{Argonne National Laboratory -- Data Science and Learning Division}{Lemont, IL}
+{\textit{Machine Learning Engineer}}{May 2024 -- Present}
+\begin{itemize}[leftmargin=0.5cm, label={$\bullet$}, topsep=2pt, itemsep=0pt]
+  \small
+  \item Led research and development of the APPFL federated learning framework (DOE-funded), enabling privacy-preserving AI model training for biomedicine and general science. Authored and co-authored 15+ manuscripts at top-tier AI, computing, and biomedical venues.
+  \item Developed AI solutions for biomedicine: automated pipelines for rare genetic disease screening, foundation models for digital histopathology image analysis, and multi-ancestry polygenic risk prediction tools.
+  \item Contributed to evaluation and post-pretraining of large language models as part of the AuroraGPT project on DOE supercomputing resources.
+  \item Designed cost-effective algorithms for distributed computing across cloud and DOE HPC platforms, reducing operational costs by more than 70\%.
+\end{itemize}
+
 \vspace{-13pt}
 \CVSubheading
-{{}}{}
-{\textit{\textbf{Graduate Visiting Student}}}{\small{Jan. 2023 - May. 2024}}
-\CVItem{
-\small{$\bullet$ 
-Led the project to build a platform for providing privacy-preserving federated learning as a service, which allows domain scientists different institutions to easily and securely train robust machine learning models together without transferring large and private datasets. \href{https://appflx.link/}{\textbf{[Website]}}}
-}
-\vspace{0pt}
-% \vspace{-2.5pt}
-% \CVItem{
-% \small{$\bullet$ Designed and implemented a novel and state-of-the-art semi-asynchronous federated learning algorithm for more efficient federated learning across heterogeneous client computing machines, with a first-author paper accepted at ICLR 2024. \href{https://github.com/APPFL/FedCompass}{\textbf{[Github]}} \href{https://openreview.net/forum?id=msXxrttLOi}{\textbf{[OpenReview]}}} 
-% }
-% \vspace{-2.5pt}
-% \CVItem{
-% \small{$\bullet$ Built up a distributed framework to efficiently fine-tune large language models such as LLaMA 2 among heterogeneous cloud and High-Performance Computing resources in a federated manner.} 
-% }
+{{}}{{}}
+{\textit{Graduate Visiting Student}}{January 2023 -- May 2024}
+\begin{itemize}[leftmargin=0.5cm, label={$\bullet$}, topsep=2pt, itemsep=0pt]
+  \small
+  \item Led development of APPFLx, a platform providing privacy-preserving cross-silo federated learning as a service for domain scientists across institutions. \href{https://appflx.link/}{\textbf{[Website]}}
+\end{itemize}
 
-%-----Experience (0)----------
 \CVSubheading
-{\normalsize{Amazon Web Services}}
-{\small{Sunnyvale, CA}}
-{\textit{Software Development Engineer Intern}}
-{\small{May. 2023 - Aug. 2023}}
-\CVItem{
-\small{$\bullet$ Developed a mobile application for Android and iOS for helping customers learn about the AWS IoT Device Location API and showcasing its capabilities for resolving IoT device locations without a built-in GPS.}
-}
-% \vspace{-2.5pt}
-% \CVItem{
-% \small{$\bullet$ Integrated AWS authentication to the application for automatic and seamless billing of the API usage.}
-% }
-
-
-%-----Experience (2)----------
-% \CVSubheading
-% {\normalsize{National Center for Supercomputing Applications}}
-% {\small{Champaign, IL}}
-% {\textit{Student Research Assistant}}{\small{Sep. 2021 - Dec. 2021}}
-% \CVItem{
-% \small{$\bullet$ Proposed a semi-supervised learning method with triplet loss to achieve more than \textbf{98.5\%} face recognition accuracy by only using two face images per person for training. \href{https://github.com/Zilinghan/ViCTer}{\textbf{[Github]}} }
-% }
-% \vspace{-2.5pt}
-% \CVItem{
-% \small{$\bullet$ Designed a video character tracker to return character appearing time slots by combining the semi-supervised face recognizer and multi-human tracker, which reaches \textbf{70\%}$^\sim$\textbf{80\%} tracking accuracy on collected datasets.}
-% }
-\CVSubHeadingListEnd
-\vspace{-15pt}
-%-----PUBLICATIONS----------------------------------------------------------------
-\section{Publications}
-\CVSubHeadingListStart
-\CVItem{\small{
-$\bullet$ \textbf{Li, Z.}, et al, 2025. Advances in APPFL: A Comprehensive and Extensible Federated Learning Framework. In \textit{2025 IEEE 25th International Symposium on Cluster, Cloud and Internet Computing (CCGrid).} \href{https://arxiv.org/abs/2409.11585}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Bai, G., Li, Y., \textbf{Li, Z.}, et al, 2024. FedSpaLLM: Federated Pruning of Large Language Models. In \textit{2025 Annual Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics.} \href{https://arxiv.org/abs/2410.14852}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ \textbf{Li, Z.}, et al, 2024. FedCompass: Efficient Cross-Silo Federated Learning on Heterogeneous Client Devices using a Computing Power Aware Scheduler. In \textit{The 12th International Conference on Learning Representations (ICLR).} \href{https://openreview.net/forum?id=msXxrttLOi}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Wilkins, G., Di, S., Calhoun, J., \textbf{Li, Z.}, et al, 2024. FedSZ: Leveraging Floating-Point Lossy Compression for Federated Learning Communications. In \textit{The 44th IEEE
-International Conference on Distributed Computing Systems (ICDCS).} \href{https://arxiv.org/abs/2312.13461}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Hoang, T. H., Fuhrman, J., Klarqvist, M., Li, M., Chaturvedi, P., \textbf{Li, Z.,} et al, 2024. Enabling End-to-End Secure Federated Learning in Biomedical Research on Heterogeneous Computing Environments with APPFLx. In \textit{Computational and Structural Biotechnology Journal (CSBJ)}. \href{https://arxiv.org/abs/2312.08701}{\textbf{[Paper]}}
-}} 
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ \textbf{Li, Z.}, et al, 2024. Secure Federated Learning Across Heterogeneous Cloud and High-Performance Computing Resources -- A Case Study on Federated Fine-tuning of LLaMA 2. In \textit{Special Issue in Computing in Science \& Engineering (CiSE).} \href{https://arxiv.org/abs/2402.12271}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Madduri, R., \textbf{Li, Z.}, et al, 2024. Advances in Privacy Preserving Federated Learning to Realize a Truly Learning Healthcare System. In \textit{The Sixth IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications.} \href{https://arxiv.org/abs/2409.19756}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ \textbf{Li, Z.}, et al, 2023. APPFLx: Providing Privacy-Preserving Cross-Silo Federated Learning as a Service. In \textit{IEEE 19th International Conference on e-Science (e-Science).} \href{https://arxiv.org/abs/2308.08786}{\textbf{[Paper]}}
-}} 
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ \textbf{Li, Z.}, Wang, X., Zhang, Z., Kindratenko, V., 2023. ViCTer: A Semi-Supervised Video Character Tracker. In \textit{Machine Learning with Applications.} \href{https://doi.org/10.1016/j.mlwa.2023.100460}{\textbf{[Paper]}}
-}} 
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Wu, Y., Miao, X., \textbf{Li, Z.}, He, S., Yuan, X., Yin, J., 2023. An Efficient Generative Data Imputation Toolbox with Adversarial Learning. In \textit{2023 IEEE 39th International Conference on Data Engineering (ICDE).}
-\href{https://ieeexplore.ieee.org/abstract/document/10184711}{\textbf{[Paper]}}
-}} 
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Yuan, X.$^*$, \textbf{Li, Z.$^*$}, Wang, G., 2022. Activematch: End-to-End Semi-Supervised Active Representation Learning. In \textit{2022 IEEE International Conference on Image Processing (ICIP).} ($^*$: equal contributions) \href{https://arxiv.org/abs/2110.02521}{\textbf{[Paper]}}
-}} 
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ \textbf{Li, Z.}, He, S., Du, Y., González, S., Schewe, K. D., 2021. Unbounded Barrier-Synchronized Concurrent ASMs for Effective MapReduce Processing on Streams. In \textit{International Conference on Rigorous State-Based Methods.}
-\href{https://doi.org/10.1007/978-3-030-77543-8_1}{\textbf{[Paper]}}
-}}
-\CVSubHeadingListEnd
-
-\section{Preprints}
-\CVSubHeadingListStart
-\CVItem{\small{
-$\bullet$ Levin, M. G., Koyama, S., Woerner, J., Zhang, D. Y., Rodriguez, A., Nandi, T., Truong, B., Abramowitz, S. A., Gupta, H., Kamineni, H., Hornsby, W., \textbf{Li, Z.}, et al, 2025. Genome-Wide Assessment of Pleiotropy Across $>$ 1000 Traits from Global Biobanks. \textit{medRxiv.} Under review at \textit{Nature}. \href{https://www.medrxiv.org/content/10.1101/2025.04.18.25326074v2}  {\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Yellapragada, S., Graikos, A., Triaridis, K., \textbf{Li, Z.}, et al, 2025. Pathology Image Compression with Pre-trained Autoencoders. \textit{arXiv preprint.} Under review at \textit{The 28th International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI 2025)}. \href{https://arxiv.org/abs/2503.11591}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Yellapragada, S., Graikos, A., \textbf{Li, Z.}, et al, 2025. PixCell: A Generative Foundation Model for Digital Histopathology Images. \textit{arXiv preprint.} \href{https://arxiv.org/abs/2506.05127}{\textbf{[Paper]}} 
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Sinha, A., \textbf{Li, Z.}, et al, 2025. FedCostAware: Enabling Cost-Aware Federated Learning on the Cloud. \textit{arXiv preprint.} Under review at \textit{IEEE 21st International Conference on e-Science}. \href{https://arxiv.org/abs/2505.21727}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Hiniduma, K., \textbf{Li, Z.}, et al, 2025. CADRE: Customizable Assurance of Data Readiness in Privacy-Preserving Federated Learning. \textit{arXiv preprint.} Under review at \textit{IEEE 21st International Conference on e-Science}. \href{https://arxiv.org/abs/2505.23849}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Cappello, F., Madireddy, S., Underwood, R., Getty, N., Chia, N. L. P., Ramachandra, N., Nguyen, J., Keceli, M., Mallick, T., \textbf{Li, Z.}, et al, 2025. EAIRA: Establishing a Methodology for Evaluating AI Models as Scientific Research Assistants. \textit{arXiv preprint.} \href{https://arxiv.org/abs/2502.20309}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
-\CVItem{\small{
-$\bullet$ Belagali, V., Yellapragada, S., Graikos, A., Kapse, S., \textbf{Li, Z.}, et al, 2024. Gen-SIS: Generative Self-augmentation Improves Self-supervised Learning. \textit{arXiv preprint.} Under review at \textit{The 39th Annual Conference on Neural Information Processing Systems (NeurIPS 2025)}. \href{https://arxiv.org/abs/2412.01672}{\textbf{[Paper]}}
-}}
-\vspace{-2.5pt}
+{Amazon Web Services}{Sunnyvale, CA}
+{\textit{Software Development Engineer Intern}}{May 2023 -- August 2023}
+\begin{itemize}[leftmargin=0.5cm, label={$\bullet$}, topsep=2pt, itemsep=0pt]
+  \small
+  \item Developed a mobile application (Android/iOS) demonstrating the AWS IoT Device Location API for resolving device locations without built-in GPS.
+\end{itemize}
 
 \CVSubHeadingListEnd
+\vspace{-2pt}
 
-%-----PROJECTS----------------------------------------------------
-% \section{Selected Projects}
-% \CVSubHeadingListStart
-% %-----Project (1)----------
-% \CVSubheading
-% {\small{Full Stack Project: GroupToDo} $|$ \emph{\small{JS, React, Node.js, MongoDB}}}{\small{Champaign, IL, Nov. 2022 - Dec. 2022}}{}{}
-% \vspace{-19pt}
-% \CVItem{\small{$\bullet$ Designed a todo list web application suitable for group collaboration, GroupToDo, in which users can manage both their personal tasks and assigned group tasks. \href{https://youtu.be/LsAwws9SEzo}{\textbf{[Demo]}} }}
-% \vspace{-4pt}
-% \CVItem{$\bullet$ Built the frontend webpages using React and JavaScript, and developed the user authentication via Firebase.}
-% \vspace{-4pt}
-% \CVItem{$\bullet$ Implemented backend APIs via Node.js and MongoDB, and deployed the backend to Heroku.}
-% \vspace{0pt}
+%--PROFESSIONAL ACTIVITIES-----------------------------------------------------
+\section{Professional Activities}
+\begin{itemize}[leftmargin=1cm, label={$\bullet$}, itemsep=2pt]
+  \small
+  \item \textbf{Peer Reviewer} for the following journals and conferences (ordered by impact): CVPR, ICCV, ECCV, IEEE Transactions on Circuits and Systems for Video Technology (TCSVT), Journal of Medical Systems, Medical Physics, SoftwareX, Journal of Supercomputing, ETRI Journal, Journal of Digital Health, International Journal of Cloud Computing, NAACL Workshops
+\end{itemize}
 
-%-----Project (2)----------
-% \CVSubheading
-% {Ebook Service and Management System $|$ \emph{\small{JS, Vue, SQL}}}{Champaign, IL, Sep. 2021 - Dec. 2021}{}{}
-% \vspace{-18pt}
-% \CVItem{$\bullet$ Developed a webpage which displays the contents of \textbf{1000+} ebooks according to the two-level category.}
-% \vspace{-6pt}
-% \CVItem{$\bullet$ Set up ebook management pages with user authentication to safely access and modify the database from frontend. }
-% \vspace{-12pt}
+%--PUBLICATIONS, PRESENTATIONS, AND OTHER EVIDENCE----------------------------
+\section{Publications, Presentations, and Other Evidence of Achievement}
 
-% \CVSubheading
-% {\normalsize{Semi-supervised Active Representation Learning $|$ \emph{\small{Python}}}}
-% {\small{Haining, China, Jun. 2021 - Feb. 2022}}
-% {}{}
-% \vspace{-18pt}
-% \CVItem{\small{
-% $\bullet$ Proposed a semi-supervised learning (SSL) method which solves the current drawbacks such as ambiguous representations for inter-class samples, sensitivity to initialization, and inconvenience in building labeled sets.
-% }}
-% \vspace{-4pt}
-% \CVItem{\small{
-% $\bullet$ Reached \textbf{state-of-the-art} performance on CIFAR-10 (\textbf{1\%$^\sim$2\%} improvement) and CIFAR-100 (\textbf{4\%} improvement).
-% }}
-% \vspace{0pt}
+\noindent\small\textit{Note: \textbf{Li, Z.} denotes the candidate. $^*$~denotes equal contribution. Lists are chronological, most recent first.}
 
-% %-----Project (3)----------
-% \CVSubheading
-% {\normalsize{GAN-based Missing Data Imputation Toolbox $|$ \emph{\small{Python}}}}
-% {Hangzhou, China, Jun. 2021 - Sep. 2021}
-% {}{}
-% \vspace{-18pt}
-% \CVItem{\small{
-% $\bullet$ Proposed an improved generative adversarial network (GAN) based missing data imputation method, which speeds up the model training by \textbf{7.5x} on average, and embedded the model into a GUI toolbox using \textbf{PyQt}.
-% }}
-% \vspace{-4pt}
-% \CVItem{\small{
-% $\bullet$ Employed pagination to decrease the time for opening large files with millions of items to less than 5 seconds.
-% }}
-% \vspace{-4pt}
+%-- (2) Refereed Journal Articles ---------------------------------------------
+\PubSection{Refereed Journal Articles and Book Chapters}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item Hoang, T.H., Fuhrman, J., Klarqvist, M., Li, M., Chaturvedi, P., \textbf{Li, Z.}, Kim, K., Ryu, M., et al.\ (2025). Enabling End-to-End Secure Federated Learning in Biomedical Research on Heterogeneous Computing Environments with APPFLx. \textit{Computational and Structural Biotechnology Journal}. \href{https://arxiv.org/abs/2312.08701}{[DOI]}
 
-%-----Project (4)----------
-% \CVSubheading
-% {{Linux-like Operating System Supporting Multiple Terminals} $|$ \emph{\small{C, x86-Assembly}}}{Remote, Mar. 2021 - May. 2021}{}{}
-% \vspace{-18pt}
-% \CVItem{$\bullet$ Developed an operating system with three students from scratch, including OS functionalities such as basic device supports, interrupt handlers, system calls, dynamic memory allocation, and writable file system.}\vspace{-6pt}
-% \CVItem{$\bullet$ Implemented a round-robin scheduler to support three terminals running at the same time.}
-% \CVSubHeadingListEnd
-% \vspace{-18pt}
+  \item Patel, P., Corsi, A., Huerta, E.A., Merfeld, K., Tiki, V., \textbf{Li, Z.}, Bicer, T., Chard, K., et al.\ (2025). Radio Afterglow Detection and AI-driven Response (RADAR): A Federated Framework for Gravitational-wave Event Follow-up. \textit{The Astrophysical Journal Supplement Series}, 280(2), 71. \href{https://doi.org/10.3847/1538-4365/adfbea}{[DOI]}
 
-%-----Project (5)----------
-% \CVSubheading
-% {\small{TCP Protocol from Scratch} $|$ \emph{\small{C}}}{Champaign, IL, Oct. 2021 - Nov. 2021}{}{}
-% % {Advisor: Prof. Romit Roy Choudhury, University of Illinois at Urbana–Champaign}{Oct. 2021 - Nov. 2021}
-% \vspace{-18pt}
-% \CVItem{\small{$\bullet$ Implemented the TCP protocol based on UDP's sendto and recvfrom to transmit gigabyte data reliably.}}
-% \vspace{-6pt}
-% \CVItem{\small{$\bullet$ Realized congestion avoidance and fast recovery features of the TCP protocol.}}
-% \vspace{-6pt}
-% \CVItem{$\bullet$ Utilized at least \textbf{70\%} of bandwidth in a steady state without competing traffic.}
-% \vspace{0pt}
+  \item \textbf{Li, Z.}, He, S., Chaturvedi, P., Kindratenko, V., Huerta, E.A., Kim, K., Madduri, R. (2024). Secure Federated Learning Across Heterogeneous Cloud and High-Performance Computing Resources: A Case Study on Federated Fine-tuning of LLaMA 2. \textit{Computing in Science \& Engineering (CiSE)}. \href{https://arxiv.org/abs/2402.12271}{[DOI]}
+
+  \item \textbf{Li, Z.}, Wang, X., Zhang, Z., Kindratenko, V. (2023). ViCTer: A Semi-Supervised Video Character Tracker. \textit{Machine Learning with Applications}. \href{https://doi.org/10.1016/j.mlwa.2023.100460}{[DOI]}
+\end{enumerate}
+
+%-- (3) Refereed Conference Proceedings ---------------------------------------
+\PubSection{Publications in Refereed Conference and Workshop Proceedings}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item \textbf{Li, Z.}, He, S., Yang, Z., Ryu, M., Kim, K., Madduri, R., et al.\ (2025). Advances in APPFL: A Comprehensive and Extensible Federated Learning Framework. In \textit{Proceedings of the 25th IEEE International Symposium on Cluster, Cloud and Internet Computing (CCGrid 2025)}. \href{https://arxiv.org/abs/2409.11585}{[DOI]}
+
+  \item Bai, G., Li, Y., \textbf{Li, Z.}, Zhao, L., Kim, K. (2025). FedSpaLLM: Federated Pruning of Large Language Models. In \textit{Proceedings of the 2025 Annual Conference of the Nations of the Americas Chapter of the ACL (NAACL 2025)}. \href{https://arxiv.org/abs/2410.14852}{[DOI]}
+
+  \item Yellapragada, S., Graikos, A., Triaridis, K., \textbf{Li, Z.}, Nandi, T., Madduri, R., et al.\ (2025). Pathology Image Compression with Pre-trained Autoencoders. In \textit{Proceedings of the 28th International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI 2025)}. \href{https://arxiv.org/abs/2503.11591}{[DOI]}
+
+  \item Sinha, A., \textbf{Li, Z.}, Liu, T., Kindratenko, V., Kim, K., Madduri, R. (2025). Cost-Aware Federated Learning on the Cloud. In \textit{Proceedings of the 21st IEEE International Conference on e-Science (e-Science 2025)}. \href{https://arxiv.org/abs/2505.21727}{[DOI]}
+
+  \item \textbf{Li, Z.}, Chaturvedi, P., He, S., Chen, H., Singh, G., Kindratenko, V., Huerta, E.A., et al.\ (2024). FedCompass: Efficient Cross-Silo Federated Learning on Heterogeneous Client Devices Using a Computing Power Aware Scheduler. In \textit{Proceedings of the 12th International Conference on Learning Representations (ICLR 2024)}. \href{https://openreview.net/forum?id=msXxrttLOi}{[DOI]}
+
+  \item Wilkins, G., Di, S., Calhoun, J., \textbf{Li, Z.}, Kim, K., Underwood, R., Mortier, R., et al.\ (2024). FedSZ: Leveraging Error-Bounded Lossy Compression for Federated Learning Communications. In \textit{Proceedings of the 44th IEEE International Conference on Distributed Computing Systems (ICDCS 2024)}. \href{https://arxiv.org/abs/2312.13461}{[DOI]}
+
+  \item Madduri, R., \textbf{Li, Z.}, Nandi, T., Kim, K., Ryu, M., Rodriguez, A. (2024). Advances in Privacy Preserving Federated Learning to Realize a Truly Learning Healthcare System. In \textit{Proceedings of the 6th IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications (TPS-ISA 2024)}. \href{https://arxiv.org/abs/2409.19756}{[DOI]}
+
+  \item \textbf{Li, Z.}, He, S., Chaturvedi, P., Hoang, T.H., Ryu, M., Huerta, E.A., Kindratenko, V., Kim, K., Madduri, R. (2023). APPFLx: Providing Privacy-Preserving Cross-Silo Federated Learning as a Service. In \textit{Proceedings of the 19th IEEE International Conference on e-Science (e-Science 2023)}. \href{https://arxiv.org/abs/2308.08786}{[DOI]}
+
+  \item Wu, Y., Miao, X., \textbf{Li, Z.}, He, S., Yuan, X., Yin, J. (2023). An Efficient Generative Data Imputation Toolbox with Adversarial Learning. In \textit{Proceedings of the 39th IEEE International Conference on Data Engineering (ICDE 2023)}. \href{https://ieeexplore.ieee.org/abstract/document/10184711}{[DOI]}
+
+  \item Yuan, X.$^*$, \textbf{Li, Z.$^*$}, Wang, G. (2022). ActiveMatch: End-to-End Semi-Supervised Active Representation Learning. In \textit{Proceedings of the 2022 IEEE International Conference on Image Processing (ICIP 2022)}. \href{https://arxiv.org/abs/2110.02521}{[DOI]}
+
+  \item \textbf{Li, Z.}, He, S., Du, Y., Gonz\'{a}lez, S., Schewe, K.D. (2021). Unbounded Barrier-Synchronized Concurrent ASMs for Effective MapReduce Processing on Streams. In \textit{Proceedings of the International Conference on Rigorous State-Based Methods (ABZ 2021)}. \href{https://doi.org/10.1007/978-3-030-77543-8_1}{[DOI]}
+\end{enumerate}
+
+%-- (5) Other Publications (Preprints) ----------------------------------------
+\PubSection{Other Publications (Preprints and Manuscripts Under Review)}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item Belagali, V., Kapse, S., Marza, P., Das, S., \textbf{Li, Z.}, et al.\ (2025). TICON: A Slide-Level Tile Contextualizer for Histopathology Representation Learning. \textit{arXiv:2512.21331}. \href{https://arxiv.org/abs/2512.21331}{[arXiv]}
+
+  \item \textbf{Li, Z.}, Sinha, A., Li, Y., Chard, K., Kim, K., Madduri, R. (2025). Experiences Building Enterprise-Level Privacy-Preserving Federated Learning to Power AI for Science. \textit{arXiv:2511.08998}. \href{https://arxiv.org/abs/2511.08998}{[arXiv]}
+
+  \item Yellapragada, S., Graikos, A., \textbf{Li, Z.}, Triaridis, K., Belagali, V., Kapse, S., et al.\ (2025). PixCell: A Generative Foundation Model for Digital Histopathology Images. \textit{arXiv:2506.05127}. \href{https://arxiv.org/abs/2506.05127}{[arXiv]}
+
+  \item Hiniduma, K., \textbf{Li, Z.}, et al.\ (2025). CADRE: Customizable Assurance of Data Readiness in Privacy-Preserving Federated Learning. \textit{arXiv:2505.23849}. Under review at \textit{IEEE 21st International Conference on e-Science}. \href{https://arxiv.org/abs/2505.23849}{[arXiv]}
+
+  \item Levin, M.G., Koyama, S., Woerner, J., Zhang, D.Y., Rodriguez, A., Nandi, T., Truong, B., \textbf{Li, Z.}, et al.\ (2025). Genome-Wide Assessment of Pleiotropy Across $>$1000 Traits from Global Biobanks. \textit{medRxiv:2025.04.18.25326074}. Under review at \textit{Nature}. \href{https://www.medrxiv.org/content/10.1101/2025.04.18.25326074v2}{[medRxiv]}
+
+  \item Cappello, F., Madireddy, S., Underwood, R., Getty, N., Chia, N.L.P., \textbf{Li, Z.}, et al.\ (2025). EAIRA: Establishing a Methodology for Evaluating AI Models as Scientific Research Assistants. \textit{arXiv:2502.20309}. \href{https://arxiv.org/abs/2502.20309}{[arXiv]}
+
+  \item Belagali, V., Yellapragada, S., Graikos, A., Kapse, S., \textbf{Li, Z.}, et al.\ (2024). Gen-SIS: Generative Self-augmentation Improves Self-supervised Learning. \textit{arXiv:2412.01672}. Under review at \textit{NeurIPS 2025}. \href{https://arxiv.org/abs/2412.01672}{[arXiv]}
+\end{enumerate}
+
+%-- (6) Invited Talks ---------------------------------------------------------
+\PubSection{Invited Talks Presented at Major Conferences and Symposia}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item ``Leveraging Open-Source LLMs-Enabled Identification of Undiagnosed Patients with Rare Genetic Aortopathies.'' \textit{AMIA 2025 Informatics Summit}, Pittsburgh, PA, March 2025.
+
+  \item ``When Federated Learning Meets FABRIC.'' \textit{FABRIC Tutorials}, December 2024.
+
+  \item ``Federated Learning Tutorial: Concepts, Challenges, and Framework.'' \textit{SciFM Summer School}, Ann Arbor, MI, July 2024.
+\end{enumerate}
+
+%-- (7) Seminars and Colloquia ------------------------------------------------
+\PubSection{Seminars and Colloquia Presented}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item ``A Year in APPFL Software Development.'' \textit{AI4Science Quarterly Meeting}, Argonne National Laboratory, Lemont, IL, February 2025.
+
+  \item ``APPFL Framework and Its Integration with MONAI.'' \textit{MONAI Federated Learning Working Group} (Virtual), February 2025.
+\end{enumerate}
+
+%-- (8) Other Presentations ---------------------------------------------------
+\PubSection{Other Presentations and Contributed Talks}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item ``Advances in Privacy-Preserving Federated Learning to Realize a Truly Learning Healthcare System.'' \textit{TPS-ISA 2024}, Washington, D.C., October 2024.
+
+  \item ``Using Globus Compute to Streamline Federated Learning Applications.'' \textit{ParslFest 2024}, Chicago, IL, October 2024.
+
+  \item ``APPFLx.Link: Providing Privacy-Preserving Cross-Silo Federated Learning as a Service.'' \textit{ParslFest 2023}, Chicago, IL, October 2023.
+\end{enumerate}
+
+%-- (10) Leadership -----------------------------------------------------------
+\PubSection{Leadership Provided to Scientific/Engineering/Technical Organizations}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item Technical lead and lead developer of the APPFL (Advanced Privacy-Preserving Federated Learning) open-source framework at Argonne National Laboratory, providing technical direction for the framework's architecture, development roadmap, and community engagement.
+\end{enumerate}
+
+%-- (13) Significant Software -------------------------------------------------
+\PubSection{Significant Software Developed}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item \textbf{APPFL: Advanced Privacy-Preserving Federated Learning Framework} (\href{https://github.com/APPFL/APPFL}{github.com/APPFL/APPFL}). Led end-to-end design, development, and maintenance of this open-source federated learning framework. Metrics as of May 2026: 176 GitHub stars, 35 forks, Discord community of 67 users. Adopted and actively used by multiple U.S.\ DOE national laboratories, including Oak Ridge National Laboratory, Lawrence Berkeley National Laboratory, Sandia National Laboratories, and Los Alamos National Laboratory.
+\end{enumerate}
+
+%-- Graduate Students ---------------------------------------------------------
+\PubSection{Graduate Students Mentored (Research Mentor)}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item \textbf{Ze Yang}, M.S.\ in Computer Science, University of Illinois at Urbana-Champaign (graduated; currently at Meta). Co-author, ``Advances in APPFL'' (CCGrid 2025).
+
+  \item \textbf{Aditya Sinha}, M.S.\ in Computer Science, University of Illinois at Urbana-Champaign (graduated; currently at Microsoft). Lead author, ``Cost-Aware Federated Learning on the Cloud'' (e-Science 2025) and ``FedCostAware'' (arXiv 2025).
+
+  \item \textbf{Kaveen Hiniduma}, Ph.D.\ in Computer Science, Ohio State University (in progress). Lead author, ``CADRE'' (arXiv 2025, under review at e-Science 2025).
+
+  \item \textbf{Rishi Kesav Mohan}, M.S.\ in Computer Science, University of Illinois at Urbana-Champaign (graduated; currently at Snowflake).
+
+  \item \textbf{Abhijit Chunduru}, M.S.\ in Computer Science, University of Massachusetts Amherst (in progress).
+\end{enumerate}
+
+%-- (14) Major Projects -------------------------------------------------------
+\PubSection{Major Projects Managed or Directed}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item \textbf{APPFL Framework Development (DOE-funded)}: Led technical direction and development of the APPFL framework at Argonne National Laboratory, coordinating contributions from partner national laboratories and external collaborators. Responsibilities include architecture design, feature development, testing, documentation, and integration with DOE computing infrastructure.
+\end{enumerate}
+
+%-- (16) Sustained Interaction ------------------------------------------------
+\PubSection{Sustained Interaction with Sponsors}
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item \textbf{U.S.\ Department of Energy (DOE)}: Ongoing technical contributor to DOE-funded research in privacy-preserving federated learning, distributed AI, and scientific computing, supporting DOE's mission to advance AI capabilities across national laboratories.
+\end{enumerate}
+
+\vspace{8pt}
+
+%--CITATION RECORD-------------------------------------------------------------
+\section{Citation Record}
+
+\noindent\small\textit{Source: Google Scholar (\href{https://scholar.google.com/citations?user=4JbL29YAAAAJ}{profile}), as of May 2026. \quad Total citations: \textbf{254} \quad h-index: \textbf{10} \quad i10-index: \textbf{10}}
+\vspace{4pt}
+
+\begin{enumerate}[leftmargin=1cm, label={[\arabic*]}, itemsep=3pt]
+  \small
+  \item \textbf{Li, Z.} et al.\ ``Advances in APPFL: A Comprehensive and Extensible Federated Learning Framework.'' \textit{CCGrid 2025.} \hfill\textbf{Cited by 45}
+
+  \item \textbf{Li, Z.} et al.\ ``FedCompass: Efficient Cross-Silo Federated Learning on Heterogeneous Client Devices Using a Computing Power Aware Scheduler.'' \textit{ICLR 2024.} \hfill\textbf{Cited by 31}
+
+  \item \textbf{Li, Z.} et al.\ ``APPFLx: Providing Privacy-Preserving Cross-Silo Federated Learning as a Service.'' \textit{e-Science 2023.} \hfill\textbf{Cited by 27}
+
+  \item Hoang, T.H., \ldots, \textbf{Li, Z.} et al.\ ``Enabling End-to-End Secure Federated Learning in Biomedical Research with APPFLx.'' \textit{CSBJ 2025.} \hfill\textbf{Cited by 20}
+
+  \item Bai, G., Li, Y., \textbf{Li, Z.} et al.\ ``FedSpaLLM: Federated Pruning of Large Language Models.'' \textit{NAACL 2025.} \hfill\textbf{Cited by 19}
+
+  \item Wilkins, G., \ldots, \textbf{Li, Z.} et al.\ ``FedSZ: Leveraging Error-Bounded Lossy Compression for Federated Learning Communications.'' \textit{ICDCS 2024.} \hfill\textbf{Cited by 18}
+
+  \item Yuan, X.$^*$, \textbf{Li, Z.$^*$}, Wang, G. ``ActiveMatch: End-to-End Semi-Supervised Active Representation Learning.'' \textit{ICIP 2022.} \hfill\textbf{Cited by 13}
+
+  \item Cappello, F., \ldots, \textbf{Li, Z.} et al.\ ``EAIRA: Establishing a Methodology for Evaluating AI Models as Scientific Research Assistants.'' \textit{arXiv 2025.} \hfill\textbf{Cited by 11}
+
+  \item Madduri, R., \textbf{Li, Z.} et al.\ ``Advances in Privacy Preserving Federated Learning to Realize a Truly Learning Healthcare System.'' \textit{TPS-ISA 2024.} \hfill\textbf{Cited by 10}
+
+  \item \textbf{Li, Z.} et al.\ ``Secure Federated Learning Across Heterogeneous Cloud and HPC Resources: A Case Study on Federated Fine-tuning of LLaMA 2.'' \textit{CiSE 2024.} \hfill\textbf{Cited by 10}
+
+  \item Belagali, V., Yellapragada, S., \ldots, \textbf{Li, Z.} et al.\ ``Gen-SIS: Generative Self-augmentation Improves Self-supervised Learning.'' \textit{arXiv 2024.} \hfill\textbf{Cited by 9}
+
+  \item Yellapragada, S., Graikos, A., \textbf{Li, Z.} et al.\ ``PixCell: A Generative Foundation Model for Digital Histopathology Images.'' \textit{arXiv 2025.} \hfill\textbf{Cited by 7}
+
+  \item Wu, Y., Miao, X., \textbf{Li, Z.} et al.\ ``An Efficient Generative Data Imputation Toolbox with Adversarial Learning.'' \textit{ICDE 2023.} \hfill\textbf{Cited by 7}
+
+  \item Levin, M.G., \ldots, \textbf{Li, Z.} et al.\ ``Genome-Wide Assessment of Pleiotropy Across $>$1000 Traits from Global Biobanks.'' \textit{medRxiv 2025} (under review at \textit{Nature}). \hfill\textbf{Cited by 6}
+
+  \item Sinha, A., \textbf{Li, Z.} et al.\ ``Cost-Aware Federated Learning on the Cloud.'' \textit{e-Science 2025.} \hfill\textbf{Cited by 3}
+
+  \item Patel, P., \ldots, \textbf{Li, Z.} et al.\ ``RADAR: A Federated Framework for Gravitational-wave Event Follow-up.'' \textit{Astrophys.\ J.\ Suppl.\ Ser.\ 2025.} \hfill\textbf{Cited by 2}
+
+  \item \textbf{Li, Z.}, Sinha, A. et al.\ ``Experiences Building Enterprise-Level Privacy-Preserving Federated Learning to Power AI for Science.'' \textit{arXiv 2025.} \hfill\textbf{Cited by 2}
+
+  \item Yellapragada, S., \ldots, \textbf{Li, Z.} et al.\ ``Pathology Image Compression with Pre-trained Autoencoders.'' \textit{MICCAI 2025.} \hfill\textbf{Cited by 2}
+
+  \item Belagali, V., \ldots, \textbf{Li, Z.} et al.\ ``TICON: A Slide-Level Tile Contextualizer for Histopathology Representation Learning.'' \textit{arXiv 2025.} \hfill\textbf{Cited by 2}
+
+  \item \textbf{Li, Z.}, Wang, X., Zhang, Z., Kindratenko, V. ``ViCTer: A Semi-Supervised Video Character Tracker.'' \textit{Machine Learning with Applications 2023.} \hfill\textbf{Cited by 2}
+
+  \item \textbf{Li, Z.}, He, S., Du, Y., Gonz\'{a}lez, S., Schewe, K.D. ``Unbounded Barrier-Synchronized Concurrent ASMs for Effective MapReduce Processing on Streams.'' \textit{ABZ 2021.} \hfill\textbf{Cited by 0}
+
+  \item Hiniduma, K., \textbf{Li, Z.} et al.\ ``CADRE: Customizable Assurance of Data Readiness in Privacy-Preserving Federated Learning.'' \textit{arXiv 2025.}
+\end{enumerate}
 
 \end{document}
