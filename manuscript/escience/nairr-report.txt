@@ -1,0 +1,29 @@
+PROJECT OVERVIEW - Summary of the project you conducted including research
+goals and methods (2 paragraphs, can be from proposal)
+====
+
+We aimed to advance trustworthy and privacy-preserving AI for scientific and biomedical applications by enabling institutions to collaboratively train on large-scale AI models while maintaining data sovereignty via federated learning (FL). We also planned to investigate how to deploy scalable FL workflows across heterogeneous computing resources for more efficient and robust distributed training.
+
+To achieve so, we leveraged the NAIRR Pilot computing resources from multiple supercomputing facilities to benchmark the training performance and resource utilization of different FL strategies, as well as the communication efficiency and scalability of various communication protocols using the Advanced Privacy-Preserving Federated Learning (APPFL: https://appfl.ai) framework. We also worked on developing applications of FL in medicine to demonstrate of power of FL in improving model generalizability without sharing sensitive training data.
+
+ACCOMPLISHMENTS & KEY FINDINGS – What did you or your team achieve with this
+allocation? (2-3 paragraphs)
+====
+With the NAIRR allocation, our team advanced the development of trustworthy, robust, and privacy-preserving AI systems for science and medicine through large-scale FL research. A major accomplishment was the complete redesign and advancement of the APPFL framework, an open-source framework for scalable and secure FL training across heterogeneous computing environments. Leveraging NAIRR resources from multiple supercomputing facilities, we benchmarked various synchronous and asynchronous FL algorithms, communication protocols, compression methods, and privacy-preserving techniques to study their scalability, efficiency, and resource utilization. These experiments provided important insights into how large-scale FL training can effectively utilize geographically distributed and privacy-sensitive datasets while maintaining strong performance and efficiency. We also developed new methods to improve the reliability and trustworthiness of FL workflows through CADRE, a customizable framework for evaluating and improving data readiness in privacy-preserving FL experiments. By integration into APPFL, CADRE enables collaborators to assess and improve data quality, fairness, and usability without exposing sensitive data, and ensure datasets are suitable for downstream AI model training. 
+
+In parallel, this NAIRR allocation also enabled an impactful biomedical AI application that demonstrates the real-world potential of privacy-aware and scalable AI systems. Collaborating with researchers from The University of Pennsylvania, we developed an open-source large language model pipeline for identifying patients at risk for rare genetic aortopathies from clinical notes. By evaluation on over 22,000 clinical notes from 500 patients, the system demonstrated strong patient-level performance while supporting secure deployment within healthcare environments. Together, all these efforts demonstrate how the NAIRR Pilot resources accelerated advances in scalable FL infrastructure, trustworthy AI methods, and privacy-preserving scientific and medical AI applications.
+
+IMPACT - What is likely to be the impact of your project to your discipline or others?
+(1-2 paragraphs)
+====
+Our project advances trustworthy and privacy-preserving AI by demonstrating how FL can be effectively deployed across heterogeneous computing environments for scientific and biomedical applications. The redesigned APPFL framework provides the community with an advanced open-source platform for scalable and secure FL experimentation with more than a dozen of supported FL strategies for different use cases, while the CADRE framework introduces privacy-preserving data readiness evaluation to improve the reliability and robustness of distributed AI workflows. Together, these efforts help lower the barrier to collaborative AI development without centralized data sharing. The project also demonstrates the broader scientific impact of combining scalable AI infrastructure with privacy-preserving AI methods. Our LLM-based toolkit for identifying patients at risk for rare genetic aortopathies illustrates how these technologies can support clinically relevant decision-making while ensuring privacy within healthcare environments. 
+
+Broadly speaking, the experiments, software, and deployment experiences developed through this project can significantly benefit other scientific domains where data are sensitive but institutionally distributed, including healthcare, national laboratories, and multi-institution scientific collaborations.
+
+BENEFITS TO YOUR RESEARCH – Describe how the NAIRR Pilot benefited your
+research. What were you able to accomplish that you otherwise couldn't have?
+(1-2 paragraphs)
+====
+The NAIRR Pilot allocation provided us with access to computing resources across multiple supercomputing facilities, which was critical for conducting FL experiments, a distributing training paradigm, under realistic distributed conditions. These resources enabled us to benchmark FL algorithms, communication protocols, compression methods, and privacy-preserving techniques at scales that would not have been possible with local resources alone. Additionally, the allocation helped with the development of the secure biomedical AI workflows by enabling large-scale experiments with open-source large language models. 
+
+Without the NAIRR Pilot resources, it would have been significantly more difficult to conduct these large-scale distributed experiments, evaluate performance across heterogeneous systems, and develop reproducible open-source biomedical AI workflows for the broader research community.

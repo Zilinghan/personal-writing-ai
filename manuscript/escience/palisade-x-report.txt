@@ -1,0 +1,102 @@
+PALISADE-X Contributions to Bridge2AI: Progress and Accomplishments
+Introduction and Background
+PALISADE-X addresses one of the harder problems in biomedical AI: how to train machine learning models collaboratively across institutions when the underlying patient data cannot be moved or shared. By combining computational expertise from DOE national laboratories with clinical and biomedical datasets from NIH’s Bridge2AI research program, the project has developed privacy-preserving federated learning infrastructure that operates at scale and in real research environments.
+The central product of this effort is APPFL—the Advanced Privacy-Preserving Federated Learning framework[1]. APPFL is an open-source system built to work across the heterogeneous infrastructure that characterizes modern scientific environments: DOE leadership-class supercomputers, institutional clusters, cloud platforms, and edge resources. It supports distributed model training while keeping each institution’s data where it lives. Privacy guarantees are implemented at multiple layers: differential privacy, secure aggregation, encrypted communication, and trusted execution environments, giving participating sites meaningful control over what information they expose during training.
+Building on APPFL, the team developed APPFLx [2], a deployment architecture designed for production use across genuinely heterogeneous infrastructure. APPFLx prioritizes end-to-end identity and access management, portability, scalability, and reproducibility, using containerized and Kubernetes-based orchestration to make complex federated workflows manageable in practice.
+The project also produced ABLE—Argonne’s Biomedical Learning Environment—a secure enclave designed specifically for sensitive biomedical AI workflows. ABLE combines modern identity management, containerized execution, and secure communication protocols to support cross-institutional collaboration while satisfying institutional and regulatory compliance requirements.
+The primary objectives of PALISADE-X were to:
+•	Develop APPFL with differentially private federated learning algorithms appropriate for biomedical AI applications.
+•	Deploy APPFL within secure computing environments capable of handling controlled biomedical datasets.
+•	Demonstrate privacy-preserving AI workflows on real-world multimodal datasets aligned with NIH Bridge2AI flagship projects.
+•	Build scalable architectures connecting DOE computing infrastructure with NIH-funded biomedical research centers.
+Through this work, PALISADE-X has helped lay the groundwork for secure, distributed, and privacy-aware biomedical AI at national scale.
+AI Data Readiness Inspector (AIDRIN)
+A recurring problem in biomedical AI is that datasets were not designed with model training in mind. Clinical and operational data tends to have missing metadata, inconsistent annotations, imbalanced cohorts, patchy provenance records, and gaps in population representation. These are not minor inconveniences—they directly affect model robustness, fairness, reproducibility, and downstream clinical utility.
+To address this, the PALISADE-X team built AIDRIN (AI Data Readiness Inspector) [3][4], a framework for systematically evaluating whether a biomedical dataset is actually ready for AI development. AIDRIN assesses quality across a range of dimensions: completeness, metadata integrity, interoperability, annotation consistency, cohort representation, and suitability for downstream model training workflows.
+The framework was later extended and applied within the NIH Bridge2AI program to evaluate the AI readiness of flagship datasets, contributing to broader program-level discussions about standards for AI-ready biomedical data.
+Core AIDRIN capabilities include:
+•	Assessment of dataset completeness and metadata quality.
+•	Evaluation of data harmonization and interoperability readiness.
+•	Identification of gaps in labeling, annotations, and cohort representation.
+•	Analysis of multimodal data consistency and provenance.
+•	Generation of AI-readiness metrics for downstream model development.
+The team subsequently extended AIDRIN into an agent-based system capable of doing more than flagging problems—it actively recommends remediation steps. Rather than producing a readiness score and stopping there, the system points toward concrete improvements.
+These agent-based capabilities include:
+•	Automated recommendations for improving metadata quality.
+•	Identification of missing annotations and suggested remediation workflows.
+•	Recommendations for rebalancing cohorts and improving representativeness.
+•	Guidance on harmonization and preprocessing strategies.
+•	AI-assisted evaluation of dataset suitability for specific model architectures and downstream tasks.
+This work complements the broader PALISADE-X mission. Federated learning addresses how to train models without centralizing data; AIDRIN addresses the equally important question of whether distributed data is good enough to train on in the first place.
+DOE–NIH Partnership and Its Impact
+NIH Bridge2AI contributes access to rich multimodal biomedical datasets: imaging, clinical records, voice data, physiological measurements, alongside domain expertise from leading research institutions. DOE national laboratories bring scalable computing, distributed systems, cybersecurity, high-performance networking, and the infrastructure needed to run federated learning experiments at a scale that individual institutions cannot replicate.
+Together, this partnership enabled PALISADE-X to take on problems that no single organization could easily solve:
+•	Scaling federated learning workflows across heterogeneous computing environments.
+•	Supporting secure AI training across institutions with different cybersecurity and governance requirements.
+•	Evaluating differential privacy and communication-efficient algorithms at meaningful scale.
+•	Developing portable, reproducible deployment architectures for biomedical AI.
+•	Bridging the gap between biomedical researchers and advanced computing specialists.
+That last point matters more than it might seem. The collaboration brought together AI researchers, clinicians, privacy experts, and HPC specialists in ways that kept the technical work grounded in real biomedical use cases. The result was infrastructure that is both computationally sophisticated and operationally practical—not always the same thing.
+The DOE–NIH partnership demonstrates how national-scale cyberinfrastructure can serve the Bridge2AI mission: enabling trustworthy, reusable biomedical AI models that preserve patient privacy and institutional autonomy.
+Progress Applying APPFL to Bridge2AI Centers
+AI-READI
+One of the more substantial demonstrations has been applying APPFL to the AI-READI initiative [5], which is building AI-ready datasets for ophthalmology and retinal disease research, including geographic atrophy and age-related macular degeneration.
+The team developed tutorials and workflow demonstrations showing how AI-READI datasets can support federated model development, with multiple institutions collaborating while retaining local control of sensitive imaging and clinical data. To evaluate robustness, the team constructed simulated multi-hospital federated environments using AI-READI data, confirming that distributed training maintained model quality while improving generalizability across patient populations.
+A significant outreach component reached several hundred ophthalmologists, clinician-scientists, and biomedical AI researchers through tutorials and workshops at the Association for Research in Vision and Ophthalmology (ARVO) conference. The goal was to introduce the vision research community to federated learning in practical terms—not as a theoretical concept but as something they could actually use. The project also established reusable workflow patterns and infrastructure templates that can support future federated AI studies using imaging, clinical, and multimodal ophthalmology datasets.
+Voice AI
+Biomedical voice data sits at a particularly difficult intersection: scientifically valuable for detecting neurological, respiratory, behavioral, and cognitive conditions through speech and vocal biomarkers, yet deeply personal. Voice recordings carry identifying information in ways that make centralization especially problematic.
+Using APPFL, the team investigated approaches for training robust Voice AI models across distributed institutional datasets, keeping raw audio recordings local while enabling collaborative model development [6]. The work focused on communication-efficient federated approaches, privacy-preserving aggregation, and differential privacy strategies adapted for speech and audio data.
+Beyond the technical results, these experiments produced practical insights into the specific challenges of distributed training with large audio datasets—a modality that is underrepresented in the federated learning literature. The work expanded APPFL’s demonstrated applicability beyond imaging and genomics and positioned it for the emerging multimodal AI applications central to the Bridge2AI program.
+CHoRUS
+PALISADE-X contributed to collaborative planning and infrastructure development for the CHoRUS initiative, with a focus on early prediction of sepsis using multimodal clinical datasets.
+Much of the work involved standing up the non-technical prerequisites—data usage agreements with researchers at Duke University, governance frameworks, and the operational mechanisms needed to make cross-institutional collaboration legally tractable. This turned out to be some of the most instructive work of the project. Getting the governance right is not a formality that precedes the real work; it is real work, and experience gained here informed how the team approaches data access challenges more broadly.
+The proposed federated workflows focused on developing predictive sepsis onset models from distributed clinical datasets while maintaining institutional control over sensitive patient records. The PALISADE-X team identified deployment architectures, privacy-preserving methodologies, and secure communication mechanisms necessary to support future experiments, and established foundational collaborations for ongoing distributed clinical AI studies.
+Federated Learning for Genomics and GA4GH Collaboration
+Genomics presents some of the most significant data sovereignty challenges in biomedical AI. Large-scale biobanks and research programs generate datasets invaluable for training AI models, but these datasets frequently cannot be centralized due to privacy regulations, institutional policies, and international governance requirements. Federated learning is a natural fit—but it requires standards that do not yet fully exist.
+PALISADE-X has been working to build those standards. The team proposed and now leads a federated learning working group within the Global Alliance for Genomics and Health (GA4GH), an international organization focused on interoperable and responsible genomic data sharing. The working group’s focus is developing standards and best practices for running federated learning experiments across distributed genomics repositories and biobanks internationally.
+Active areas include:
+•	Defining interoperable standards for federated learning experiment orchestration across genomics repositories.
+•	Standardizing metadata and execution workflows for distributed AI model training.
+•	Integrating federated learning capabilities with existing GA4GH standards and APIs.
+•	Establishing reproducible, portable workflows for distributed genomics AI experiments.
+•	Supporting secure and privacy-aware access to genomic datasets across institutions.
+The team has also integrated APPFL with key GA4GH standards, including TES (Task Execution Service) for portable execution of distributed computational tasks, and DRS (Data Repository Service) for standardized discovery and access of genomic datasets. These integrations allow APPFL-based workflows to operate within emerging international genomics infrastructure—not as a standalone tool, but as a component that fits into broader data ecosystems.
+This work positions APPFL and associated PALISADE-X technologies as a serious enabling platform for large-scale distributed genomics AI spanning biobanks, healthcare systems, national laboratories, and international research institutions.
+Overall Impact
+Across its work with Bridge2AI, PALISADE-X has built and demonstrated privacy-preserving federated learning infrastructure that functions in the messy conditions of real biomedical research—across heterogeneous computing environments, diverse governance frameworks, and multiple data modalities.
+Specific contributions include:
+•	Scalable federated learning infrastructure through APPFL and APPFLx.
+•	A secure computing environment through ABLE for sensitive biomedical AI workflows.
+•	Demonstrated federated AI workflows across multimodal datasets including imaging, voice, clinical, and genomics data.
+•	Community education through workshops, tutorials, and open-source tooling.
+•	Strengthened DOE–NIH collaboration at the intersection of advanced computing and biomedical research.
+•	Governance and deployment models that future multi-institutional collaborations can build on.
+The broader ambition behind PALISADE-X is to make privacy-preserving distributed AI a standard part of biomedical research infrastructure—not a specialty technique requiring deep HPC expertise, but something biomedical researchers can actually rely on. These accomplishments are a meaningful step in that direction.
+
+Publications
+2025
+•	[CCGrid 2025] Z. Li, S. He, Z. Yang, M. Ryu, K. Kim, R. Madduri, “Advances in APPFL: A Comprehensive and Extensible Federated Learning Framework,” in 2025 IEEE 25th International Symposium on Cluster, Cloud and Internet Computing (CCGrid), 2025. [Paper]
+•	[NAACL Main 2025] G. Bai, Y. Li, Z. Li, L. Zhao, K. Kim, “FedSpaLLM: Federated Pruning of Large Language Models,” in The Main Conference of 2025 Annual Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics (NAACL 2025 Main), 2025. [Paper]
+•	[CSBJ][Journal] T.-H. Hoang, J. Fuhrman, R. Madduri, M. Li, P. Chaturvedi, Z. Li, K. Kim, M. Ryu, R. Chard, E. Huerta et al., “Enabling end-to-end secure federated learning in biomedical research on heterogeneous computing environments with appflx,” in Computational and Structural Biotechnology Journal, 2025. [Paper]
+•	[eScience 2025] K. Hiniduma, Z. Li, A. Sinha, R. Madduri, S. Byna, “CADRE: Customizable Assurance of Data Readiness in Privacy-Preserving Federated Learning”, to appear in 2025 IEEE 21st International Conference on e-Science (eScience), 2025. [Paper]
+•	[Allerton 2025] A. Sinha, Z. Li, T. Liu, V. Kindratenko, K. Kim, R. Madduri, “FedCostAware: Enabling Cost-Aware Federated Learning on the Cloud”, to appear in 61st Allerton Conference on Communication, Control, and Computing, 2025. [Paper]
+
+2024
+•	[ICLR 2024] Z. Li, P. Chaturvedi, S. He, H. Chen, G. Singh, V. Kindratenko, E. A. Huerta, K. Kim, and R. Madduri, “Fedcompass: Efficient cross-silo federated learning on heterogeneous client devices using a computing power-aware scheduler,” in The Twelfth International Conference on Learning Representations, 2024. [Paper]
+•	[CiSE 2024][Journal] Z. Li, S. He, P. Chaturvedi, V. Kindratenko, E. A. Huerta, K. Kim, and R. Madduri, “Secure federated learning across heterogeneous cloud and high-performance computing resources - a case study on federated fine-tuning of llama 2,” in Computing in Science & Engineering, 2024. [Paper]
+•	[IEEE TPS 2024] R. Madduri, Z. Li, T. Nandi, K. Kim, M. Ryu, A. Rodriguez, “Advances in Privacy Preserving Federated Learning to Realize a Truly Learning Healthcare System,” in The Sixth IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications, 2024. [Paper]
+•	[SSDBM 2024] K. Hiniduma, S. Byna, J. L. Bez, and R. Madduri. “AI Data Readiness Inspector (AIDRIN) for Quantitative Assessment of Data Readiness for AI,” in Proceedings of the 36th International Conference on Scientific and Statistical Database Management, 2024. [Paper]
+
+2023
+•	[e-Science 2023] Z. Li, S. He, P. Chaturvedi, T.-H. Hoang, M. Ryu, E. Huerta, V. Kindratenko, J. Fuhrman, M. Giger, R. Chard et al., “APPFLx: Providing privacy-preserving cross-silo federated learning as a service,” in 2023 IEEE 19th International Conference on e-Science (e-Science). IEEE, 2023, pp. 1-4. [Paper]  [Web Service]
+2022
+•	[IPDPSW 2022] M. Ryu, Y. Kim, K. Kim, and R. K. Madduri, “APPFL: open-source software framework for privacy-preserving federated learning,” in 2022 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW). IEEE, 2022, pp. 1074-1083. [Paper]
+
+References
+1.	M. Ryu, Y. Kim, K. Kim, and R. K. Madduri, “APPFL: open-source software framework for privacy-preserving federated learning,” in 2022 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW). IEEE, 2022, pp. 1074-1083.
+2.	Z. Li, S. He, P. Chaturvedi, T.-H. Hoang, M. Ryu, E. Huerta, V. Kindratenko, J. Fuhrman, M. Giger, R. Chard et al., “APPFLx: Providing privacy-preserving cross-silo federated learning as a service,” in 2023 IEEE 19th International Conference on e-Science (e-Science). IEEE, 2023, pp. 1-4.
+3.	Hiniduma, S. Byna, J. L. Bez, R. Madduri (2024). AI Data Readiness Inspector (AIDRIN) for Quantitative Assessment of Data Readiness for AI. In Proceedings of the 36th International Conference on Scientific and Statistical Database Management (SSDBM ‘24). Association for Computing Machinery, New York, NY, USA, Article 7, 1–12.
+4.	Hiniduma, D. Ryan, S. Byna, J. L. Bez, R. Madduri (2025). AIDRIN 2.0: A Framework to Assess Data Readiness for AI. Poster presented at the International Conference on Scalable Scientific Data Management (SSDBM 2025). https://arxiv.org/abs/2505.18213
+5.	ARVO course: Eye Disease classification with AI-READI. https://github.com/APPFL/APPFL/tree/main/examples/notebook_tutorials/aireadi_arvo_course
+6.	B2AI-Voice Federated Learning Experiment. https://github.com/APPFL/APPFL/tree/43e7b66b8624be26aafafaae01b02f988b1eceeb/examples/resources/configs/b2ai_voice
+

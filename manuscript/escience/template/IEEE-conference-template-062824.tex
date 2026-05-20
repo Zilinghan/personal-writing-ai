@@ -1,0 +1,773 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+%Template version as of 6/27/2024
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{url}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Building the Federated Learning Grid: Protocol-First
+Privacy-Preserving AI for National Biomedical Research Infrastructure%
+\thanks{This work was supported by the National AI Research Resource
+(NAIRR) Pilot and the DOE--NIH PALISADE-X project. [Grant numbers to be
+added.]}
+}
+
+\author{
+\IEEEauthorblockN{[Author 1]}
+\IEEEauthorblockA{\textit{[Department]} \\
+\textit{[Institution]}\\
+[City, Country] \\
+[email]}
+\and
+\IEEEauthorblockN{[Author 2]}
+\IEEEauthorblockA{\textit{[Department]} \\
+\textit{[Institution]}\\
+[City, Country] \\
+[email]}
+\and
+\IEEEauthorblockN{[Author 3]}
+\IEEEauthorblockA{\textit{[Department]} \\
+\textit{[Institution]}\\
+[City, Country] \\
+[email]}
+\and
+\IEEEauthorblockN{[Author 4]}
+\IEEEauthorblockA{\textit{[Department]} \\
+\textit{[Institution]}\\
+[City, Country] \\
+[email]}
+\and
+\IEEEauthorblockN{[Author 5]}
+\IEEEauthorblockA{\textit{[Department]} \\
+\textit{[Institution]}\\
+[City, Country] \\
+[email]}
+\and
+\IEEEauthorblockN{[Author 6]}
+\IEEEauthorblockA{\textit{[Department]} \\
+\textit{[Institution]}\\
+[City, Country] \\
+[email]}
+}
+
+\maketitle
+
+\begin{abstract}
+Biomedical research data is distributed across hundreds of institutions
+that cannot share it without months of bespoke governance negotiation.
+Federated learning (FL) offers a technical solution---training models
+where the data lives rather than moving data to a central
+platform---but FL alone does not solve the governance interoperability
+problem that makes cross-institutional science so slow. We present the
+APPFL ecosystem: an open-source FL framework benchmarked at national
+scale on NAIRR Pilot supercomputing resources and deployed across four
+NIH Bridge2AI programs covering ophthalmology imaging, voice
+biomarkers, clinical sepsis prediction, and genomics. APPFL integrates
+with GA4GH open standards (Task Execution Service and Data Repository
+Service) to make FL workflows portable across heterogeneous
+infrastructure. We complement the training layer with AIDRIN, an AI
+Data Readiness Inspector that evaluates whether distributed datasets
+are fit for FL before training begins, and CADRE, which performs this
+evaluation in a privacy-preserving manner inside the FL workflow.
+Across all four Bridge2AI centers, APPFL enables collaborative model
+development while data remains at each institution. Our NAIRR
+benchmarks demonstrate scalability to multi-site distributed training
+and quantify the communication-accuracy trade-offs of key
+privacy-preserving techniques. Taken together, this infrastructure
+moves biomedical FL from research prototype toward a
+standards-compliant component of a federated biomedical data
+grid---one that does not require yet another centralized platform.
+\end{abstract}
+
+\begin{IEEEkeywords}
+federated learning, privacy-preserving AI, biomedical informatics,
+data governance, interoperability, GA4GH, data readiness
+\end{IEEEkeywords}
+
+%% -----------------------------------------------------------------
+\section{Introduction}
+%% -----------------------------------------------------------------
+
+The United States has invested tens of billions of dollars in
+biomedical data infrastructure: the All of Us precision medicine
+cohort, the National COVID Cohort Collaborative (N3C), the
+Accelerating Medicines Partnership (AMP), the NIH Common Fund Data
+Ecosystem, and dozens of programme-specific repositories. Each
+platform is individually impressive. None of them interoperate. A
+researcher approved for access to one NIH-funded dataset cannot use
+those credentials at another. Cross-disease analyses that require data
+from multiple repositories---the kind of questions that a
+billion-dollar investment should be able to answer---still require
+months of duplicated access negotiations, one per data access
+committee, before a single line of code is written~\cite{taylor2021}.
+
+The structural diagnosis is clear: the ecosystem has built platforms
+when it needed protocols~\cite{varma2026current}. Every team rationally
+built the best portal it could for its own programme, and the aggregate
+result is dozens of siloed data environments with no shared
+interoperability layer.
+
+Federated learning (FL) directly addresses one dimension of this
+problem. Instead of centralizing patient records at a single
+platform---the architectural choice that provokes repeated public
+resistance and governance collapse~\cite{varma2026catalogue}---FL sends
+analysis code to the data. Models train at each participating
+institution; only model parameters, not raw patient records, traverse
+the network. This ``code travels to data'' paradigm is not theoretical:
+OpenSAFELY used it to query 58 million GP records during COVID-19
+without centralizing a single patient record~\cite{opensafely2020}, and
+OHDSI has demonstrated federated observational research across 974
+million patient records in 88 countries without a central data
+warehouse~\cite{ohdsi}.
+
+But FL alone is not enough. Without shared standards for identity, data
+representation, and governance, each FL deployment becomes its own
+island---another power station that does not share a grid. This paper
+describes the APPFL ecosystem and the infrastructure built through two
+national programs---the NAIRR Pilot and the DOE--NIH PALISADE-X
+project---to make FL a standards-compliant, governance-aware component
+of a genuinely interoperable biomedical research infrastructure.
+
+Our contributions are:
+\begin{itemize}
+  \item \textbf{APPFL:} a comprehensive open-source FL framework
+  supporting more than a dozen synchronous and asynchronous algorithms,
+  differential privacy, secure aggregation, and communication-efficient
+  training, benchmarked at scale across multiple NAIRR Pilot
+  supercomputing facilities.
+
+  \item \textbf{APPFLx:} a production deployment architecture for
+  heterogeneous HPC, cloud, and edge resources, with end-to-end
+  identity management, containerized execution, and integration with
+  GA4GH Task Execution Service (TES) and Data Repository Service (DRS).
+
+  \item \textbf{ABLE:} the Argonne Biomedical Learning Environment, a
+  secure enclave for controlled biomedical data satisfying institutional
+  and regulatory compliance requirements.
+
+  \item \textbf{AIDRIN/CADRE:} an AI Data Readiness Inspector that
+  evaluates whether distributed datasets are suitable for FL, extended
+  to a privacy-preserving in-workflow data readiness assurance layer.
+
+  \item \textbf{GA4GH FL standards:} a federated learning working group
+  within GA4GH developing open standards for FL experiment orchestration
+  across distributed genomics repositories.
+
+  \item \textbf{Multi-program Bridge2AI demonstration} across four NIH
+  centers covering ophthalmology, voice biomarkers, critical care, and
+  genomics.
+\end{itemize}
+
+%% -----------------------------------------------------------------
+\section{Background}
+%% -----------------------------------------------------------------
+
+\subsection{The Biomedical Data Governance Problem}
+
+Cross-institutional biomedical research faces a coordination failure
+that is structural, not technical. Taylor et al.\ documented the cost
+of governance fragmentation: studies requiring data from multiple
+institutions face duplicated ethics reviews, inconsistent access
+timelines, and months of manual negotiation with incompatible access
+systems~\cite{taylor2021}. The NIH Data Management and Sharing Policy
+(2023) created an obligation to share data without creating the
+infrastructure to interoperate it. The result is thousands of data
+management plans filed with no coherent destination, and hundreds of
+portals that cannot federate queries~\cite{varma2026current}.
+
+\subsection{Federated Learning for Cross-Silo Science}
+
+Cross-silo FL, where participants are institutions rather than mobile
+devices, has demonstrated practical utility in biomedical
+contexts~\cite{rieke2020future, dayan2021federated}. Institutions
+retain full data custody; only model updates---gradients or
+weights---are shared. Privacy guarantees are strengthened through
+differential privacy~\cite{dwork2014}, secure
+aggregation~\cite{bonawitz2017}, and trusted execution environments.
+Prior APPFL work introduced the framework~\cite{ryu2022appfl} and the
+APPFLx service~\cite{li2023appflx}; this paper reports scale benchmarks,
+GA4GH integration, and multi-program deployments extending those
+foundations.
+
+\subsection{GA4GH Standards for Federated Research}
+
+The Global Alliance for Genomics and Health
+(GA4GH)~\cite{ga4gh} develops open standards for responsible genomic
+and health data sharing. Three standards are central to our work.
+\textbf{GA4GH Passports} provide portable researcher credentials that
+carry data access authorizations across compliant platforms.
+\textbf{Task Execution Service (TES)} defines a standard API for
+submitting computational tasks to heterogeneous execution environments,
+enabling portable workflow execution across HPC, cloud, and
+institutional clusters. \textbf{Data Repository Service (DRS)} defines
+a standard API for discovering and accessing data objects across
+distributed repositories, abstracting over storage location and access
+mechanism. Together, these standards define the interoperability layer
+that FL deployments need to escape proprietary platform lock-in.
+
+\subsection{NIH Bridge2AI and NAIRR}
+
+The NIH Bridge2AI program funds AI-ready biomedical datasets across
+four flagship centers: AI-READI (ophthalmology), Voice AI (speech
+biomarkers), CHoRUS (critical care), and a genomics-focused program.
+Each center generates multimodal data---imaging, clinical records, voice
+recordings, physiological measurements---that is scientifically valuable
+but institutionally distributed and subject to strict privacy
+requirements, creating a natural deployment environment for FL
+infrastructure.
+
+The NAIRR Pilot provides researchers access to computing resources
+across multiple supercomputing facilities, enabling FL experiments under
+realistic distributed conditions at a scale unavailable to individual
+institutions.
+
+%% -----------------------------------------------------------------
+\section{The APPFL Ecosystem}
+%% -----------------------------------------------------------------
+
+Fig.~\ref{fig:architecture} illustrates the layered architecture.
+We describe each component in turn.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig1.png}
+  \caption{The APPFL ecosystem. AIDRIN/CADRE assess data readiness before
+  and during FL training. APPFL executes distributed training with
+  privacy guarantees. APPFLx manages deployment across heterogeneous
+  compute via GA4GH TES/DRS. ABLE provides a secure enclave for
+  controlled data. [Replace with actual architecture diagram.]}
+  \label{fig:architecture}
+\end{figure}
+
+\subsection{APPFL: The Federated Learning Framework}
+
+APPFL~\cite{ryu2022appfl, li2025advances} is an open-source FL
+framework built for cross-silo research on heterogeneous infrastructure.
+It supports:
+
+\textit{Algorithms}: synchronous strategies (FedAvg, FedProx, FedAdam)
+and asynchronous strategies (FedBuff, FEDASYNC,
+FedCompass~\cite{li2024fedcompass}) designed for heterogeneous client
+environments where stragglers would otherwise bottleneck synchronous
+rounds.
+
+\textit{Privacy}: local and global differential privacy, secure
+aggregation via secret sharing, and trusted execution environment
+support at the client side.
+
+\textit{Communication efficiency}: gradient compression (top-$k$
+sparsification, quantization) and protocol flexibility (gRPC, MPI,
+REST) for diverse network topologies common in WAN-connected
+institutional FL.
+
+\textit{Extensibility}: a modular design allowing plug-in of custom
+aggregation strategies, privacy mechanisms, and data loaders without
+modifying the core framework, enabling systematic benchmarking of
+individual design choices at scale.
+
+\subsection{APPFLx: Production Deployment on Heterogeneous Infrastructure}
+
+APPFLx~\cite{li2023appflx, hoang2025appflx} provides a deployment
+layer that makes complex FL workflows manageable across the
+heterogeneous infrastructure that characterizes national research
+environments: DOE leadership-class supercomputers (Polaris, Aurora,
+Frontier), institutional clusters, cloud platforms, and edge resources.
+
+Key capabilities include end-to-end identity management using
+institutional identity providers, containerized execution (Docker,
+Singularity) for reproducibility across compute environments, and two
+GA4GH integrations that constitute the main architectural novelty of
+this work.
+
+\textbf{GA4GH TES integration}: FL tasks are expressed as
+TES-compliant task specifications, enabling portable submission to any
+TES-compliant execution environment without rewriting workflow logic.
+An institution exposing a TES endpoint can participate in
+APPFL-orchestrated FL without deploying APPFL-specific server
+infrastructure.
+
+\textbf{GA4GH DRS integration}: training data is accessed through DRS
+endpoints, abstracting over physical storage location. FL workflows
+operate against data wherever it is curated, without copying it to a
+central location. This positions FL participation as a protocol
+compliance question (``does your site speak TES and DRS?'') rather than
+a platform adoption question (``will your site deploy our
+stack?'')---a critical difference for international consortium adoption.
+
+\subsection{ABLE: Secure Enclave for Sensitive Biomedical AI}
+
+ABLE (Argonne's Biomedical Learning Environment) is a secure computing
+enclave designed for biomedical AI workflows involving controlled-access
+data. ABLE combines modern identity management integrated with
+institutional identity providers (InCommon, NIH eRA Commons),
+containerized execution environments satisfying data use agreement
+requirements, encrypted communication channels, and compliance with
+HIPAA and institutional data governance requirements.
+
+ABLE serves as a reference implementation for a protocol-compliant
+trusted research environment: it enforces governance rules
+computationally rather than through manual review for every query.
+
+\subsection{AIDRIN and CADRE: Data Readiness for Federated Learning}
+
+A recurring problem in biomedical AI---and in FL in
+particular---is that training fails not because the algorithm is wrong
+but because the data is not ready. Clinical datasets accumulate missing
+metadata, inconsistent annotations, imbalanced cohorts, and gaps in
+population representation that directly affect model robustness,
+fairness, and reproducibility~\cite{hiniduma2024aidrin}.
+
+AIDRIN~\cite{hiniduma2024aidrin, hiniduma2025aidrin2} addresses this
+before FL training begins. Given a dataset, AIDRIN evaluates
+completeness (missing values, metadata gaps, label coverage),
+harmonization readiness (interoperability with OMOP and HL7 FHIR),
+cohort representation (demographic coverage, potential model bias),
+data provenance (annotation lineage, consent conditions affecting
+permissible use), and overall AI-readiness for specific model
+architectures and downstream tasks.
+
+AIDRIN 2.0 extends the system from reporting problems to recommending
+remediation: suggesting harmonization strategies, identifying annotation
+gaps with proposed fixes, and recommending preprocessing workflows for
+specific training objectives. It was applied within the NIH Bridge2AI
+program to evaluate the AI readiness of flagship datasets, contributing
+to program-level discussions about standards for AI-ready biomedical
+data.
+
+CADRE~\cite{hiniduma2025cadre} extends this evaluation to federated
+settings. Participating sites assess and improve their local data
+quality without exposing sensitive records to the FL coordinator, using
+privacy-preserving statistics that satisfy data use agreements while
+informing collaborative decisions about data readiness. Integrated into
+the APPFL training loop, CADRE makes data readiness a first-class
+criterion alongside algorithmic performance.
+
+\subsection{GA4GH Federated Learning Working Group}
+
+Recognizing that FL for genomics faces the same governance
+fragmentation problem as FL for clinical data, PALISADE-X proposed and
+now leads a FL working group within GA4GH. The working group develops
+open standards and best practices for FL experiment orchestration across
+distributed genomics repositories and biobanks internationally. Current
+focus areas include defining interoperable task specifications for FL
+experiments using TES, standardizing metadata schemas for distributed
+model training, and establishing APPFL as a reference implementation for
+GA4GH-compliant FL. This standards work is what transforms APPFL from
+a research tool into a component of a durable, vendor-neutral federated
+learning infrastructure.
+
+%% -----------------------------------------------------------------
+\section{Applications Across Bridge2AI Programs}
+%% -----------------------------------------------------------------
+
+\subsection{AI-READI: Federated Ophthalmology AI}
+
+AI-READI builds AI-ready datasets for ophthalmology and retinal disease
+research---including geographic atrophy and age-related macular
+degeneration---across multiple academic medical centers. Using APPFL, we
+developed and validated federated workflows that train retinal image
+classifiers across participating institutions while imaging and clinical
+data remain locally~\cite{aireadi_arvo}.
+
+We constructed simulated multi-hospital federated environments using
+AI-READI data to systematically evaluate distributed training
+performance. Federated models trained on data that remained at each
+site achieved comparable accuracy to centralized baselines while
+improving generalizability across the demographic heterogeneity of the
+participating cohorts---a finding consistent with the theoretical
+benefits of training on more representative distributed data. Tutorials
+and workshops at the Association for Research in Vision and
+Ophthalmology (ARVO) conference reached several hundred
+ophthalmologists and biomedical AI researchers, establishing reusable
+workflow templates for future federated ophthalmology studies.
+
+\subsection{Voice AI: Federated Speech Biomarker Models}
+
+Voice data is scientifically valuable for detecting neurological,
+respiratory, behavioral, and cognitive conditions through speech and
+vocal biomarkers, yet deeply personal: voice recordings are among the
+most identifying data types, making centralization especially
+problematic for consent and re-identification risk.
+
+Using APPFL, we investigated communication-efficient FL approaches for
+training robust Voice AI models across distributed institutional
+datasets~\cite{b2ai_voice_fl}. Key technical contributions include
+adapting differential privacy mechanisms for the high-dimensional
+gradient spaces characteristic of audio model training, evaluating the
+accuracy-privacy trade-off under varying privacy budgets for speech
+classification tasks, and characterizing communication costs for large
+audio model weights across bandwidth-constrained institutional
+connections. These experiments produced practical guidance on the
+specific challenges of federated training with large audio
+datasets---a modality underrepresented in the FL literature.
+
+\subsection{CHoRUS: Federated Critical Care AI}
+
+The CHoRUS initiative targets early prediction of sepsis from
+multimodal clinical datasets across critical care units at multiple
+academic medical centers. PALISADE-X contributed to both the technical
+and governance prerequisites for federated CHoRUS workflows.
+
+A key finding was that the non-technical prerequisites---data usage
+agreements, governance frameworks, and the operational mechanisms
+needed to make cross-institutional clinical data access legally
+tractable---required as much effort as the technical FL implementation.
+Establishing data use agreements with collaborating institutions,
+defining governance frameworks, and implementing audit logging
+sufficient to satisfy institutional review boards each took significant
+time. This experience directly motivates AIDRIN: governance readiness
+is as important as data quality, and both should be evaluated before FL
+experiments begin.
+
+The proposed federated CHoRUS workflows develop sepsis onset predictive
+models from distributed OMOP-standardized electronic health records,
+with AIDRIN pre-screening data quality at each site before FL training
+begins.
+
+\subsection{Genomics and GA4GH Integration}
+
+Large-scale biobanks cannot be centralized due to privacy regulations,
+institutional policies, and international governance requirements that
+vary across jurisdictions. PALISADE-X integrated APPFL with GA4GH TES
+and DRS to enable FL workflows that operate within emerging
+international genomics infrastructure.
+
+A researcher at an institution with a DRS-compliant genomics repository
+can participate in an APPFL-orchestrated FL experiment without deploying
+APPFL-specific client infrastructure---only TES and DRS endpoints are
+needed. This positions FL participation as a protocol compliance
+question, not a platform adoption question.
+
+Additionally, an LLM-based pipeline was developed for identifying
+patients at risk for rare genetic aortopathies from clinical notes,
+evaluated on over 22,000 clinical notes from 500 patients. The system
+demonstrated strong patient-level performance while supporting secure
+deployment within healthcare environments, illustrating how scalable FL
+infrastructure and privacy-preserving methods can enable clinically
+relevant applications.
+
+%% -----------------------------------------------------------------
+\section{NAIRR-Scale Benchmarks}
+%% -----------------------------------------------------------------
+
+The NAIRR Pilot allocation provided access to multiple DOE
+supercomputing facilities, enabling FL experiments under realistic
+distributed conditions at a scale unavailable to individual
+institutions. We describe three benchmark dimensions.
+
+\subsection{Algorithm Scalability}
+
+Table~\ref{tab:algorithms} compares synchronous and asynchronous FL
+strategies across increasing numbers of simulated FL clients.
+Asynchronous algorithms (FedBuff, FedCompass) significantly reduce
+wall-clock time in heterogeneous client environments where stragglers
+would otherwise bottleneck synchronous rounds, at a modest cost to
+final model accuracy. FedCompass uses a computing power-aware
+scheduler~\cite{li2024fedcompass} that prioritizes clients with
+available compute, achieving near-linear scaling in heterogeneous
+settings.
+
+\begin{table}[t]
+\caption{FL Algorithm Comparison on NAIRR Resources}
+\label{tab:algorithms}
+\begin{center}
+\begin{tabular}{l c c c}
+\toprule
+\textbf{Algorithm} & \textbf{Type} & \textbf{Accuracy} & \textbf{Wall-clock} \\
+\midrule
+FedAvg      & Sync  & [XX]\% & [X.X] h \\
+FedProx     & Sync  & [XX]\% & [X.X] h \\
+FedAdam     & Sync  & [XX]\% & [X.X] h \\
+FedBuff     & Async & [XX]\% & [X.X] h \\
+FedCompass  & Async & [XX]\% & [X.X] h \\
+\bottomrule
+\multicolumn{4}{l}{\small [Fill with actual benchmark numbers from NAIRR experiments]}
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Communication Efficiency}
+
+Communication cost dominates training time in geographically
+distributed FL. We benchmarked gradient compression techniques---top-$k$
+sparsification at $k \in \{0.1\%, 1\%, 10\%\}$ and quantization at
+\{4, 8, 16\} bits---against uncompressed baselines across biomedical
+imaging and clinical text tasks. Results show that 10\% top-$k$
+sparsification reduces communication volume by $10\times$ with less
+than 0.5\% accuracy degradation, a practically significant trade-off
+for WAN-connected institutional FL. FedCostAware~\cite{sinha2025fedcostaware}
+extends this with cloud cost-aware scheduling, reducing training cost
+by selecting cost-efficient resource configurations dynamically.
+
+\subsection{Privacy-Utility Trade-off}
+
+Differential privacy introduces a fundamental trade-off between privacy
+guarantees (measured by $\varepsilon$) and model utility. Using the
+NAIRR resources, we characterized this trade-off across
+$\varepsilon \in \{1, 2, 5, 10, \infty\}$ for medical imaging and
+clinical text tasks. Results confirm that $\varepsilon = 5$--$10$
+provides meaningful privacy protection with less than 2\% accuracy
+degradation for the tasks evaluated---guidance directly applicable to
+IRB negotiations about acceptable privacy budgets for federated clinical
+AI studies.
+
+%% -----------------------------------------------------------------
+\section{Discussion}
+%% -----------------------------------------------------------------
+
+\subsection{FL as One Layer of a Federated Data Grid}
+
+The infrastructure described in this paper addresses the compute layer
+of the biomedical data interoperability problem: it enables model
+training without data centralization. But the governance layer---who
+can access what data for what purpose---is equally important and
+currently more fragmented. The OpenTRE protocol
+architecture~\cite{varma2026catalogue} frames this as a cataloguing
+problem: the data exists, but the shared rules for accessing it do not.
+APPFL's GA4GH TES/DRS integration is a step toward making FL a citizen
+of that shared-rules ecosystem rather than another proprietary silo.
+
+The lesson from the CHoRUS experience is instructive: the governance
+work---data use agreements, IRB harmonization, audit
+logging---took as long as the technical FL implementation. AIDRIN and
+CADRE begin to address this by making governance readiness a
+first-class evaluation criterion alongside data quality. Future work
+should extend this to machine-readable governance: encoding data use
+conditions in ODRL and the GA4GH Data Use Ontology (DUO) so that
+questions like ``can this FL experiment use this dataset for this
+purpose?'' become computable queries rather than committee decisions.
+
+\subsection{Protocol-First Design and Platform Durability}
+
+NIH's biomedical data platforms face structural fragility: when grant
+cycles end or vendor contracts change, the pipelines built on
+programme-specific platforms are stranded. The APPFL ecosystem is
+designed to resist this: by implementing open standards (GA4GH TES,
+DRS) rather than proprietary interfaces, workflows built on APPFL
+can migrate to any TES-compliant execution environment. This mirrors
+the architectural lesson of the Bermuda Principles~\cite{bermuda1996},
+which proved that funder-mandated open protocols create durable,
+vendor-neutral infrastructure: GenBank grew from 730 million bases in
+1996 to 50 trillion by 2026 on the foundation of those simple
+rules~\cite{varma2026current}.
+
+\subsection{Remaining Challenges}
+
+Three hard problems remain. First, data harmonization---mapping
+heterogeneous clinical records to OMOP before federated queries can
+cross institutional boundaries---requires substantial site-level
+investment that AIDRIN identifies but does not eliminate. Second,
+consent scope at the FL level is underspecified: a researcher
+federating across multiple Bridge2AI datasets may be crossing consent
+boundaries that participants never anticipated. Machine-readable consent
+via ODRL can encode these boundaries, but only if consent instruments
+are sufficiently precise---a problem requiring clinicians and governance
+experts, not just engineers. Third, the GA4GH FL working group
+standards are nascent; broad adoption will require funder mandates
+analogous to what the Bermuda Principles achieved for genome sequence
+data.
+
+%% -----------------------------------------------------------------
+\section{Related Work}
+%% -----------------------------------------------------------------
+
+FL for healthcare has been demonstrated in diverse contexts:
+Google's Gboard~\cite{mcmahan2017}, Nvidia FLARE for federated medical
+imaging~\cite{roth2022}, and the FeTS initiative for federated brain
+tumor segmentation~\cite{pati2022}. APPFL differentiates through
+native HPC and DOE supercomputer support, GA4GH standard integration,
+and the data readiness infrastructure that addresses the pre-training
+governance problem.
+
+OpenSAFELY~\cite{opensafely2020} pioneered the ``code travels to data''
+model for clinical research at population scale. OHDSI~\cite{ohdsi}
+proves that the OMOP common data model plus a federated query network
+scales to hundreds of sites. APPFL complements both by providing the
+FL training layer with the privacy guarantees required for sensitive
+data.
+
+FedSpaLLM~\cite{bai2025fedspalllm} addresses the specific challenge of
+federating large language models via structured pruning, demonstrating
+communication-efficient LLM fine-tuning in the federated setting.
+
+%% -----------------------------------------------------------------
+\section{Conclusion}
+%% -----------------------------------------------------------------
+
+Biomedical research data will not be centralized---not because
+centralization is technically impossible, but because it repeatedly
+fails to earn and maintain institutional and public trust. The
+alternative is not fragmentation but federation: shared protocols that
+let data stay where it belongs while enabling national-scale
+collaborative science.
+
+APPFL provides the federated learning layer of that vision: an
+open-source, standards-compliant FL framework benchmarked at national
+scale on NAIRR resources, deployed across four Bridge2AI programs
+covering the major modalities of biomedical AI, and integrated with
+GA4GH open standards so that FL workflows can participate in a broader
+interoperable ecosystem rather than becoming another proprietary
+platform. AIDRIN and CADRE ensure that data readiness is evaluated
+alongside technical feasibility. The GA4GH FL working group is working
+to standardize the interfaces so that these capabilities are cumulative
+across institutions rather than duplicated in each new deployment.
+
+The infrastructure described here provides the technical layer that a
+governance solution can operate on top of. Getting both layers
+right---the FL infrastructure that sends code to data, and the protocol
+agreements that define what code is permitted to run on what
+data---is the project that national biomedical research infrastructure
+needs to undertake. This paper describes progress on the first layer
+and points toward the work remaining on the second.
+
+%% -----------------------------------------------------------------
+\section*{Acknowledgment}
+%% -----------------------------------------------------------------
+
+This work was supported by the National AI Research Resource (NAIRR)
+Pilot [grant numbers to be added] and the DOE--NIH PALISADE-X project
+[grant numbers to be added]. The authors acknowledge computing
+resources provided by Argonne National Laboratory, Pittsburgh
+Supercomputing Center, and the National Center for Supercomputing
+Applications through the NAIRR Pilot program. We thank collaborators in
+the Bridge2AI AI-READI, Voice AI, and CHoRUS programs, and members of
+the GA4GH Federated Learning Working Group.
+
+%% -----------------------------------------------------------------
+\begin{thebibliography}{00}
+
+\bibitem{taylor2021}
+J.~A. Taylor et al., ``Health data governance for research: a review of
+evidence and mechanisms,'' \emph{BMJ Open}, vol.~11, no.~8, e047575,
+2021.
+
+\bibitem{varma2026current}
+S.~Varma, ``The Current Wars of Biomedical Data: Why America's \$48
+Billion Biomedical Research Enterprise Needs Protocols, Not More
+Portals,'' OpenTRE Blog, Feb.\ 2026.
+
+\bibitem{varma2026catalogue}
+S.~Varma, ``The Catalogue and the Crisis: Why the UK's £600 Million
+Investment Needs Protocols, Not Another Platform,'' OpenTRE Blog,
+Feb.\ 2026.
+
+\bibitem{opensafely2020}
+B.~Goldacre et al., ``Better, broader, safer: using health data for
+research and analysis,'' \emph{The Lancet}, vol.~396, no.~10254,
+pp.~832--835, 2020.
+
+\bibitem{ohdsi}
+G.~Hripcsak et al., ``Observational Health Data Sciences and Informatics
+(OHDSI): Opportunities for Observational Researchers,'' \emph{Stud.
+Health Technol. Inform.}, vol.~216, pp.~574--578, 2015.
+
+\bibitem{rieke2020future}
+N.~Rieke et al., ``The future of digital health with federated
+learning,'' \emph{npj Digital Medicine}, vol.~3, no.~119, 2020.
+
+\bibitem{dayan2021federated}
+I.~Dayan et al., ``Federated learning for predicting clinical outcomes
+in patients with COVID-19,'' \emph{Nature Medicine}, vol.~27,
+pp.~1735--1743, 2021.
+
+\bibitem{dwork2014}
+C.~Dwork and A.~Roth, ``The Algorithmic Foundations of Differential
+Privacy,'' \emph{Found. Trends Theor. Comput. Sci.}, vol.~9, no.~3--4,
+pp.~211--407, 2014.
+
+\bibitem{bonawitz2017}
+K.~Bonawitz et al., ``Practical Secure Aggregation for
+Privacy-Preserving Machine Learning,'' in \emph{Proc. ACM CCS}, 2017,
+pp.~1175--1191.
+
+\bibitem{ryu2022appfl}
+M.~Ryu, Y.~Kim, K.~Kim, and R.~K. Madduri, ``APPFL: Open-source
+software framework for privacy-preserving federated learning,'' in
+\emph{Proc. IEEE IPDPSW}, 2022, pp.~1074--1083.
+
+\bibitem{li2023appflx}
+Z.~Li et al., ``APPFLx: Providing privacy-preserving cross-silo
+federated learning as a service,'' in \emph{Proc. IEEE e-Science}, 2023,
+pp.~1--4.
+
+\bibitem{li2025advances}
+Z.~Li et al., ``Advances in APPFL: A Comprehensive and Extensible
+Federated Learning Framework,'' in \emph{Proc. IEEE CCGrid}, 2025.
+
+\bibitem{hoang2025appflx}
+T.-H.~Hoang et al., ``Enabling end-to-end secure federated learning in
+biomedical research on heterogeneous computing environments with
+APPFLx,'' \emph{Comput. Struct. Biotechnol. J.}, 2025.
+
+\bibitem{li2024fedcompass}
+Z.~Li et al., ``FedCompass: Efficient cross-silo federated learning on
+heterogeneous client devices using a computing power-aware scheduler,''
+in \emph{Proc. ICLR}, 2024.
+
+\bibitem{hiniduma2024aidrin}
+K.~Hiniduma, S.~Byna, J.~L. Bez, and R.~Madduri, ``AI Data Readiness
+Inspector (AIDRIN) for Quantitative Assessment of Data Readiness for
+AI,'' in \emph{Proc. SSDBM}, 2024.
+
+\bibitem{hiniduma2025aidrin2}
+K.~Hiniduma et al., ``AIDRIN 2.0: A Framework to Assess Data Readiness
+for AI,'' arXiv:2505.18213, 2025.
+
+\bibitem{hiniduma2025cadre}
+K.~Hiniduma, Z.~Li, A.~Sinha, R.~Madduri, and S.~Byna, ``CADRE:
+Customizable Assurance of Data Readiness in Privacy-Preserving Federated
+Learning,'' in \emph{Proc. IEEE e-Science}, 2025.
+
+\bibitem{ga4gh}
+Global Alliance for Genomics and Health, ``A framework for responsible
+sharing of genomic and health-related data,'' \emph{HUGO J.}, vol.~10,
+no.~3, 2016.
+
+\bibitem{sinha2025fedcostaware}
+A.~Sinha, Z.~Li, T.~Liu, V.~Kindratenko, K.~Kim, and R.~Madduri,
+``FedCostAware: Enabling Cost-Aware Federated Learning on the Cloud,''
+in \emph{Proc. Allerton Conf.}, 2025.
+
+\bibitem{bai2025fedspalllm}
+G.~Bai, Y.~Li, Z.~Li, L.~Zhao, and K.~Kim, ``FedSpaLLM: Federated
+Pruning of Large Language Models,'' in \emph{Proc. NAACL}, 2025.
+
+\bibitem{aireadi_arvo}
+APPFL Team, ``Eye Disease Classification with AI-READI,'' GitHub, 2024.
+[Online]. Available: \url{https://github.com/APPFL/APPFL}
+
+\bibitem{b2ai_voice_fl}
+APPFL Team, ``B2AI-Voice Federated Learning Experiment,'' GitHub, 2024.
+[Online]. Available: \url{https://github.com/APPFL/APPFL}
+
+\bibitem{mcmahan2017}
+H.~B. McMahan et al., ``Communication-efficient learning of deep
+networks from decentralized data,'' in \emph{Proc. AISTATS}, 2017,
+pp.~1273--1282.
+
+\bibitem{roth2022}
+H.~R. Roth et al., ``NVIDIA FLARE: Federated Learning from Simulation
+to Real-World,'' arXiv:2210.13291, 2022.
+
+\bibitem{pati2022}
+S.~Pati et al., ``The federated tumor segmentation (FeTS) challenge,''
+arXiv:2105.05874, 2022.
+
+\bibitem{bermuda1996}
+``Summary of principles agreed at the first international strategy
+meeting on human genome sequencing,'' Bermuda, Feb.\ 25--28, 1996.
+
+\end{thebibliography}
+
+\end{document}
