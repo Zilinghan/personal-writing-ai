@@ -4,6 +4,36 @@ This document describes the component architecture of the redesigned APPFLx plat
 
 ---
 
+## 0. Architecture Overview
+
+The diagram below shows how the five layers and the web portal interact at a high level.
+
+```
+ ┌────────────────────────────────────────────────────┐
+ │                    1 Roles                         │
+ │         Admin      Orchestrator      Client        │
+ └─────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+ ┌────────────────────────────────────────────────────┐
+ │                    Web Portal                      │
+ └───────┬──────────────────────────┬─────────────────┘
+         │                          │
+         ▼                          ▼
+ ┌───────────────┐       ┌──────────────────────────────┐
+ │  2 Auth       │       │     4 Application Layer      │
+ │    Layer      │       └───────────┬──────────────────┘
+ └───────────────┘                   │
+                           ┌─────────┴──────────┐
+                           ▼                    ▼
+              ┌─────────────────────┐  ┌────────────────────┐
+              │  3 Computing        │  │  5 Config &        │
+              │    Resources        │  │   Result Tracking  │
+              └─────────────────────┘  └────────────────────┘
+```
+
+---
+
 ## 1. Roles
 
 The platform defines three roles in a strict hierarchy: Admin → Orchestrator → Client. Each role has a different scope of access, visibility, and responsibility within the system and within any given FL experiment.
