@@ -1,0 +1,53 @@
+FedSETA: Sparse Expert Adaptation for Federated Continual Learning
+1. Motivation
+Continual learning in federated settings introduces a fundamental challenge: clients receive different task sequences over time, yet the global model must retain knowledge of every task seen by any client without accessing raw data or requiring task identifiers at inference. 
+SETA (Mixture of Sparse Experts for Task-Agnostic Continual Learning) addresses continual learning in the centralized setting through a clean mechanism: the Split-on-Share (SoS) filter partitions pre-trained model parameters into task-specific frozen unique experts and a shared plastic expert, preventing forgetting while enabling task-agnostic inference via a top-K router. However, SETA was designed for a single model on a single task stream. Extending it to the federated setting introduces new challenges that SETA alone does not address.
+
+Core Motivation
+Given N federated clients, each receiving a private and heterogeneous sequence of tasks over time, can we extend SETA’s Split-on-Share mechanism to prevent catastrophic forgetting across all clients simultaneously, without sharing raw data, and without requiring task identifiers at inference time?
+ 
+Concretely: Client 1 sees Tasks 1 and 2. Client 2 sees Tasks 3 and 4. Client 3 sees Tasks 1, 3, and 5. Each client’s task history is private. The global model must serve all tasks on all clients after training.
+
+2. Key Observation: The Expert Boundary as Aggregation Boundary
+The central insight of this proposal is that SETA’s Split-on-Share filter naturally defines a boundary that is also the correct aggregation boundary in the federated setting.
+ 
+When SETA processes a new task, it partitions parameters into frozen unique experts that capture task-specific decision boundaries, and a shared plastic expert that captures general transferable representations. In the federated setting, this partition has an immediate and elegant interpretation:
+ 
+•       Unique experts (frozen) are never sent to the server. They accumulate locally on each client as permanent, immutable memory of that client’s task history. No server aggregation can overwrite them.
+•       The shared expert is the only component that participates in server aggregation. It learns a globally consistent representation across all clients and tasks.
+ 
+SETA’s anti-forgetting guarantee therefore transfers directly to the federated setting: once a task is complete on any client, its unique expert is frozen and cannot be affected by any future local training or global aggregation round. The forgetting problem is structurally solved by the design, not by a regularization term or replay buffer.
+3. Proposed Method
+3.1  Expert Design with V-Projection Subblocks
+In standard SETA, the SoS filter selects parameter blocks from feed-forward network (FFN) layers as experts. In this proposal, we instead use the value projection matrices (W_V) from attention heads as the basis for expert selection. The SoS filter identifies which W_V subblocks have the highest gradient magnitude on each client’s local task data. These become the unique expert for that task; the remaining blocks form the shared expert.
+ 
+Why V-projection instead of FFN?
+W_V matrices encode what information gets written into the attention output. They are more task-discriminative than FFN blocks because they directly control which value representations are selected. The SoS filter produces sharper, more compact expert boundaries on W_V than on FFN blocks, leading to better parameter efficiency and cleaner task separation.
+
+ 
+This introduces a structural challenge: because different clients may have their gradient peaks at different (layer, head) positions, the shared experts chosen by different clients occupy different parameter positions in the model. Naive aggregation would mix semantically incompatible parameter blocks. The aggregation design must account for this positional heterogeneity.
+ 
+3.2  Position-Indexed Shared Expert Aggregation
+To handle the positional misalignment of V-projection shared experts across clients, we propose a position-indexed aggregation protocol. Each shared expert upload from a client is tagged with its position key: the tuple (layer index, head index) identifying which W_V block it comes from.
+ 
+•       The server builds a position registry each round, grouping incoming shared expert uploads by their position key.
+•       Aggregation only occurs between clients that share the exact same position key, ensuring only semantically comparable parameter blocks are combined.
+•       Position keys with only one contributing client are not broadcast globally. They remain local to that client, functioning as de facto unique experts.
+
+
+3.3  Possible Aggregation Methods:
+
+Because different clients may select shared experts at different (layer, head) positions due to their heterogeneous task data, naive parameter averaging would mix semantically incompatible blocks. We therefore propose position-indexed aggregation: each shared expert upload is tagged with its position key, and the server only aggregates across clients that share the exact same (layer index, head index).  [Need to propose something here] 
+https://arxiv.org/pdf/2508.18663 [FFT-MoE: Efficient Federated Fine-Tuning for Foundation Models via Large-scale Sparse MoE under Heterogeneous Edge] [can help]
+3.4  Local Expert Accumulation and Task-Agnostic Inference
+As each client completes tasks over time, it accumulates a growing set of frozen unique experts alongside its copy of the globally aggregated shared expert. This expert pool grows monotonically — no expert is ever deleted or overwritten.
+ 
+At inference time, each client runs a router network (Wg) over its full expert pool. The router applies softmax over expert relevance scores and activates the top-K experts for each input token. No task identifier is provided at inference time — the router learns to activate the right expert combination purely from the input representation, preserving SETA’s task-agnostic inference property in the federated setting.
+ 
+The router has two components: a shared gate aggregated globally (learning which shared expert activates for what inputs), and a local unique gate kept on each client (learning to route to that client’s private unique experts). Both are trained jointly during each local training round.
+
+
+4. Summary of SETA
+Split-on-Share: Mixture of Sparse Experts for Task-Agnostic Continual Learning (SUMMARY)
+
+SETA extends a pre-trained language model to handle multiple tasks sequentially without catastrophic forgetting by converting selected parameter blocks into a mixture-of-experts architecture on the fly. The process begins with a sparse subspace selection step: when a new task arrives, SETA computes the gradient magnitude of each parameter block in the model — specifically the value projection matrices W_V across attention heads — and identifies the blocks where the gradient signal is highest. These high-magnitude blocks are the ones the model most needs to update for the new task, and they become the candidate experts. The selected blocks are then passed through the Split-on-Share (SoS) filter, which partitions them into two groups: a shared expert E_s that captures generalizable, task-agnostic representations and remains plastic across tasks, and a unique expert E_u that captures task-specific decision boundaries and is immediately frozen once the task is complete. This freezing is the core anti-forgetting mechanism — no subsequent training on any future task can modify the frozen unique experts, so the model permanently retains its task-specific knowledge without any replay buffer or regularization term. As the model encounters more tasks, it accumulates a growing pool of frozen unique experts alongside the continuously updated shared expert. At inference time, a router network W_g scores all available experts for a given input token and activates the top-K highest-scoring ones, producing the final output as a weighted sum of their responses. Crucially, this routing happens without any task identifier — the router learns purely from the input representation which expert combination to activate, making SETA fully task-agnostic at test time.
