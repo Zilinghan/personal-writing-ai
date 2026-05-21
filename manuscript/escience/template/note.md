@@ -13,13 +13,13 @@ The platform defines three roles in a strict hierarchy: Admin → Orchestrator �
 ### 1.1 Admin
 
 **What the role is:**
-The Admin is the platform operator — typically a member of the research group running the APPFLx service. There is a small number of admins. The Admin does not participate in FL experiments directly; their job is to manage who can use the platform and to monitor that usage remains reasonable.
+The Admin is the platform operator — shortly, for now, the five of us in the trac meeting. There is a small number of admins. The Admin might not participate in FL experiments directly; their job is to manage who can use the platform and to monitor that usage remains reasonable.
 
 **How the role is created:**
 The first Admin account is bootstrapped at platform setup. Subsequent Admin accounts are granted by an existing Admin through the Keycloak admin console or the platform portal. There is no self-registration path to Admin.
 
 **What the Admin can control:**
-- Approve and grant the Orchestrator role to registered users. A user who signs up via Keycloak (through Globus, institutional login, or any other supported method) does not automatically become an Orchestrator — an Admin must explicitly elevate them.
+- Approve and grant the Orchestrator role to registered users. A user who signs up via Keycloak (through Globus, institutional login, or any other supported authentication method) does not automatically become an Orchestrator — an Admin must explicitly elevate them.
 - Configure available compute backends: add NERSC Spin credentials, AWS IAM roles, or AmSC facility allocations that Orchestrators can choose from.
 - Set per-Orchestrator resource limits: maximum number of concurrently running experiments, and maximum wall-clock duration per experiment.
 - View the platform-wide usage dashboard and terminate runaway experiments.
@@ -44,13 +44,13 @@ None directly. The Admin is responsible only for platform health, not for any in
 ### 1.2 Orchestrator
 
 **What the role is:**
-The Orchestrator is a researcher who wants to run a federated learning study. They own the federation — they define who participates, what gets trained, and which compute infrastructure to use. This maps to the "federation admin" or "group admin" concept in the previous APPFLx system, but is now a formal platform role separate from the platform Admin.
+The Orchestrator is a researcher who wants to run a federated learning study with his/her own collaborators. They own the federation — they define who participates, what gets trained, and which compute infrastructure to use. This maps to the "federation admin" or "group admin" concept in the previous APPFLx system, but is now a formal platform role separate from the platform Admin.
 
 **How the role is created:**
 A user registers on the platform via Keycloak (using Globus, institutional LDAP, or another supported identity provider). The Admin then grants them the Orchestrator role. Without this explicit grant, a registered user can only be a Client.
 
 **What the Orchestrator can control:**
-- Create federations and choose the compute backend (AWS ECS, NERSC Spin, AmSC/HPC, or BYOC) and application type (see Section 4).
+- Create federations and choose the compute backend (AWS ECS, NERSC Spin, AmSC/HPC, or BYOC-Bring Your Own Compute). Each federation can host multiple experiments of different application types (see Section 4).
 - Invite Clients to the federation by email or platform identity.
 - Configure FL experiments: model, training algorithm, privacy settings, number of rounds, evaluation metrics, and whether to run AIDRIN data readiness inspection.
 - Launch experiments and stop them early if needed.
@@ -66,7 +66,7 @@ A user registers on the platform via Keycloak (using Globus, institutional LDAP,
 - Final global model artifact.
 
 **Budget enforcement:**
-The Orchestrator operates within Admin-set limits. The platform blocks new experiment launches if the Orchestrator has already reached their concurrent experiment cap, and automatically tears down experiments that exceed the maximum duration. The Orchestrator can see their own usage (total compute time this month, currently running experiments) in the portal.
+Resource limits apply only to experiments using APPFLx-provided compute resources (ECS, Spin, AmSC). For those, the platform blocks new experiment launches if the Orchestrator has already reached their concurrent experiment cap, and automatically tears down experiments that exceed the maximum duration. For BYOC experiments, no platform resource limits are imposed — the Orchestrator is fully responsible for managing their own resource usage. The Orchestrator can see their own APPFLx-backed usage (total compute time this month, currently running experiments) in the portal.
 
 **Role in an FL experiment:**
 The Orchestrator configures and launches the FL server (through the platform portal). Once launched, the server handles the training orchestration. The Orchestrator monitors progress via the portal and can stop the experiment at any time. They collect and use the final global model.
@@ -88,11 +88,9 @@ The Orchestrator sends an invitation (by email or platform identity) through the
 - Run AIDRIN locally against their dataset and submit a privacy-preserving readiness summary to the platform.
 
 **What data the Client can see:**
-- The list of federations they belong to, and which application type each one uses.
-- Their own local training metrics per round (local loss, local accuracy). They do **not** see other clients' local metrics.
-- Their own AIDRIN readiness assessment result.
-- Whether their update was included in the global model aggregation per round.
-- The final global model, only if the Orchestrator enables model sharing for the federation.
+- The list of federations they belong to.
+- The same set of FL experiment results as the Orchestrator: per-round global model metrics, per-client participation status per round, aggregated AIDRIN readiness reports, server-side experiment logs, and the final global model.
+- Their own local training metrics per round (local loss, local accuracy) and whether their update was included in aggregation each round. They do **not** see other clients' local metrics.
 
 **Budget enforcement:**
 Clients use their own compute resources (their own HPC allocation, their own laptop or cluster). No platform compute budget is consumed by Client-side training. No budget controls are applied to the Client role.
@@ -175,17 +173,17 @@ BYOC removes compute cost from the research group entirely and is the recommende
 
 - **Maximum experiment duration:** Each experiment has a configurable wall-clock time limit. The platform sets a timer at launch and calls the backend's teardown operation when the limit is reached, regardless of whether training has finished. This is the most important safeguard against forgotten running experiments consuming resources indefinitely.
 - **Concurrent experiment cap:** The platform checks the Orchestrator's currently running experiment count before provisioning a new one and blocks the launch if the cap is exceeded.
-- **For BYOC backends:** No platform budget is consumed. The Orchestrator is responsible for their own resource usage.
+- **For BYOC backends:** No platform budget is consumed and no platform resource limits are imposed. The Orchestrator is fully responsible for managing their own resource usage.
 
 ---
 
 ## 4. Application Layer
 
-An "application" is a deployable unit that combines a specific server-side container image with a corresponding client-side interaction pattern. The platform currently defines four applications. The Orchestrator chooses one application when creating a federation; the choice determines what gets deployed on the server side and what the Client needs to do.
+An "application" is a deployable unit that combines a specific server-side container image with a corresponding client-side interaction pattern. The platform currently defines four applications. A federation is not tied to a single application type — the Orchestrator can launch experiments of different application types within the same federation. The application type is chosen per experiment, not per federation; the choice determines what gets deployed on the server side and what the Client needs to do.
 
 ---
 
-### Application 1: Globus Compute FL Orchestrator
+### Application 1: Globus Compute FL Orchestrator *(currently supported by APPFLx)*
 
 **What it is:** A production FL application where the server acts as a coordinator that dispatches training function calls to Client-side Globus Compute endpoints. Each FL round is a remote Python function call: the server submits a `local_train` function to each Client's endpoint, the Client executes it on their local compute, and returns model updates. The Globus cloud infrastructure relays these calls, so Clients only need outbound internet access to Globus — no inbound ports are required on the Client side.
 
@@ -195,7 +193,7 @@ An "application" is a deployable unit that combines a specific server-side conta
 
 **Best suited for:** Production FL experiments on HPC clients already in the Globus ecosystem; asynchronous FL algorithms (FedCompass, FedBuff) where Clients do not need to be simultaneously online; heterogeneous Client compute environments.
 
-**Compatible backends:** All (ECS, Spin, Generic K8s, AmSC/HPC, BYOC).
+**Compatible backends (server-side):** All (ECS, Spin, Generic K8s, AmSC/HPC, BYOC). Note: "compatible backends" throughout this section refers to where the FL server or coordinator service is deployed, not the client's compute environment.
 
 ---
 
@@ -203,13 +201,13 @@ An "application" is a deployable unit that combines a specific server-side conta
 
 **What it is:** A production FL application where the server runs a persistent gRPC service and Clients connect to it directly. FL rounds proceed as structured message exchanges over bidirectional HTTP/2 streams. Clients authenticate to the server using a JWT token issued by the platform's Keycloak instance. The gRPC server endpoint is exposed publicly via a Kubernetes Ingress (with TLS) or an ECS load balancer.
 
-**Server side:** An APPFL gRPC server container deployed on a backend that can expose a public network endpoint (ECS, Spin, Generic K8s, or BYOC). The server manages the training loop, pushes the global model to Clients each round, and collects their updates. For large model weights that do not fit in a single gRPC message, the server issues pre-signed download URLs (S3 or Globus Transfer) for out-of-band weight transfer.
+**Server side:** An APPFL gRPC server container deployed on a backend that can expose a public network endpoint (ECS, Spin, Generic K8s, or BYOC). In APPFL's gRPC implementation, the **client** controls the training loop — the server is reactive and only responds to client requests. Clients decide when to pull the global model, when to push local updates, and what types of requests to send. For large model weights that do not fit in a single gRPC message, the server issues pre-signed download URLs (S3 or Globus Transfer) for out-of-band weight transfer.
 
-**Client side:** The Client downloads a configuration package from the portal — containing the gRPC server URI and a JWT token scoped to their federation — and runs the APPFL client agent with a single command. No Globus account or endpoint daemon is required. The Client provides a local `dataloader.py` pointing to their private data.
+**Client side:** The Client downloads a client template script from the portal — containing the gRPC server URI and a JWT token scoped to their federation. The template is customizable: Clients can configure options such as whether to run AIDRIN data readiness inspection before training, local training hyperparameters, and so on. The client script drives the training loop, sending requests to the server (ai readiness result update, model update push, etc.) according to the configured FL algorithm. No Globus account or endpoint daemon is required. The Client provides a local `dataloader.py` pointing to their private data.
 
-**Best suited for:** Production FL experiments at sites that cannot use Globus but have standard outbound HTTPS/443 access (e.g., hospital environments with strict but standard firewall rules); synchronous FL algorithms where real-time round-by-round interaction matters.
+**Best suited for:** Production FL experiments at sites that cannot use Globus but have standard outbound HTTPS/443 access (e.g., hospital environments with strict but standard firewall rules); synchronous and asynchronous FL algorithms; scenarios where clients need fine-grained control over the training loop.
 
-**Compatible backends:** ECS, NERSC Spin, Generic K8s, BYOC. Not compatible with AmSC/HPC (HPC nodes do not accept inbound connections).
+**Compatible backends (server-side):** ECS, NERSC Spin, Generic K8s, BYOC. Not compatible with AmSC/HPC (HPC nodes do not accept inbound connections).
 
 ---
 
@@ -223,30 +221,39 @@ An "application" is a deployable unit that combines a specific server-side conta
 - Configuring and launching a small-scale Globus Compute-based FL experiment using the APPFL Python API
 - Interpreting training metrics and model outputs
 
-**Server side:** A JupyterHub container deployed on ECS or Spin (Spin is natural since JupyterHub has native Kubernetes support via the `zero-to-jupyterhub` Helm chart). Auth is handled via OAuth2 against the platform's Keycloak instance.
+**Server side:** A Jupyter server container deployed on ECS or Spin, with all required packages pre-installed (`appfl`, `globus-compute-endpoint`, and dependencies). After deployment, the platform provides the Orchestrator with a direct link and a token to access the notebook interface — no Keycloak SSO login is involved in accessing the Jupyter server itself.
 
-**Client side:** A browser. Users open the SSO link from the portal and interact entirely through the notebook UI.
+**Client side:** Clients do not access the Jupyter server directly. They only need to start their Globus Compute endpoints on their own compute resources and provide the endpoint UUID to the Orchestrator, who enters it into the notebook cells to configure and run the FL experiment.
 
 **Best suited for:** New users learning the Globus Compute path before running production experiments; workshops and tutorials; testing that a dataloader works correctly; prototyping model architectures interactively. Once the user is confident in their setup, they transition to Application 1 for real experiments.
 
-**Compatible backends:** ECS, NERSC Spin.
+**Compatible backends (server-side):** ECS, NERSC Spin, BYOC (AWS and Spin). Not compatible with AmSC/HPC (HPC nodes cannot expose a web-accessible Jupyter interface).
 
 ---
 
 ### Application 4: Jupyter Server — gRPC Notebooks
 
-**What it is:** Identical in structure to Application 3, but the pre-installed notebooks walk through the gRPC-based FL workflow instead of the Globus Compute workflow. The container image is the same JupyterHub base with `appfl` and gRPC client libraries pre-installed. Pre-loaded notebooks guide the user through connecting to a gRPC FL server, testing connectivity, writing a dataloader, and running a small interactive FL experiment using the APPFL gRPC client API.
+**What it is:** An onboarding and pre-experimentation environment for the gRPC-based FL workflow. The platform deploys a Jupyter server with gRPC-themed notebooks for the Orchestrator, alongside a gRPC FL server endpoint that clients can connect to during the tutorial. Unlike Application 3 where clients do not interact with the online Jupyter server — the clients are provided a pre-configured notebook file to download and run in their own local Jupyter environment.
 
-**What the notebooks cover:**
-- Obtaining the gRPC server URI and JWT token from the portal (or using the notebook directly)
+**What the Orchestrator's notebooks cover:**
+- Configuring and launching a small-scale gRPC FL server from the notebook
+- Monitoring per-round global metrics inline
+- Interpreting training results and model outputs
+
+**What the client notebook covers:**
+- Obtaining the gRPC server URI and JWT token from the platform portal
 - Testing connectivity to the gRPC server
 - Writing and validating a local dataloader
-- Running a small interactive FL experiment using the APPFL gRPC client API from within the notebook
-- Inspecting per-round results inline
+- Running the gRPC client training loop locally using the APPFL gRPC client API
+- Inspecting per-round results from the client perspective
 
-**Best suited for:** New users learning the gRPC path; sites where Globus Compute is not an option and the user needs to understand the gRPC client setup before running production experiments with Application 2.
+**Server side:** A Jupyter server container deployed on ECS or Spin for the Orchestrator's use, plus a gRPC FL server endpoint for clients to connect to. The Orchestrator accesses the Jupyter server via a link and token provided by the platform portal.
 
-**Compatible backends:** ECS, NERSC Spin.
+**Client side:** Clients download a pre-configured notebook file (`.ipynb`) from the platform portal and run it in their own local Jupyter environment. The notebook provides step-by-step guidance for acting as a gRPC FL client — no access to the online server is needed.
+
+**Best suited for:** New users learning the gRPC path; sites where Globus Compute is not an option; users who need hands-on experience with the gRPC client workflow before running production experiments with Application 2.
+
+**Compatible backends (server-side):** ECS, NERSC Spin, BYOC (AWS and Spin). Not compatible with AmSC/HPC (HPC nodes cannot expose a web-accessible Jupyter interface).
 
 ---
 
@@ -256,7 +263,7 @@ This layer manages all inputs needed to run an experiment and all outputs produc
 
 ### 5.1 Configuration
 
-**Common configuration (required for Applications 1 and 2; pre-filled in Applications 3 and 4):**
+**Common configuration - just name a few (required for Applications 1 and 2; pre-filled in Applications 3 and 4):**
 
 | Parameter | Description |
 |---|---|
@@ -280,9 +287,8 @@ This layer manages all inputs needed to run an experiment and all outputs produc
 
 | Parameter | Description |
 |---|---|
-| gRPC server URI | Auto-generated by the platform after deployment (e.g., `fed-42.spin.appflx.link:443`) |
+| gRPC server URI | Auto-generated by the platform after deployment (e.g., `fed-grpc-42.trac.appflx.link`) |
 | Client JWT token | Per-Client auth token issued by Keycloak, scoped to this federation and experiment; downloadable from the portal |
-| Per-client dataloader | Python file uploaded by each Client |
 
 Applications 3 and 4 (Jupyter) use simplified configuration: the notebooks themselves guide users through the relevant settings interactively. The Orchestrator only needs to choose the application and the compute backend; detailed experiment config is handled inside the notebook cells.
 
@@ -300,18 +306,18 @@ The FL server reports results to the platform API at the end of each round. The 
 
 - **Admin:** Experiment status (running / completed / failed), current round number, elapsed time, backend. No model metrics.
 - **Orchestrator:** All of the above plus per-round global model metric (loss, accuracy, or other configured metric), plotted as a curve. Per-client participation status per round (contributed / timed out / skipped) — without the Client's local metric values.
-- **Client:** Their own local training metric per round (local loss, local accuracy). Whether their update was accepted into aggregation. No other Client's metrics. No global model metric unless the Orchestrator enables it.
+- **Client:** The same live global metrics as the Orchestrator: per-round global model performance (loss, accuracy, or other configured metric) plotted as a curve, and per-client participation status per round. Also their own local training metric per round (local loss, local accuracy) and whether their update was accepted into aggregation. They do not see other clients' local metrics.
 
 **After the experiment:**
 
 | Artifact | Admin | Orchestrator | Client |
 |---|---|---|---|
 | Experiment duration and status | Yes | Yes | Yes |
-| Per-round global metric curve | No | Yes | Optional (Orchestrator-controlled) |
-| Per-client participation log | No | Yes (status only) | Own entry only |
-| AIDRIN readiness report | No | Aggregated | Own site only |
-| Server-side training logs | No | Yes | No |
-| Final global model | No | Yes (download) | Optional (Orchestrator-controlled) |
+| Per-round global metric curve | No | Yes | Yes |
+| Per-client participation log | No | Yes (status only) | Yes (status only) |
+| AIDRIN readiness report | No | Aggregated | Aggregated |
+| Server-side training logs | No | Yes | Yes |
+| Final global model | No | Yes (download) | Yes (download) |
 | Per-client local metric history | No | No | Own history only |
 
 **Storage:**
