@@ -1,0 +1,627 @@
+CAREER SUMMARY — DRAFT ANSWERS
+Prepared for: Zilinghan Li
+Position: Machine Learning Engineer, Argonne National Laboratory
+
+NOTE: Items marked [VERIFY] require your input or confirmation. This draft was
+prepared from your CV and should be reviewed carefully before submission to counsel.
+
+================================================================================
+Section A: Detailed Summary of Your Work
+================================================================================
+
+PROJECT 1
+
+1. Name: APPFL & APPFLx — Advanced Privacy-Preserving Federated Learning
+   Framework and Platform for Science
+
+2. Date project began: January 2023
+
+3. Date project ended: Ongoing (present)
+
+4. Funding:
+   U.S. Department of Energy (DOE) — through Argonne National Laboratory, Data
+   Science and Learning Division. [VERIFY: Please confirm specific grant numbers
+   or program names with your research office, e.g., DOE Office of Science
+   programs, ASCR, or BER grants supporting this work.]
+
+5. Resulting publications (listed chronologically, most recent first):
+
+   - Li, Y., Dey, E., Li, Z., Raghavan, K., Madduri, R., Kim, K. "FedQueue:
+     Queue-Aware Federated Learning for Cross-Facility HPC Training." To appear
+     in Proceedings of the 43rd International Conference on Machine Learning
+     (ICML 2026).
+
+   - Li, Y., Li, Z., Chard, K., Foster, I., Munson, T., Madduri, R., Kim, K.
+     "Scalable Cross-Facility Federated Learning for Scientific Foundation
+     Models on Multiple Supercomputers." arXiv:2603.19544, 2026. (1 citation)
+
+   - Li, Z., Sinha, A., Li, Y., Chard, K., Kim, K., Madduri, R. "Experiences
+     Building Enterprise-Level Privacy-Preserving Federated Learning to Power AI
+     for Science." TPS-ISA 2025. (2 citations)
+
+   - Sinha, A., Li, Z., Liu, T., Kindratenko, V., Kim, K., Madduri, R.
+     "FedCostAware: Enabling Cost-Aware Federated Learning on the Cloud."
+     Allerton 2025. (3 citations)
+
+   - Sinha, A., Li, Z., Liu, T., Kindratenko, V., Kim, K., Madduri, R.
+     "Cost-Aware Federated Learning on the Cloud." eScience 2025. (3 citations)
+
+   - Hiniduma, K., Li, Z., Sinha, A., Madduri, R., Byna, S. "CADRE:
+     Customizable Assurance of Data Readiness in Privacy-Preserving Federated
+     Learning." eScience 2025, pp. 121–130. (2 citations)
+
+   - Li, Z., He, S., Yang, Z., Ryu, M., Kim, K., Madduri, R., et al. "Advances
+     in APPFL: A Comprehensive and Extensible Federated Learning Framework."
+     CCGrid 2025. (45 citations)
+
+   - Hoang, T.H., Fuhrman, J., Klarqvist, M., Li, M., Chaturvedi, P., Li, Z.,
+     Kim, K., Ryu, M., et al. "Enabling End-to-End Secure Federated Learning in
+     Biomedical Research on Heterogeneous Computing Environments with APPFLx."
+     Computational and Structural Biotechnology Journal, 2025. (20 citations)
+
+   - Madduri, R., Li, Z., Nandi, T., Kim, K., Ryu, M., Rodriguez, A. "Advances
+     in Privacy Preserving Federated Learning to Realize a Truly Learning
+     Healthcare System." TPS-ISA 2024. (10 citations)
+
+   - Li, Z., He, S., Chaturvedi, P., Kindratenko, V., Huerta, E.A., Kim, K.,
+     Madduri, R. "Secure Federated Learning Across Heterogeneous Cloud and HPC
+     Resources: A Case Study on Federated Fine-tuning of LLaMA 2." Computing
+     in Science & Engineering (CiSE), 2024. (10 citations)
+
+   - Li, Z., He, S., Chaturvedi, P., Hoang, T.H., Ryu, M., Huerta, E.A.,
+     Kindratenko, V., Kim, K., Madduri, R. "APPFLx: Providing Privacy-Preserving
+     Cross-Silo Federated Learning as a Service." e-Science 2023. (27 citations)
+
+6. Background:
+
+   Federated learning (FL) is a distributed machine learning paradigm that
+   enables multiple institutions to collaboratively train AI models without
+   sharing their underlying raw data. Each participating institution trains a
+   local model on its private dataset and shares only model parameters (weights
+   or gradients), which are aggregated into a shared global model. This approach
+   is critically important in scientific and biomedical research, where valuable
+   datasets exist across many institutions but cannot be pooled due to privacy
+   regulations (such as HIPAA for patient health data), data governance
+   agreements, or national security considerations at government laboratories.
+
+   Despite federated learning's enormous promise for enabling collaborative
+   science, adoption was severely limited by the lack of robust, production-ready
+   software infrastructure. Existing FL tools were either too experimental for
+   real deployments, too rigid to support the heterogeneous computing environments
+   at DOE national laboratories (spanning on-premises HPC clusters, edge devices,
+   and commercial cloud), or too complex for domain scientists who are not
+   professional software engineers. The APPFL project was undertaken to solve
+   these fundamental problems and build a comprehensive, flexible, open-source FL
+   ecosystem that would make privacy-preserving collaborative AI accessible
+   across the national laboratory network and the broader scientific community.
+
+7. Plain language summary:
+
+   APPFL (Advanced Privacy-Preserving Federated Learning) is an open-source
+   Python software framework hosted at github.com/APPFL/APPFL that provides
+   all the essential building blocks for deploying federated learning in real
+   scientific applications. The framework is architected around a plugin-based,
+   modular design where each functional component — FL aggregation algorithms,
+   communication backends (supporting gRPC, MPI, and Globus Compute), privacy
+   protection mechanisms (differential privacy and secure aggregation), data
+   compression modules, and client/server configurations — can be independently
+   configured or swapped. This modularity allows researchers to prototype novel
+   FL algorithms with minimal code changes, while practitioners can deploy
+   production-grade FL workflows using standard, battle-tested configurations.
+   The framework supports the full FL lifecycle: dataset management, training
+   coordination, model aggregation, evaluation, and logging.
+
+   Alongside the core framework, the project produced APPFLx (appflx.link), a
+   web-based platform delivering federated learning as a service. Rather than
+   requiring each institution to set up and maintain their own FL infrastructure,
+   APPFLx allows domain scientists to register their computing sites through a
+   web interface, specify their local datasets, and participate in federated
+   training experiments without writing custom distributed systems code. The
+   platform integrates with Globus for secure authentication and data transfer —
+   a widely used infrastructure across DOE national laboratories — making it
+   particularly well-suited to the DOE ecosystem. APPFLx has been used in
+   biomedical research to enable hospitals and health systems to train AI models
+   collaboratively without ever moving patient data outside their institutional
+   firewalls.
+
+   Throughout the project, several technically significant capabilities were
+   developed and integrated into the APPFL ecosystem. A computing-power-aware
+   scheduling algorithm (FedCompass, published at ICLR 2024) was created to
+   handle the fundamental challenge of heterogeneous client devices in cross-silo
+   FL, where different institutions have vastly different computational resources
+   and slower clients can bottleneck the entire training process. Cost-aware
+   scheduling (FedCostAware) was developed to minimize monetary costs when
+   running FL jobs on commercial cloud infrastructure, reducing costs by over 70%.
+   Cross-facility FL capabilities were built to run training experiments spanning
+   multiple DOE supercomputers simultaneously. Data readiness tooling (CADRE) was
+   added to verify data quality and format consistency across federated sites
+   before training begins, addressing a key practical barrier to real deployments.
+
+   The project also contributed to integrating the framework with broader DOE
+   computing infrastructure, including Globus Compute for remote function
+   execution and the FABRIC testbed for network-layer experiments. This sustained,
+   multi-year engineering and research effort transformed APPFL from an
+   experimental prototype into a mature ecosystem adopted by multiple national
+   laboratories.
+
+8. Specific role:
+
+   I was the technical lead and primary developer of the entire APPFL project
+   from its inception. I designed the software architecture and the plugin-based
+   modular system from the ground up, personally wrote the majority of the core
+   framework codebase, established and maintained the development roadmap, and
+   led community engagement including GitHub maintenance, Discord community
+   support, and onboarding of partner laboratory users. I mentored five graduate
+   students (Aditya Sinha, Ze Yang, Kaveen Hiniduma, Rishi Kesav Mohan, Abhijit
+   Chunduru) who contributed to specific components and extension papers.
+
+   I coordinated technical integration and collaboration with four additional DOE
+   national laboratories that adopted the framework (Oak Ridge, Lawrence Berkeley,
+   Sandia, Los Alamos). I served as first or co-first author on the primary
+   framework papers and as lead or senior co-author on all extension and
+   application papers. My work was critical to the project's success because there
+   was no prior lead developer — I built the architectural foundation, attracted
+   collaborators, and provided the sustained technical vision that turned a
+   research prototype into a widely adopted open-source tool.
+
+9. Success and impact:
+
+   The APPFL framework has achieved substantial adoption across the U.S. national
+   laboratory system and the broader federated learning research community. As of
+   May 2026, the GitHub repository has 176 stars and 35 forks, with an active
+   user community of 67 members on Discord. The framework is actively used and
+   integrated into scientific workflows at four major U.S. DOE national
+   laboratories: Oak Ridge National Laboratory, Lawrence Berkeley National
+   Laboratory, Sandia National Laboratories, and Los Alamos National Laboratory.
+   This multi-lab adoption of a single open-source framework is notable within
+   the DOE computing ecosystem.
+
+   The citation impact has been substantial. The primary APPFL framework paper
+   (CCGrid 2025) has 45 citations; the APPFLx service paper (e-Science 2023)
+   has 27 citations; the APPFLx biomedical journal paper (CSBJ 2025) has 20
+   citations; and the CiSE 2024 paper on secure FL across cloud and HPC has
+   10 citations. Together, the framework-related publications account for well
+   over 100 cumulative citations, reflecting sustained engagement from the
+   research community. The framework has been used as infrastructure for
+   collaborative AI research spanning biomedical diagnostics, gravitational-wave
+   astronomy, and scientific foundation model training.
+
+
+PROJECT 2
+
+1. Name: FedCompass — Efficient Cross-Silo Federated Learning on Heterogeneous
+   Computing Resources
+
+2. Date project began: [VERIFY: Approximately early 2023; please confirm when
+   you began working on the FedCompass scheduling algorithm specifically.]
+
+3. Date project ended: Approximately late 2023 / early 2024 (published at
+   ICLR 2024); extended work on heterogeneous/cross-facility FL continued
+   through FedQueue (ICML 2026)
+
+4. Funding:
+   U.S. Department of Energy (DOE) — through Argonne National Laboratory.
+   [VERIFY: Same grant sources as Project 1; please confirm.]
+
+5. Resulting publications:
+
+   - Li, Y., Dey, E., Li, Z., Raghavan, K., Madduri, R., Kim, K. "FedQueue:
+     Queue-Aware Federated Learning for Cross-Facility HPC Training." To appear
+     in ICML 2026. (this paper extends the ideas from FedCompass to multi-
+     facility HPC scheduling)
+
+   - Wilkins, G., Di, S., Calhoun, J., Li, Z., Kim, K., Underwood, R., Mortier,
+     R., et al. "FedSZ: Leveraging Error-Bounded Lossy Compression for Federated
+     Learning Communications." ICDCS 2024. (18 citations)
+
+   - Li, Z., Chaturvedi, P., He, S., Chen, H., Singh, G., Kindratenko, V.,
+     Huerta, E.A., et al. "FedCompass: Efficient Cross-Silo Federated Learning
+     on Heterogeneous Client Devices Using a Computing Power Aware Scheduler."
+     ICLR 2024. (31 citations)
+
+6. Background:
+
+   One of the most persistent practical challenges in federated learning is
+   the "straggler problem": in any cross-silo FL deployment, participating
+   institutions have vastly different computational resources, network speeds,
+   and workloads. When a synchronous FL protocol is used, the entire training
+   round cannot proceed until the slowest client finishes — meaning that a
+   single institution with outdated hardware or heavy existing load can
+   dramatically slow the entire federated training process for all participants.
+   This significantly limits the practical scalability of FL across real-world
+   scientific institutions.
+
+   Existing solutions to this problem fell into two categories: purely
+   synchronous approaches (which suffer from the straggler problem) and purely
+   asynchronous approaches (which tend to produce less accurate models due to
+   gradient staleness and inconsistent model updates). Neither adequately solved
+   the problem for the heterogeneous computing environments found across DOE
+   national laboratories and academic research sites, where computational
+   capacity can differ by orders of magnitude between participants. This project
+   aimed to design a fundamentally better scheduling strategy that could achieve
+   training efficiency close to asynchronous methods while maintaining the model
+   quality of synchronous approaches.
+
+7. Plain language summary:
+
+   FedCompass (Federated learning with a Computing Power Aware Scheduler) is a
+   novel FL training algorithm that addresses the heterogeneous client problem
+   by dynamically estimating each client's computing capacity and strategically
+   scheduling how many model updates each client should submit per training
+   round. Instead of waiting for all clients to finish (synchronous) or
+   collecting updates as they arrive without coordination (asynchronous),
+   FedCompass assigns each client a personalized number of "steps" to compute
+   before sending updates. Faster clients are assigned more work, and slower
+   clients are assigned less, so that all clients tend to finish their
+   assignments at approximately the same time. This approach dramatically
+   reduces idle waiting time at the server while keeping model updates fresh
+   and consistent.
+
+   The algorithm uses a lightweight online estimation procedure to infer each
+   client's computing speed from their observed response times, without requiring
+   clients to self-report their capacities. The scheduling decisions are computed
+   centrally at the server before each round, adding negligible overhead. The
+   result is a training protocol that achieves near-synchronous model quality
+   with significantly higher throughput on heterogeneous infrastructure.
+
+   A companion paper on this project (FedSZ, ICDCS 2024) addressed the related
+   problem of communication overhead in FL, which is a bottleneck for clients
+   with limited network bandwidth. FedSZ integrates error-bounded lossy
+   compression techniques (from Argonne's SZ compression library) into the FL
+   communication protocol, substantially reducing the volume of data transmitted
+   without meaningfully degrading model accuracy. Together, FedCompass and FedSZ
+   represent a comprehensive solution to the twin bottlenecks of compute and
+   communication heterogeneity in real-world FL deployments.
+
+   More recently, the scheduling ideas from FedCompass were extended to the
+   multi-facility HPC setting in FedQueue (ICML 2026), which addresses the
+   additional complexity of batch job queue systems on supercomputers, where
+   training jobs must be submitted to a job scheduler and may wait in a queue
+   before execution. FedQueue accounts for queue wait times in the scheduling
+   strategy, enabling efficient FL training across multiple supercomputing
+   facilities simultaneously.
+
+8. Specific role:
+
+   I was the first author and lead researcher on FedCompass. I conceived the
+   computing-power-aware scheduling idea, designed the algorithm, implemented
+   it within the APPFL framework, conducted all experiments comparing it against
+   existing FL methods on heterogeneous setups, and wrote the paper. My
+   individual contribution was critical because the core scheduling insight and
+   the mathematical formulation of the per-client step assignment were original
+   ideas I developed. I also contributed to the FedSZ collaboration, providing
+   the FL framework integration and experimental infrastructure on which the
+   compression experiments were run. For FedQueue (ICML 2026), I contributed to
+   the algorithm design and experimental evaluation for the cross-facility setting.
+
+9. Success and impact:
+
+   FedCompass was accepted at ICLR 2024, one of the premier venues in machine
+   learning research (with a typical acceptance rate around 30% for oral/poster
+   presentations and very high selectivity among thousands of submissions). The
+   paper has accumulated 31 citations since publication, demonstrating significant
+   interest from researchers working on FL scheduling and heterogeneous computing.
+   The algorithm is implemented as a standard option within the APPFL framework
+   and has been used by downstream researchers and practitioners at national
+   laboratories for heterogeneous FL deployments. The extension to FedQueue
+   (ICML 2026) — accepted at the International Conference on Machine Learning,
+   arguably the top venue in ML — validates the impact of the original scheduling
+   concept on the high-performance computing community.
+
+
+PROJECT 3
+
+1. Name: AI for Biomedical Science — Large Language Models for Rare Disease
+   Identification and Foundation Models for Digital Histopathology
+
+2. Date project began: May 2024 (upon joining Argonne as a full-time ML Engineer)
+
+3. Date project ended: Ongoing (several papers published; others under review)
+
+4. Funding:
+   [VERIFY: This work is conducted at Argonne National Laboratory. Please confirm
+   whether this is funded by DOE, NIH, or a combination. Your PI or grants
+   administrator can provide the specific grant names and numbers.]
+
+5. Resulting publications:
+
+   - Belagali, V., Kapse, S., Marza, P., Das, S., Li, Z., Nandi, T., Madduri,
+     R., Saltz, J., Christodoulidis, S., Vakalopoulou, M., Samaras, D. "TICON:
+     A Slide-Level Tile Contextualizer for Histopathology Representation
+     Learning." To appear in CVPR Findings 2026. (2 citations)
+
+   - Belagali, V., Yellapragada, S., Graikos, A., Kapse, S., Li, Z., et al.
+     "Gen-SIS: Generative Self-augmentation Improves Self-supervised Learning."
+     DataCV@CVPR 2026. (9 citations)
+
+   - Yellapragada, S., Graikos, A., Triaridis, K., Li, Z., Nandi, T., Madduri,
+     R., et al. "Pathology Image Compression with Pre-trained Autoencoders."
+     MICCAI 2025. (2 citations)
+
+   - Singhal, P.*, Li, Z.*, Yang, Z.*, Nandi, T., Morse, C., Rodriguez, Z.,
+     Rodriguez, A., Kindratenko, V., Sirugo, G., Pyeritz, R.E., et al.
+     "Leveraging Open-Source Large Language Models to Identify Undiagnosed
+     Patients with Rare Genetic Aortopathies." medRxiv 2025. Under review at
+     Cell Med. (1 citation) [* denotes co-first authorship]
+
+   - Levin, M.G., Koyama, S., Woerner, J., Zhang, D.Y., Rodriguez, A., Nandi,
+     T., Truong, B., ..., Li, Z., et al. "Genome-Wide Assessment of Pleiotropy
+     Across >1000 Traits from Global Biobanks." medRxiv:2025.04.18.25326074.
+     Under review at Nature. (6 citations)
+
+   - Yellapragada, S., Graikos, A., Li, Z., Triaridis, K., Belagali, V., Kapse,
+     S., et al. "PixCell: A Generative Foundation Model for Digital Histopathology
+     Images." arXiv:2506.05127. Under review at IEEE TPAMI. (7 citations)
+
+   - Belagali, V., Marza, P., Yellapragada, S., Li, Z., Nandi, T., Madduri, R.,
+     Saltz, J., Christodoulidis, S., Vakalopoulou, M., Samaras, D. "CDG-MAE:
+     Learning Correspondences from Diffusion Generated Views." arXiv:2506.18164.
+     Under review at TMLR. (1 citation)
+
+6. Background:
+
+   Two major unmet needs in medicine and biological research motivated this
+   project. First, many patients with rare genetic diseases — particularly rare
+   connective tissue disorders and genetic aortopathies — go undiagnosed for
+   years or even decades because the diseases are uncommon, their presentations
+   are variable, and most clinicians lack specialized expertise to recognize them.
+   Automated AI tools that can screen electronic health records (EHR) and flag
+   patients at risk could dramatically accelerate diagnosis. Second, digital
+   pathology — the computerized analysis of tissue biopsy slides — has enormous
+   potential to make cancer diagnosis faster, more reproducible, and more
+   accessible, but existing AI models are limited by the lack of large-scale
+   annotated training datasets and by computational constraints when processing
+   gigapixel whole-slide images.
+
+   This project aimed to develop and apply state-of-the-art AI methods to both
+   problems, leveraging large language models (LLMs) for clinical text analysis
+   and deep learning vision models for histopathology image analysis.
+
+7. Plain language summary:
+
+   In the rare disease work, the project applied open-source large language
+   models (such as LLaMA and Mistral) to retrospectively screen clinical notes
+   in electronic health records to identify patients with undiagnosed rare genetic
+   aortopathies — heritable disorders that cause the aorta (the body's largest
+   artery) to abnormally dilate or dissect, with potentially fatal consequences
+   if undetected. The LLM pipeline was designed to extract relevant clinical
+   features from unstructured free-text notes, classify patient risk, and
+   prioritize candidates for genetic testing and specialist referral. This work
+   represents one of the first demonstrations of using open-source LLMs (rather
+   than proprietary models) for rare disease identification in clinical text,
+   preserving patient privacy while achieving high diagnostic sensitivity.
+
+   In the digital histopathology work, the project contributed to developing
+   and evaluating novel deep learning architectures for analyzing whole-slide
+   pathology images. These images, which can be gigapixels in size, present
+   unique challenges: no single AI model can process the entire image at once,
+   so the field relies on "multiple instance learning" approaches that aggregate
+   features from thousands of small image tiles. Contributions included TICON
+   (a slide-level model that contextualizes tile features spatially), PixCell
+   (a generative foundation model for histopathology images that can synthesize
+   realistic pathology images and support downstream analysis), and Gen-SIS
+   (a self-supervised learning approach using generative models for data
+   augmentation). The project also developed efficient image compression methods
+   tailored to pathology images to reduce storage and transmission costs in
+   federated pathology workflows.
+
+   A third component of the biomedical work involved contributing to large-scale
+   polygenic risk studies — analyses that combine genetic variants across the
+   genome to predict disease risk — including a genome-wide pleiotropy study
+   spanning over 1,000 traits across global biobanks, which is currently under
+   review at Nature.
+
+8. Specific role:
+
+   For the rare genetic aortopathy paper, I was a co-first author (equal
+   contribution with two other authors). My specific contributions included
+   developing and evaluating the LLM-based pipeline for EHR text analysis,
+   conducting experiments comparing multiple open-source model architectures,
+   and contributing to the clinical validation analysis. I also presented this
+   work at the AMIA 2025 Informatics Summit in Pittsburgh.
+
+   For the histopathology papers, I served as a co-author and contributed
+   to the federated learning infrastructure enabling multi-institutional
+   training of pathology models across Argonne and partner institutions
+   (Stony Brook University and other medical centers). I also contributed
+   to experimental design and evaluation pipelines.
+
+   For the pleiotropy/polygenic risk work, I contributed to the computational
+   analysis pipeline for multi-ancestry biobank data integration.
+
+9. Success and impact:
+
+   This body of work spans multiple high-impact publication venues. The rare
+   aortopathy paper is under review at Cell Med (a prominent biomedical journal),
+   and the genome-wide pleiotropy study is under review at Nature. The
+   histopathology papers include an accepted paper at CVPR Findings 2026 (a top
+   computer vision venue), an accepted paper at MICCAI 2025 (the leading medical
+   imaging conference), and manuscripts under review at IEEE TPAMI and TMLR.
+   The PixCell paper has 7 citations already as a preprint, reflecting the
+   community's interest in generative foundation models for pathology. The work
+   on rare disease screening was presented at AMIA 2025 — the leading biomedical
+   informatics conference — demonstrating its relevance to clinical practice.
+
+
+PROJECT 4
+
+1. Name: AuroraGPT and Scientific Large Language Model Evaluation
+
+2. Date project began: May 2024 (upon joining Argonne as a full-time ML Engineer)
+
+3. Date project ended: Ongoing
+
+4. Funding:
+   U.S. Department of Energy (DOE) — Argonne National Laboratory. The AuroraGPT
+   project is an Argonne-led initiative on the Aurora supercomputer at Argonne,
+   one of the world's leading exascale computing systems. [VERIFY: Please confirm
+   specific DOE program/grant details.]
+
+5. Resulting publications:
+
+   - Bai, G., Li, Y., Li, Z., Zhao, L., Kim, K. "FedSpaLLM: Federated Pruning
+     of Large Language Models." NAACL 2025. (19 citations)
+
+   - Cappello, F., Madireddy, S., Underwood, R., Getty, N., Chia, N.L.P.,
+     Ramachandra, N., Nguyen, J., Keceli, M., Mallick, T., Li, Z., et al.
+     "EAIRA: Establishing a Methodology for Evaluating AI Models as Scientific
+     Research Assistants." arXiv:2502.20309. Under review at International
+     Journal of High Performance Computing Applications (IJHPCA). (11 citations)
+
+6. Background:
+
+   Large language models (LLMs) such as GPT-4 have demonstrated remarkable
+   capabilities across general language tasks, but their utility for specialized
+   scientific research remains less well understood. Scientists need AI models
+   that can reason about complex physical systems, assist with mathematical
+   derivations, generate and debug scientific code, and interface with domain-
+   specific knowledge in fields like physics, chemistry, and biology. The
+   AuroraGPT project at Argonne National Laboratory is an effort to develop and
+   evaluate LLMs specifically trained and fine-tuned for scientific applications,
+   leveraging the Aurora exascale supercomputer — one of the world's most powerful
+   computing systems with over one exaflop of computational capacity.
+
+   A related challenge is evaluating whether existing LLMs are truly capable
+   scientific assistants. Most LLM benchmarks test general knowledge and
+   reasoning, but few evaluate models on realistic scientific research tasks
+   such as writing functional scientific code, interpreting experimental results,
+   or performing domain-specific reasoning. The EAIRA project addressed this
+   gap by developing a rigorous evaluation methodology for assessing AI models
+   as scientific research assistants.
+
+7. Plain language summary:
+
+   The AuroraGPT work involved contributing to the post-pretraining and evaluation
+   of large language models on DOE supercomputing resources. Post-pretraining
+   encompasses techniques like instruction fine-tuning, reinforcement learning
+   from human feedback (RLHF), and domain-specific continued pretraining, which
+   adapt a base LLM to be more helpful, accurate, and aligned with scientific
+   use cases. Working on a system like Aurora provides access to computational
+   resources that are orders of magnitude larger than commercial cloud instances,
+   enabling experiments with model scales and dataset sizes not otherwise feasible.
+
+   The EAIRA project (Establishing a Methodology for Evaluating AI Models as
+   Scientific Research Assistants) developed a comprehensive framework for
+   evaluating how well LLMs perform on realistic scientific tasks. The evaluation
+   covers multiple scientific domains and task types, assessing models on their
+   ability to assist with scientific coding, data analysis, literature synthesis,
+   and domain-specific problem solving. This methodology fills an important gap
+   in the AI evaluation literature by moving beyond toy benchmarks to tasks
+   that reflect what scientists actually need from AI assistants.
+
+   The FedSpaLLM project (NAACL 2025) addressed the orthogonal challenge of
+   making LLMs smaller and more efficient through federated pruning — a technique
+   that uses federated learning to collaboratively identify and remove redundant
+   parameters from a large language model without centralizing the training data.
+   This approach enables privacy-preserving model compression across institutions
+   that hold private data but want to benefit from a shared, compact LLM.
+
+8. Specific role:
+
+   For the AuroraGPT project, I contributed to the evaluation and post-pretraining
+   pipelines for scientific LLMs on DOE supercomputing resources.
+   [VERIFY: Please describe your specific technical contributions more precisely —
+   e.g., which components of the post-pretraining pipeline you worked on, what
+   datasets or evaluation tasks you handled, and how your work was critical to
+   the outcomes.]
+
+   For EAIRA, I contributed as a co-author to developing evaluation tasks and
+   running model assessments across scientific domains. [VERIFY: Please describe
+   your specific contributions to this paper more precisely.]
+
+   For FedSpaLLM, I contributed as a co-author, providing federated learning
+   framework infrastructure and experimental guidance from my expertise with APPFL.
+
+9. Success and impact:
+
+   FedSpaLLM was accepted at NAACL 2025 — the Nations of the Americas Chapter
+   of the Association for Computational Linguistics annual conference, one of the
+   top venues in natural language processing — and has accumulated 19 citations,
+   making it one of the more-cited papers from this body of work. The EAIRA
+   methodology paper has 11 citations already as a preprint, indicating strong
+   community interest in rigorous scientific AI evaluation. The AuroraGPT project
+   represents participation in one of the highest-profile scientific AI initiatives
+   in the U.S. government computing ecosystem, conducted on DOE's flagship exascale
+   system. I am also a contributing member of the Transformational AI Models
+   Consortium (ModCon), an Argonne-led DOE multi-laboratory consortium for
+   building advanced scientific AI models, within the Baseline AI Capabilities
+   (BASE) working group's self-improving model team.
+
+
+================================================================================
+Section B: Awards
+================================================================================
+
+[VERIFY: No awards are listed on your CV. Please consider whether you have
+received any awards that were not listed, such as:
+  - Best paper awards at conferences
+  - Fellowships (DOE, NSF, etc.)
+  - Department or laboratory awards
+  - University awards during your degrees (e.g., outstanding thesis, honor society)
+  - Competitive scholarships
+
+If none apply, this section may be left blank.]
+
+
+================================================================================
+Section C: Professional Memberships
+================================================================================
+
+[VERIFY: Your CV lists peer reviewer roles at CVPR, ICCV, ECCV, IEEE TCSVT,
+Journal of Medical Systems, Medical Physics, SoftwareX, Journal of Supercomputing,
+ETRI Journal, Journal of Digital Health, International Journal of Cloud Computing,
+and NAACL Workshops. However, the attorney's instructions specify that memberships
+must be competitive (not simply open to anyone who pays dues).
+
+Please consider whether you hold any of the following:
+  - Senior membership or fellowship in IEEE, ACM, or AAAI
+  - Membership in a selective honor society (e.g., Sigma Xi)
+  - Selection to a competitive program or cohort (e.g., DOE Early Career, NSF CAREER)
+
+If your reviewing activities involve selection by editors/conference chairs as a
+recognized expert in the field, that may be worth discussing with your attorney.
+
+If none of the above apply, this section may be left blank.]
+
+
+================================================================================
+Section D: Media
+================================================================================
+
+[VERIFY: No external media coverage is listed on your CV. Please consider:
+  - Has your work been mentioned in news articles (e.g., Argonne Laboratory news,
+    DOE Office of Science news, or external press)?
+  - Has your work been featured in any newsletters, podcasts, or technology news
+    outlets (e.g., HPCwire, The Next Platform, Nature News)?
+  - Have you been interviewed or quoted by any external media?
+
+Note: Press releases from Argonne itself may count if they appear in external
+outlets. Lab-internal news does not qualify. If none apply, leave blank.]
+
+
+================================================================================
+Section E: Additional Questions
+================================================================================
+
+1. Patents:
+
+[VERIFY: No patents are listed on your CV. Please confirm whether you hold any
+granted patents, pending patent applications, or have contributed to invention
+disclosures at Argonne National Laboratory. National laboratory employees often
+file invention disclosures that may become patent applications — your technology
+transfer office can confirm this. If none, this section may be left blank.]
+
+2. New profiles since initial NIW filing:
+
+   - Google Scholar: https://scholar.google.com/citations?user=4JbL29YAAAAJ
+     (Total citations: 254, h-index: 10, i10-index: 10, as of May 2026)
+
+   [VERIFY: Please also provide links to any of the following if you have profiles
+   on them that did not exist at the time of your NIW filing:
+   - ResearchGate
+   - ORCID
+   - Web of Science Researcher Profile
+   - Semantic Scholar
+   - LinkedIn (if relevant)
+   Please also confirm the date of your original NIW filing so your attorney can
+   determine which profiles are "new" for purposes of this question.]
