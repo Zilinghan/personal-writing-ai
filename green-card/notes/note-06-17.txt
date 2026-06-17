@@ -1,0 +1,47 @@
+Hi,
+I have added the following files, with some additional comments that I would like to provide. Also, I marked all items that I might provide later in yellow.
+Professional Experience:
+I have provided the original offer letter. Also, I want to provide the information that I have a promotion that is currently going through Argonne’ internal process (I have submitted the needed materials). If the official promotion happens before we send out the application, I will provide corresponding materials later.
+Publications:
+All files I uploaded whose starts with [publication] are new peer-reviewed papers since NIW is filed, NO preprints are included. There are two papers worth mentioning:
+-	[publication]-icml2026.pdf: This paper is a paper that is currently accepted at The Forty-Third International Conference on Machine Learning (ICML2026), and you can find the information online at: https://icml.cc/virtual/2026/poster/64374. However, this conference will only happen on July 7th (which might around the time we submit the application), and it’s camera-ready version is not online yet. The paper I uploaded is the camera-ready version of it, and should be identical to the final version that will be online after the conference.
+-	[publication]-paper-allerton2025.pdf: This paper is accepted at The Allerton Conference 2025, which uses a university-hosted publisher. The published version of the paper can be found at: https://www.ideals.illinois.edu/items/137365. The program of the conference can be found at: https://easychair.org/smart-program/2025Allerton/
+Fundings:
+Here, I would love to provide some funding additional information that is missing in the career summary I provided before. The following information is provided by Dr. Eliu Huerta, who I worked with in the RADAR paper and AuroraGPT project.
+For project 3 (AI for Science – Scientific Benchmarking, Evaluation, and Applications of Large-Scale AI Models) in my career summary, the funding this project received include:
+-	RADAR paper: This is supported by the Diaspora Project, https://diaspora-project.github.io/ Total amount: $10M. Lead PI: Ian Foster. U.S. Department of Energy under Contract No. DE-AC02-06CH11357, Office of Advanced Scientific Computing Research (ASCR).
+-	AuroraGPT: This is an Argonne Laboratory Directed Research and Development (LDRD) project. Lead PI: Rajeev Thakur. Total amount: $7,919,809
+-	ModCon: PI: Rick Stevens, total amount $8,043,971.
+Some of the work done in Diaspora has led to an NSF CSSI project. SINAPSE: Scalable Infrastructure for AI-coupled Predictive Simulation Enhancement. This project aims to develop modular workflows for large scale AI-coupled-HPC workflows. Institutions involved: UChicago, Princeton, Rutgers and UCSD. Total amount: $3M. PIs: Shantanu Jha (Rutgers), Andrew Rosen (Princeton), Rommie Amaro (UCSD), Eliu Huerta (UChicago).
+I am still collecting funding information for projects 1 and 2 from the PI. Also, please let me know if further funding information is needed.
+Peer Review:
+-	I provided evidence for 11 completed peer reviews since last NIW filing. For now, I still have 5 other papers that I am currently reviewing and should be able to complete in the next 10 days or so (before the filing for this application):
+o	3 papers for The British Machine Vision Conference (BMVC) 2026
+o	1 paper for SoftwareX
+o	1 paper for Cluster Computing
+-	I could not add many of my reviews to Publons, so that’s why I have to provide emails as a proof for my reviews.
+Leadership Positions: GA4GH Working Group
+I think I did not mention anything about the leadership position for GA4GH, and I don’t hold such position. The main role I played in GA4GH is that: the APPFL framework (the one I led technically) actively participate in the federated learning (FL) working group of GA4GH, and it’s the first framework that integrates GA4GH’s Task Execution Service (TES) standards for federated learning to develop interoperable international standards for FL across genomics repositories. I am the person who led such integration effort. This GA4GH FedML group GitHub repo could be a proof for that: https://github.com/ga4gh/ga4gh-fedml-hackathon-connect2026#5-real-world-implementation
+Notable Citations
+I provided five more notable citations from other peer-reviewed papers, but I felt like the [notable-citation]-2.pdf is not a suitable one, so please ignore that one and exclude it from the evidence.
+Non-citatory Implementation
+Currently, I do not have evidence for this part, but I think my manager might have. I will reach out to my manager regarding this and will provide later if there are any.
+Awards: Best Paper Award at The 5th DataCV Workshop at CVPR2026
+I have provided the award certificate in pdf as [award]-datacv.pdf, and the other needed evidence about this award is provided below:
+The DataCV 2026 Workshop, officially titled The 5th DataCV Workshop and Challenge, was held in conjunction with CVPR 2026, one of the leading international conferences in computer vision. The workshop took place on June 3, 2026, in Denver, Colorado, USA.
+For the paper track, the workshop received submissions from researchers worldwide. All submitted papers were evaluated through a double-blind review process by experts from academia and industry. The workshop accepted 26 papers in total, including oral and poster presentations. The Best Paper Award was selected from the accepted workshop papers based on the technical quality, novelty, significance, clarity, and relevance of the work to the workshop theme.
+The award was decided by the workshop organizers and program committee, whose members include researchers from universities and industry institutions such as Australian National University, Stanford University, Leiden University, UC San Diego, Google Research, University of Science and Technology Beijing, Shandong University, AMD, and others.
+For the DataCV 2026 Best Paper Award, one recipient was selected. The award was presented during the DataCV 2026 Workshop award ceremony.
+Public information about the workshop, accepted papers, program, organizers, and committee members is available on the official workshop website: https://sites.google.com/view/datacv-2026-cvpr/ 
+Unsolicited presentations and talks
+I have provided two files: [talk]-1-tpc-bof.pdf and [talk]-2-amia.pdf, which shows: (1) the acceptance email; and (2) the evidence that confirms that I gave the talk for the following two talks:
+(1)	“Training Scalability of the APPFL Framework.” BOF: Federated Learning at Scale, Trillion Parameter Consortium (TPC) 2025, San Jose, CA, July 2025.
+(2)	“Leveraging Open-Source LLMs-Enabled Identification of Undiagnosed Patients with Rare Genetic Aortopathies.” AMIA 2025 Informatics Summit, Pittsburgh, PA, March 2025.
+It should be noted that the AMIA presentation is submitted by my co-author Pankhuri Singhal (whose name is shown in the acceptance email), but I am the one who give the presentation, as shown in the screenshots of the program.
+Please also share official documentation illustrating the prestige of the given event, such as the organizing organization’s role in the field or its national/global impact and/or the event’s own history, goals, and audience. @Claude: Help me with this according to https://tpc25.org/ and https://amia.org/education-events/amia-2025-informatics-summit
+
+Additional Information
+I see that there are GitHub contributions pages for APPFL (https://github.com/APPFL/APPFL) and Apeiron (https://github.com/AI-ModCon/BaseSIM_APEIRON) added as additional evidence, so I also added [github]-scicode.pdf, which is the screenshot of the contribution page (https://github.com/scicode-bench/SciCode/graphs/contributors?from=6%2F30%2F2024&to=6%2F13%2F2026) for SciCode (https://github.com/scicode-bench/SciCode), another open-source software to which I contributed.
+
+If I can come up with additional useful information, I will add later with messages explaining that.
+
