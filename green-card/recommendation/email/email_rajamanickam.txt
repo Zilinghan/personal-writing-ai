@@ -1,0 +1,14 @@
+Subject: Request for Recommendation Letter — EB-1B Green Card Application
+
+Dear Dr. Rajamanickam,
+
+My name is Zilinghan Li, and I am a Machine Learning Engineer at Argonne National Laboratory, where I serve as the main developer of the APPFL federated learning framework, working closely with Dr. Ravi Madduri and Dr. Kibaek Kim on federated learning infrastructure, algorithms, and deployment for large-scale scientific applications. I am applying for permanent residency in the United States on the basis of my research contributions, and to support my application it is helpful to have letters from researchers outside my direct collaborators who can speak to the importance of my work.
+
+I understand that you and your group at Sandia National Laboratory have used the APPFL federated learning framework, of which I am the main developer, and that we have been in contact regarding technical questions during your use of the framework. Because you have firsthand experience with APPFL and a direct understanding of the work behind it, I would like to ask if you would be willing to support my application.
+
+If you are willing, Please know that this would require very little on your part — simply letting me know if you'd be willing to help is all it takes to get started. My attorney will then draft a letter on your behalf for you to review and revise as you see fit before signing. The focus of the letter will be on my research contributions and their importance, and will not require you to say anything you would not know from reviewing my CV and published work. I have attached my CV and some of my key papers to this email.
+
+Thank you for taking the time to consider my request. This is an important step in my career, and I would be very appreciative for your assistance.
+
+Sincerely,
+Zilinghan Li

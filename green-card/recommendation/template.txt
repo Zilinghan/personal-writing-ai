@@ -1,0 +1,32 @@
+For individuals who have cited your work:
+"Dear [Name],
+[Give your name and some basic details about yourself]. I am applying for permanent residency
+in the United States on the basis of my research contributions, and to support my application it is
+helpful to have letters from people who do not know me personally to discuss the importance of
+my work. You cited my paper [title] in your own paper [title], and I would therefore like to ask
+you if you would be willing to support my application.
+If you are willing, my attorney will draft a letter for you to review and revise as you see fit. The
+focus of the letter will be on my research contributions and their importance, and will not
+require you to say anything you would not know from reviewing my CV and published work. I
+have attached my CV and my paper that you cited to this email.
+Thank you for taking the time to consider my request. This is an important step in my career, and
+I would be very appreciative for your assistance.
+Sincerely,
+[Your name]"
+
+For individuals who have not cited your work:
+“Dear [Name],
+[Give your name and some basic details about yourself]. I am applying for permanent residency
+in the United States on the basis of my research contributions, and to support my application it is
+helpful to have letters from people who do not know me personally to discuss the importance of
+my work. Because [explain why you are asking them: “we have similar research interests” / “we
+discussed my work at a conference” / etc.], I would like to ask you if you would be willing to
+support my application.
+If you are willing, my attorney will draft a letter for you to review and revise as you see fit. The
+focus of the letter will be on my research contributions and their importance, and will not
+require you to say anything you would not know from reviewing my CV and published work. I
+have attached my CV and some of my notable papers to this email.
+Thank you for taking the time to consider my request. This is an important step in my career, and
+I would be very appreciative for your assistance.
+Sincerely,
+[Your name]"

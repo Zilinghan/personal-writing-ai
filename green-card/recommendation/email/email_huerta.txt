@@ -1,0 +1,12 @@
+Subject: Request for Recommendation Letter — EB-1B Green Card Application
+
+Hi Eliu,
+
+I hope you're doing well! I am currently applying for permanent residency in the United States through an EB-1B petition, based on my research contributions. As part of this application, it would be very helpful to have a recommendation letter from you speaking to our collaborative work on AuroraGPT and the broader AI for Science projects.
+
+Please know that this would require very little on your part — simply letting me know if you'd be willing to help is all it takes to get started. My attorney at Ellis Porter PLC will then draft a letter on your behalf for you to review and revise as you see fit before signing. The letter will focus on my research contributions and their significance — specifically my role on the AuroraGPT post-training team (scaling SFT, DPO, and KTO pipelines on the Aurora exascale supercomputer), my contributions to the SciCode benchmark and EAIRA evaluation methodology, and my work on the RADAR federated AI framework for gravitational-wave follow-up. The letter will not require you to say anything beyond what you know from our work together.
+
+I have attached my CV and some of my key papers for your reference. Thank you so much for considering this request — your support would mean a great deal to me.
+
+Best regards,
+Zilinghan

@@ -1,0 +1,118 @@
+LIST OF RECOMMENDERS
+
+
+Recommender 1
+
+Recommender’s Name: Ravi Madduri [Dependent Recommender] madduri@anl.gov 
+
+Recommender’s Employer: Argonne National Laboratory (Senior Scientist)
+
+How do you know this recommender? Ravi is my direct manager who I worked most closely with for more than three and half years. 
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Ravi is appropriate for discussing Projects 1 and 2 in my career summary. Ravi has been the primary advisor and PI for most of the work in Projects 1 and 2, specifically,
+-	[Project 1] The APPFL Framework and the APPFLx service development, and the corresponding papers (eScience 2023, CCGrid 2025).
+-	[Project 1] Various federated learning algorithms development (ICLR 2024, eScience 2025, ICML 2026)
+-	[Project 1] Ravi is also the person who helped with setting up the collaborations of APPFL (e.g., AI-READI and VoiceAI)
+-	[Project 2] Ravi serves as the co-PI for all the work and publications listed in Project 2, including the collaboration work on digital histopathology with Stony Brook University and the work on rare disease early screening with The University of Pennsylvania. 
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Ravi’s Argonne Profile Page: https://www.anl.gov/profile/ravi-k-madduri
+-	Ravi’s Group Page: https://lab.madduri.us/ 
+-	Ravi’s CV Page: https://lab.madduri.us/cv/ 
+-	Ravi’s Google Scholar: https://scholar.google.com/citations?user=1NoINjMAAAAJ&hl=en&oi=ao 
+
+Recommender 2
+
+Recommender’s Name: Eliu Huerta [Dependent Recommender] elihu@anl.gov 
+
+Recommender’s Employer: Argonne National Laboratory (Lead for Translational AI)
+
+How do you know this recommender? I have worked with Eliu in the AuroraGPT post-training team where his is the team lead, and we have also collaborated a lot for various AI for Science projects.
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Eliu is appropriate for discussing Project 3 (AI for Science) in my career summary. I have collaborated extensively with Eliu in Project 3, specifically:
+-	Eliu is the group lead for the AuroraGPT post-training team, of which I am a group member.
+-	Eliu is the co-PI for the RADAR paper, and I worked closely with Eliu in the RADAR paper.
+-	For the SciCode open-source software to which I contributed, Eliu is the primary advisorx for that project.
+-	Eliu and I also worked in the AuroraGPT evaluation team before, and we are co-authors for the EAIRA paper.
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Eliu’s Argonne Profile Page: https://www.anl.gov/profile/eliu-a-huerta 
+-	Eliu’s Google Scholar: https://scholar.google.com/citations?user=CZQuCS0AAAAJ&hl=en 
+
+
+Recommender 3
+
+Recommender’s Name: Xiaoyi Lu [Independent Recommender] xiaoyilu@ufl.edu 
+
+Recommender’s Employer: University of Florida (Associate Professor)
+
+How do you know this recommender? Xiaoyi’s research group used the APPFL framework for their research, and I also met Xiaoyi in-person at various conferences I attended including TPC 2025 and VoiceAI symposium 2026. Xiaoyi and I also had some shared connections (e.g., my coauthor Kibaek Kim), but I have never personally collaborated with Xiaoyi nor published paper with him/his team.
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Xiaoyi is appropriate to discuss Project 1 (Federated Learning). His work FedDES [1] cited two of my work (APPFL and FedCompass – I am the first author for both work). Specifically, the FedCompass algorithm developed by me is chosen as an important baseline to compare in the FedDES paper.
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Xiaoyi’s Personal Webpage: https://faculty.eng.ufl.edu/xiaoyi-lu/ 
+
+[1] Chen, Zhonghao, Weicong Chen, Duo Zhang, Kibaek Kim, Guanpeng Li, Sheng Di, and Xiaoyi Lu. "FedDES: Discrete Event Based Performance Simulation for Federated Learning Systems." In Proceedings of the Tenth ACM/IEEE Symposium on Edge Computing, pp. 1-16. 2025.
+
+Recommender 4
+
+Recommender’s Name: Sivasankaran Rajamanickam [Independent Recommender] srajama@sandia.gov 
+
+Recommender’s Employer: Sandia National Laboratory (Distinguished Member of Technical Staff)
+
+How do you know this recommender? Siva and his group have used the APPFL framework I developed and reached out to me for questions they have during usage. Siva and I had some shared connections (such as my manager Ravi Madduri and my coauthor Kibaek Kim), but I have never personally collaborated with Siva nor published paper with him/his team. 
+[Note: Could Siva be considered as independent recommender if I helped his team use my tool, but I never published paper with them nor have plan to publish in the future?]
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Siva is appropriate to discuss Project 1 (Federated Learning). Siva and his group have used the APPFL framework I developed, and they have reached out to me via email regarding some out-of-memory issues when using the framework. I helped them resolved the memory usage issues they had. He is familiar with what APPFL is doing and the impact of my work, though they have not yet published any work and cited my paper.
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Siva’s Personal Webpage: https://siva.science/ 
+
+Recommender 5
+
+Recommender’s Name: Olivera Kotevska [Independent Recommender] kotevskao@ornl.gov 
+
+Recommender’s Employer: Oak Ridge National Laboratory (Senior Research Scientist)
+
+How do you know this recommender? Some of Olivera’s works cited my developed APPFL framework, and I have met Olivera in person at a seminar at Argonne back in 2024. Olivera and I had some shared connections (such as my manager Ravi Madduri and my coauthor Kibaek Kim), but I have never personally collaborated with Olivera nor published paper with her/her team.
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Olivera is appropriate to discuss Project 1 (Federated Learning). Two of Olivera’s work [2, 3] cited my work (APPFL – I am the first author). Specifically, APPFL is used as an important framework baseline to compare in their OmniFed paper, from which Olivera had a comprehensive understanding of what APPFL is doing and the importance of my work. 
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Olivera’s Personal Webpage: https://okotevska.github.io/ 
+
+[2] Tyagi, Sahil, Andrei Cozma, Olivera Kotevska, and Feiyi Wang. "OmniFed: A Modular Framework for Configurable Federated Learning from Edge to HPC." In Proceedings of the SC'25 Workshops of the International Conference for High Performance Computing, Networking, Storage and Analysis, pp. 516-523. 2025.
+[3] Kim, Kibaek, Krishnan Raghavan, Olivera Kotevska, Matthieu Dorier, Ravi Madduri, Minseok Ryu, Todd Munson et al. "Privacy-preserving federated learning for science: Challenges and research directions." In 2024 IEEE International Conference on Big Data (BigData), pp. 7849-7853. IEEE, 2024.
+
+
+Recommender 6
+
+Recommender’s Name: Minh-Quan Le [Independent Recommender] mile@cs.stonybrook.edu 
+
+Recommender’s Employer: Stony Brook University (PhD Student)
+
+How do you know this recommender? Quan has a paper [4] cited my work Gen-SIS, and he also knows about my other collaboration work with Stony Brook University such as PixCell. Quan and I have some shared connections such as my coauthors Srikar Yellapragada, but I have never personally collaborated with Quan nor published paper with him.
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Quan is appropriate to discuss Project 2 (AI for Biomedical Science) as he cited my Gen-SIS paper and he is familiar with my work such as PixCell, Ticon, and Autoencoder-based pathology image compressor. 
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Quan’s Personal Webpage: https://minhquanlecs.github.io/ 
+-	Quan’s CV: https://minhquanlecs.github.io/cv/  
+
+
+[4] Le, Minh-Quan, Gaurav Mittal, Tianjian Meng, A. S. M. Iftekhar, Vishwas Suryanarayanan, Barun Patra, Dimitris Samaras, and Mei Chen. "Hummingbird: High fidelity image generation via multimodal context alignment." The Thirteenth International Conference on Learning Representation (2025). 
+
+Recommender 7
+
+Recommender’s Name: Lei Zhou [Independent Recommender] lezzhou@cs.stonybrook.edu 
+
+Recommender’s Employer: Stony Brook University (PhD Student)
+
+How do you know this recommender? Lei also knows about my other collaboration work with Stony Brook University and he works in a similar domain. Lei and I have some shared connections such as my coauthors Varun, but I have never personally collaborated with Quan nor published paper with him.
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Lei is appropriate to discuss Project 2 (AI for Biomedical Science) as he is familiar with my work such as Gen-SIS and TICON.
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Lei's Google Scholar: https://scholar.google.com/citations?user=AdsoCBgAAAAJ&hl=en
+

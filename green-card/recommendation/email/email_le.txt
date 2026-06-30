@@ -1,0 +1,14 @@
+Subject: Request for Recommendation Letter — EB-1B Green Card Application
+
+Dear Quan,
+
+My name is Zilinghan Li, and I am a Machine Learning Engineer at Argonne National Laboratory, where my research focuses on AI for biomedical science, including foundation models for computational pathology. I am applying for permanent residency in the United States on the basis of my research contributions, and to support my application it is helpful to have letters from researchers outside my direct collaborators who can speak to the importance of my work.
+
+Your paper "Hummingbird: High Fidelity Image Generation via Multimodal Context Alignment" (ICLR 2025) cited my work Gen-SIS, and I know that you are also familiar with other work from my collaboration with Stony Brook University, including PixCell and TICON. For these reasons, I would like to ask if you would be willing to support my application.
+
+If you are willing, Please know that this would require very little on your part — simply letting me know if you'd be willing to help is all it takes to get started. My attorney will then draft a letter on your behalf for you to review and revise as you see fit before signing. The focus of the letter will be on my research contributions and their importance, and will not require you to say anything you would not know from reviewing my CV and published work. I have attached my CV and the Gen-SIS paper to this email.
+
+Thank you for taking the time to consider my request. This is an important step in my career, and I would be very appreciative for your assistance.
+
+Sincerely,
+Zilinghan Li
