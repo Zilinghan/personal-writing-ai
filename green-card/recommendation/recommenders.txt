@@ -116,3 +116,17 @@ What topics are appropriate for this recommender to discuss? Please specify whic
 Please either provide the recommender’s CV or a link to their webpage bio.
 -	Lei's Google Scholar: https://scholar.google.com/citations?user=AdsoCBgAAAAJ&hl=en
 
+Recommender 8
+
+Recommender’s Name: Christian Engelmann [Independent Recommender] engelmannc@ornl.gov
+
+Recommender’s Employer: Oak Ridge National Laboratory (Distinguished Scientist and Group Leader,)
+
+How do you know this recommender? One of Christian's work cited my developed APPFL framework. Christian and I had some shared connections (such as my manager Ravi Madduri and my coauthor Kibaek Kim), but I have never personally collaborated with Christian nor published paper with him/his team.
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Christian is appropriate to discuss Project 1 (Federated Learning). Christian’s work [5] cited my work (APPFL – I am the first author), and we have a shared research interest in distribute and federated learning, so Christian had a comprehensive understanding of what APPFL is doing and the importance of my work. 
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+-	Christian Personal Webpage: https://www.christian-engelmann.info/
+
+[5] Kim, Kibaek, Krishnan Raghavan, Olivera Kotevska, Matthieu Dorier, Ravi Madduri, Minseok Ryu, Todd Munson et al. "Privacy-preserving federated learning for science: Challenges and research directions." In 2024 IEEE International Conference on Big Data (BigData), pp. 7849-7853. IEEE, 2024.
