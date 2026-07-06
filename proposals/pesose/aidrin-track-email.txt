@@ -1,0 +1,26 @@
+Subject: NSF PESOSE — which track should we target for AIDRIN? (let's discuss tomorrow)
+
+Hi [collaborator],
+
+I've been looking into the NSF PESOSE call (Pathways to Enable Secure Open-Source Ecosystems) as a potential fit for AIDRIN. I've attached my summary of the program, and wanted to give you a quick high-level overview before we meet tomorrow.
+
+WHAT PESOSE FUNDS
+The key thing about PESOSE is that it does NOT fund the product/tool itself - it funds the open-source ecosystem around a promising product: governance, distributed multi-org development, a contributor pipeline, a user community, security practices, and a long-term sustainability plan. Two important disqualifiers: (1) it won't fund tool development on its own, and (2) it won't fund ecosystems that are already well-resourced. So the ideal candidate is a strong, promising product whose ecosystem is still underbuilt.
+
+THREE TRACKS
+- Track 1 — scope and plan the establishment of an open-source ecosystem. 1 year, $300K.
+- Track 2 — establish and expand a sustainable ecosystem based on a robust, promising product that meets an emergent societal/national need. 2 years, $1.5M.
+- Track 3 — improve the safety, security, and privacy of an existing ecosystem/product. 2 years, $1.5M.
+
+WHY AIDRIN COULD FIT WELL
+AIDRIN is a good match because it's not near "well-resourced," so it cleanly avoids the second disqualifier. The data-readiness / responsible-AI / data-governance framing gives us a strong national-importance argument (data quality is foundational to trustworthy AI). That makes it a natural fit for Track 1 (scope and plan the ecosystem) or an early Track 2 (establish and expand).
+
+THE DECISION I'D LIKE YOUR TAKE ON
+Which track do we go for?
+- Track 1 is the honest fit if AIDRIN's governance, contributor strategy, and user community genuinely don't exist yet and we're really still building the blueprint.
+- Track 2 is the stronger play IF we can point to an existing user base worth expanding (adopters, downloads, citations, downstream integrations). If that traction story is thin, we shouldn't force Track 2.
+
+Let's dig into this at our meeting tomorrow — I just wanted to get it on your radar with my summary beforehand so we can make the call together.
+
+Best,
+Zilinghan

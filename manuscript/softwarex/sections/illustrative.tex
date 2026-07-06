@@ -1,0 +1,78 @@
+
+\subsection{Installation and Quickstart}
+
+HiveWatch is installed from PyPI in a single command:
+
+\begin{lstlisting}[language=bash,style=PythonStyle,caption={Installation.}]
+pip install hivewatch            # core only
+pip install hivewatch[all]       # with W&B and MLflow
+\end{lstlisting}
+
+The following listing shows a minimal integration of HiveWatch into any FL server loop, requiring no knowledge of the underlying framework:
+
+\begin{lstlisting}[style=PythonStyle,caption={Minimal HiveWatch integration.}]
+import hivewatch
+from hivewatch.emitters import SSEEmitter, WandbEmitter
+
+hivewatch.init(
+    algorithm="FedAvg",
+    emitters=[
+        SSEEmitter(runs_dir="runs", port=7070),
+        WandbEmitter(project="my-fl-project"),
+    ],
+)
+
+for round_num in range(num_rounds):
+    hivewatch.round_start(round_num)
+
+    for client_id, result in client_results.items():
+        hivewatch.log_client_update(
+            client_id,
+            round=round_num,
+            local_accuracy=result["acc"],
+            local_loss=result["loss"],
+            num_samples=result["n"],
+            bytes_sent=result["bytes"],
+            train_time_sec=result["t"],
+        )
+
+    hivewatch.log_round(
+        round_num,
+        global_accuracy=agg_acc,
+        global_loss=agg_loss,
+    )
+
+hivewatch.finish()
+\end{lstlisting}
+
+\subsection{Framework Integration}
+
+We demonstrate framework-agnosticism by integrating the identical five-call API into three FL frameworks with different communication stacks. Full runnable examples ship with the HiveWatch source distribution.
+
+\textit{APPFL (gRPC).} The APPFL example subclasses \texttt{ServerAgent} and intercepts each client update in the aggregation callback. HiveWatch is called at the server side only; the client code is unchanged.
+
+\textit{Flower.} The Flower example wraps Flower's \texttt{Strategy.aggregate\_fit()} hook. Per-client metrics from Flower's \texttt{FitRes} objects are forwarded to \texttt{log\_client\_update()} with no additional client-side changes.
+
+\textit{NVIDIA FLARE.} The NVIDIA FLARE example subclasses \texttt{FedAvg} to inject HiveWatch calls into \texttt{send\_model()}, \texttt{\_aggregate\_one\_result()}, and \texttt{\_get\_aggregated\_result()}. All three integrations required fewer than 50 lines of framework-side bridging code each, and none required modifications to HiveWatch itself.
+
+\subsection{Instrumentation Overhead}
+
+Because HiveWatch runs on the server's critical path, its overhead must be small relative to typical round durations. We measure per-call overhead over 50 rounds with 20 clients per round (1{,}050 calls total), comparing no-emitter (bookkeeping only) and SSEEmitter (synchronous JSONL append plus full \texttt{.map.json} rewrite per call) configurations. Results are shown in Table~\ref{tab:overhead}.
+
+\begin{table}[t]
+\caption{Per-call instrumentation overhead ($\mu$s), 50 rounds $\times$ 20 clients.}
+\label{tab:overhead}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Call (configuration)} & \textbf{Mean} & \textbf{Median} & \textbf{p95} \\
+\midrule
+\texttt{log\_client\_update} (no emitter) & 5.0 & 4.7 & 5.9 \\
+\texttt{log\_round} (no emitter)           & 37.2 & 34.3 & 48.9 \\
+\texttt{log\_client\_update} (SSEEmitter)  & 2822.5 & 2759.0 & 4763.8 \\
+\texttt{log\_round} (SSEEmitter)           & 3005.4 & 2995.7 & 4723.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Internal bookkeeping (schema normalization, derived-metric computation, round-state tracking) costs 5--37\,$\mu$s per call regardless of which emitters are attached. The SSEEmitter raises per-call overhead to $\sim$2.8\,ms, which is entirely attributable to the synchronous file flush after each JSONL append and the full rewrite of the map metadata snapshot — a deliberate consistency tradeoff so that crashed runs leave a complete, replayable artifact on disk. Summed over a 20-client round, the SSEEmitter adds $\sim$59\,ms of server overhead, which is negligible relative to real FL round durations (seconds to minutes). The WandbEmitter and MLflowEmitter offload persistence to external services and do not incur per-call file I/O. The SSEEmitter produced a 1.09\,MB JSONL history file and a 439\,KB map metadata snapshot for this 50-round, 20-client workload — sufficient to fully reconstruct client geography, status transitions, and round summaries via the map dashboard without re-running training.
