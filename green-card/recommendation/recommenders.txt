@@ -130,3 +130,32 @@ Please either provide the recommender’s CV or a link to their webpage bio.
 -	Christian Personal Webpage: https://www.christian-engelmann.info/
 
 [5] Kim, Kibaek, Krishnan Raghavan, Olivera Kotevska, Matthieu Dorier, Ravi Madduri, Minseok Ryu, Todd Munson et al. "Privacy-preserving federated learning for science: Challenges and research directions." In 2024 IEEE International Conference on Big Data (BigData), pp. 7849-7853. IEEE, 2024.
+
+Recommender 9
+
+Recommender’s Name: Venkat S. Malladi [Independent Recommender] vsmalladi@gmail.com
+
+Recommender’s Employer: Microsoft
+
+How do you know this recommender? Venkat is leading the GA4GH (https://www.ga4gh.org/) federated analysis work stream (https://www.ga4gh.org/work_stream/federated_analysis/) and my developed APPFL framework is the first real work implementation of the integration of GA4GH TES (Task Execusion Service) into federated learing framework (https://github.com/ga4gh/ga4gh-fedml-hackathon-connect2026/tree/main/05-real-world-implementation#real-world-implementation), and this integration is discussed in the GA4GH Federated group meeting. Venkat and I also had a shared connection, my manager Ravi Madduri, but I have never personally collaborated with Venkat nor published paper with him/his team. 
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: Venkat is appropriate to discuss Project 1 (Federated Learning). Venkat leads the GA4GH federated analysis work stream and the federated learning platform (APPFL) I developed is the first real work implementation that satifies the defined GA4GH TES standards. Also, a preprint of Venkat (10.20944/preprints202601.2048.v1) also talked about APPFL in its discussion of federation platform. 
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+- Venkat's LinkedIn Webpage: https://www.linkedin.com/in/venkatmalladi/
+- Venkat's Google scholar: https://scholar.google.com/citations?user=cgdMt-QAAAAJ&hl=en
+
+Recommender 10
+
+Recommender’s Name: Kuang-Ching (KC) Wang [Independent Recommender] kc.wang@binghamton.edu/kwang43@binghamton.eduI
+
+Recommender’s Employer: Binghamton University
+
+How do you know this recommender? KC is one of the leaders for the FABRIC Testbed (https://portal.fabric-testbed.net/about/leadership) and I have demonstrated how APPFL can be deployed on the FABRIC testbed and presented a tutorial at FABRIC virtual tutorials and Research Experiences for Undergraduates (REU) program at the University of North Carolina at Chapel Hill. 
+
+What topics are appropriate for this recommender to discuss? Please specify which project numbers in Section D each individual can discuss: KC is appropriate to discuss Project 1 (Federated Learning). KC leads the FABRIC testbed and APPFL demonstrates a great application of FABRIC in benchmarking and prototyping federated learning algorithms. 
+
+Please either provide the recommender’s CV or a link to their webpage bio.
+- KC's Homepage: https://cs.binghamton.edu/~kcwang/
+- KC's School Page: https://www.binghamton.edu/computer-science/people/profile.html?id=kwang43
+- KC's Google Scholar: https://scholar.google.com/citations?user=4BTXrfkAAAAJ&hl=en 

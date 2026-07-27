@@ -1,0 +1,16 @@
+Subject: Request for Recommendation Letter — EB-1B Green Card Application
+
+Hi Venkat,
+
+My name is Zilinghan Li, and I am a Machine Learning Engineer at Argonne National Laboratory, where I serve as the main developer of the APPFL federated learning framework, working closely with Ravi Madduri on federated learning infrastructure, algorithms, and deployment for large-scale scientific applications. I am applying for permanent residency in the United States on the basis of my research contributions, and to support my application it is helpful to have letters from researchers outside my direct collaborators who can speak to the importance of my work.
+
+I know that you lead the GA4GH Federated Analysis work stream, and I wanted to reach out because the APPFL framework I developed has the real-world implementation that integrates GA4GH's Task Execution Service (TES) into a federated learning framework, satisfying the interoperability standards defined by GA4GH for federated computation across distributed repositories. This integration has been discussed and demonstrated in the GA4GH federated learning group meetings, and I noticed that your recent preprint (https://www.preprints.org/manuscript/202601.2048) also discusses APPFL as part of the broader federated platform landscape. For these reasons, I believe you have a meaningful understanding of what APPFL does and its significance in advancing federated AI for science and genomics, and I would like to ask if you would be willing to support my application.
+
+If you are willing, please know that this would require very little on your part — simply letting me know if you'd be willing to help is all it takes to get started. My attorney will then draft a letter on your behalf for you to review and revise as you see fit before signing. The focus of the letter will be on my research contributions and their importance, and will not require you to say anything you would not know from reviewing my CV and published work. I have attached my CV and the APPFL paper to this email.
+
+Thank you for taking the time to consider my request. This is an important step in my career, and I would be very appreciative for your assistance.
+
+Sincerely,
+Zilinghan Li
+
+

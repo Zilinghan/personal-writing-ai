@@ -1,0 +1,17 @@
+Subject: Request for Recommendation Letter — Zilinghan Li (APPFL/FABRIC Tutorial, Argonne National Laboratory)
+
+To: kc.wang@binghamton.edu, kwang43@binghamton.edu
+[Note: I found two email addresses for you online and was not sure which is the correct one, so I am sending this to both. I apologize if this causes any inconvenience.]
+
+Dear Professor Wang,
+
+My name is Zilinghan Li, and I am a Machine Learning Engineer at Argonne National Laboratory, where I serve as the main developer of the APPFL federated learning framework, working on federated learning infrastructure, algorithms, and deployment for large-scale scientific applications. I am applying for permanent residency in the United States on the basis of my research contributions, and to support my application it is helpful to have letters from researchers outside my direct collaborators who can speak to the importance of my work.
+
+I know that you are one of the leaders of the FABRIC Testbed, and I wanted to reach out because I have demonstrated how APPFL can be deployed on FABRIC for benchmarking and prototyping federated learning algorithms, and I presented a tutorial on this at the FABRIC virtual tutorials series and the Research Experiences for Undergraduates (REU) program at the University of North Carolina at Chapel Hill. Because you have a direct understanding of how APPFL leverages FABRIC infrastructure and the significance of such an application, I would like to ask if you would be willing to support my application.
+
+If you are willing, please know that this would require very little on your part — simply letting me know if you'd be willing to help is all it takes to get started. My attorney will then draft a letter on your behalf for you to review and revise as you see fit before signing. The focus of the letter will be on my research contributions and their importance, and will not require you to say anything you would not know from reviewing my CV and published work. I have attached my CV and the APPFL paper to this email.
+
+Thank you for taking the time to consider my request. This is an important step in my career, and I would be very appreciative for your assistance.
+
+Sincerely,
+Zilinghan Li

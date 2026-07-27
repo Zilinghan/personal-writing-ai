@@ -1,0 +1,171 @@
+LIST OF CONFIRMED RECOMMENDERS
+Prepared for: Zilinghan Li
+Last updated: July 2026
+
+================================================================================
+DEPENDENT RECOMMENDERS
+================================================================================
+
+------------------------------------------------------------------------
+Recommender 1
+------------------------------------------------------------------------
+
+Recommender's Name: Ravi K. Madduri
+Type: Dependent Recommender
+Email: madduri@anl.gov
+Employer: Argonne National Laboratory
+Title: Senior Scientist, Data Science and Learning Division
+
+How does the applicant know this recommender?
+Ravi Madduri is the applicant's direct supervisor and principal investigator. The applicant has worked closely with Ravi for more than three and a half years, first as a Graduate Visiting Student (January 2023 – May 2024) and then as a full-time Machine Learning Engineer (May 2024 – present).
+
+Topics appropriate for this recommender to discuss (Career Summary Projects 1 and 2):
+- [Project 1] Development of the APPFL framework and the APPFLx federated learning service platform, corresponding to papers published at e-Science 2023 and CCGrid 2025.
+- [Project 1] Development of novel federated learning algorithms (FedCompass – ICLR 2024; FedCostAware – Allerton 2025; FedQueue – ICML 2026) and broader federated learning research (e-Science 2025).
+- [Project 1] Establishment of external collaborations for APPFL, including the AI-READI ophthalmology initiative and the Bridge2AI Voice AI program.
+- [Project 2] Co-PI for all work and publications in Project 2, including the computational pathology collaboration with Stony Brook University and the rare genetic disease screening project with the University of Pennsylvania.
+
+Recommender's profile:
+- Argonne Profile: https://www.anl.gov/profile/ravi-k-madduri
+- Group Page: https://lab.madduri.us/
+- CV: https://lab.madduri.us/cv/
+- Google Scholar: https://scholar.google.com/citations?user=1NoINjMAAAAJ&hl=en&oi=ao
+
+
+------------------------------------------------------------------------
+Recommender 2
+------------------------------------------------------------------------
+
+Recommender's Name: Eliu A. Huerta
+Type: Dependent Recommender
+Email: elihu@anl.gov
+Employer: Argonne National Laboratory
+Title: Lead for Translational AI, Data Science and Learning Division
+
+How does the applicant know this recommender?
+Eliu Huerta is the team lead of the AuroraGPT post-training team, of which the applicant is a member. The applicant has collaborated extensively with Eliu across multiple AI for Science projects at Argonne.
+
+Topics appropriate for this recommender to discuss (Career Summary Project 3):
+- [Project 3] AuroraGPT post-training team: Eliu leads the team and can speak directly to the applicant's role in scaling SFT, DPO, and KTO pipelines on the Aurora exascale supercomputer.
+- [Project 3] RADAR paper (The Astrophysical Journal Supplement Series, 2025): Eliu is a co-PI and worked closely with the applicant on the federated AI framework for gravitational-wave event follow-up.
+- [Project 3] SciCode open-source benchmark: Eliu is the primary advisor for this project, to which the applicant contributed.
+- [Project 3] EAIRA evaluation methodology paper: Eliu and the applicant are co-authors.
+
+Recommender's profile:
+- Argonne Profile: https://www.anl.gov/profile/eliu-a-huerta
+- Google Scholar: https://scholar.google.com/citations?user=CZQuCS0AAAAJ&hl=en
+
+
+================================================================================
+INDEPENDENT RECOMMENDERS
+================================================================================
+
+------------------------------------------------------------------------
+Recommender 3
+------------------------------------------------------------------------
+
+Recommender's Name: Xiaoyi Lu
+Type: Independent Recommender
+Email: xiaoyilu@ufl.edu
+Employer: University of Florida
+Title: Associate Professor
+
+How does the applicant know this recommender?
+Xiaoyi Lu's research group used the APPFL framework for their research. The applicant also met Xiaoyi in person at the Trillion Parameter Consortium (TPC) 2025 conference and the VoiceAI Symposium 2026. They have a shared professional connection through co-author Kibaek Kim, but have never personally collaborated or co-authored any paper.
+
+Topics appropriate for this recommender to discuss (Career Summary Project 1):
+Xiaoyi's paper "FedDES: Discrete Event Based Performance Simulation for Federated Learning Systems" (ACM/IEEE Symposium on Edge Computing, 2025) cited two of the applicant's first-author works: the APPFL framework and the FedCompass algorithm. In particular, FedCompass was selected as a key comparison baseline in FedDES, indicating a thorough engagement with the applicant's contributions.
+
+Reference:
+[1] Chen, Z., Chen, W., Zhang, D., Kim, K., Li, G., Di, S., and Lu, X. "FedDES: Discrete Event Based Performance Simulation for Federated Learning Systems." In Proceedings of the Tenth ACM/IEEE Symposium on Edge Computing, pp. 1–16. 2025.
+
+Recommender's profile:
+- Personal Webpage: https://faculty.eng.ufl.edu/xiaoyi-lu/
+
+
+------------------------------------------------------------------------
+Recommender 4
+------------------------------------------------------------------------
+
+Recommender's Name: Olivera Kotevska
+Type: Independent Recommender
+Email: kotevskao@ornl.gov
+Employer: Oak Ridge National Laboratory
+Title: Senior Research Scientist
+
+[IMPORTANT NOTE: Olivera has confirmed she is willing to write a letter but will not be able to use an Oak Ridge National Laboratory letterhead. The letter will need to be written on personal or alternative letterhead.]
+
+How does the applicant know this recommender?
+Two of Olivera Kotevska's papers have cited the APPFL framework developed by the applicant. The applicant also met Olivera in person at a seminar at Argonne in 2024. They share professional connections through the applicant's supervisor (Ravi Madduri) and co-author (Kibaek Kim), but have never personally collaborated or co-authored any paper.
+
+Topics appropriate for this recommender to discuss (Career Summary Project 1):
+Olivera's papers cited the APPFL framework, and APPFL was used as an important comparison baseline in the OmniFed paper, reflecting a comprehensive understanding of APPFL's capabilities and impact.
+
+References:
+[2] Tyagi, S., Cozma, A., Kotevska, O., and Wang, F. "OmniFed: A Modular Framework for Configurable Federated Learning from Edge to HPC." In Proceedings of the SC'25 Workshops, pp. 516–523. 2025.
+[3] Kim, K., Raghavan, K., Kotevska, O., Dorier, M., Madduri, R., Ryu, M., Munson, T. et al. "Privacy-Preserving Federated Learning for Science: Challenges and Research Directions." In IEEE International Conference on Big Data (BigData), pp. 7849–7853. 2024.
+
+Recommender's profile:
+- Personal Webpage: https://okotevska.github.io/
+
+
+------------------------------------------------------------------------
+Recommender 5
+------------------------------------------------------------------------
+
+Recommender's Name: Lei Zhou
+Type: Independent Recommender
+Email: lezzhou@cs.stonybrook.edu
+Employer: Stony Brook University
+Title: PhD Student
+
+How does the applicant know this recommender?
+Lei Zhou works in the computational pathology domain and is familiar with the applicant's collaboration work with Stony Brook University, including Gen-SIS and TICON. They share a professional connection through co-author Varun Belagali, but have never personally collaborated or co-authored any paper.
+
+Topics appropriate for this recommender to discuss (Career Summary Project 2):
+Lei is familiar with the applicant's contributions in computational pathology — specifically Gen-SIS (Best Paper Award, DataCV@CVPR 2026) and TICON (CVPR Findings 2026) — and is well-positioned to speak to the significance of these contributions within the computational pathology research community.
+
+Recommender's profile:
+- Google Scholar: https://scholar.google.com/citations?user=AdsoCBgAAAAJ&hl=en
+
+
+------------------------------------------------------------------------
+Recommender 6
+------------------------------------------------------------------------
+
+Recommender's Name: Kuang-Ching (KC) Wang
+Type: Independent Recommender
+Email: kc.wang@binghamton.edu / kwang43@binghamton.edu
+Employer: Binghamton University
+Title: Professor
+
+How does the applicant know this recommender?
+KC Wang is one of the leaders of the FABRIC Testbed (https://portal.fabric-testbed.net/about/leadership). The applicant demonstrated how APPFL can be deployed on FABRIC for prototyping and benchmarking federated learning algorithms, and presented a tutorial on this at the FABRIC virtual tutorials series and the Research Experiences for Undergraduates (REU) program at the University of North Carolina at Chapel Hill. The applicant and KC have never personally collaborated or co-authored any paper.
+
+Topics appropriate for this recommender to discuss (Career Summary Project 1):
+KC leads the FABRIC Testbed — a large-scale, NSF-funded national cyberinfrastructure platform for distributed systems and networking research — and has firsthand knowledge of the applicant's work demonstrating APPFL on FABRIC. The applicant deployed APPFL across geographically distributed FABRIC sites, validating the framework's portability on national research infrastructure, and presented tutorials at the FABRIC virtual tutorial series and the REU program at the University of North Carolina at Chapel Hill. As a FABRIC leader, KC is well-positioned to speak to both the technical sophistication required to deploy federated learning on programmable distributed infrastructure and the broader significance of APPFL's demonstrated applicability on a nationally recognized platform.
+
+Recommender's profile:
+- Homepage: https://cs.binghamton.edu/~kcwang/
+- School Page: https://www.binghamton.edu/computer-science/people/profile.html?id=kwang43
+- Google Scholar: https://scholar.google.com/citations?user=4BTXrfkAAAAJ&hl=en
+
+
+------------------------------------------------------------------------
+Recommender 7
+------------------------------------------------------------------------
+
+Recommender's Name: Hieu Le
+Type: Independent Recommender
+Email: hle40@charlotte.edu
+Employer: University of North Carolina at Charlotte
+Title: Assistant Professor
+
+How does the applicant know this recommender?
+Hieu Le was introduced to the applicant by mutual collaborator Varun Belagali, who is a co-author on the applicant's computational pathology work at Stony Brook University (including TICON, Gen-SIS, and CDG-MAE). Hieu directs the Charlotte Computer Vision Lab and works in computer vision and medical imaging — closely related to the applicant's histopathology AI work. The applicant and Hieu have not previously collaborated or co-authored any paper.
+
+Topics appropriate for this recommender to discuss (Career Summary Project 2):
+Hieu is an Assistant Professor specializing in computer vision and medical imaging, with publications at top venues including CVPR, ECCV, ICCV, NeurIPS, ICML, and ICLR. He is well-positioned to speak to the significance of the applicant's contributions in computational pathology — including PixCell (a generative foundation model for histopathology, under review at IEEE TPAMI), TICON (CVPR Findings 2026), Gen-SIS (Best Paper Award, DataCV@CVPR 2026), and the pathology image compression work (MICCAI 2025) — from the perspective of an active researcher in the computer vision and medical imaging community.
+
+Recommender's profile:
+- Personal Webpage: https://hieulem.github.io/

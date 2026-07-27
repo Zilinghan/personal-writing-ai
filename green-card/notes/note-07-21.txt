@@ -1,0 +1,8 @@
+Hi Mikala and the Ellis Porter Team,
+
+Thank you for the feedback — that is very helpful. As requested, I have replaced Lei Zhou (PhD student, Stony Brook University) from the recommender list with Dr. Hieu Le, an Assistant Professor at the University of North Carolina at Charlotte, who directs the Charlotte Computer Vision Lab and works in computer vision and medical imaging. Dr. Le has been introduced to me through my collaborator Varun Belagali, and he is well-positioned to discuss Project 2 (AI for Biomedical Science), particularly my computational pathology work including PixCell, TICON, and Gen-SIS. I have updated the recommender list accordingly and re-uploaded it.
+
+Please let me know if you need any additional independent recommenders for Project 2 or 3, or if there is anything else I can provide.
+
+Best regards,
+Zilinghan Li
