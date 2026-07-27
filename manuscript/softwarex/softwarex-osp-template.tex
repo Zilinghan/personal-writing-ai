@@ -1,19 +1,19 @@
-%% 
+%%
 %% Copyright 2026 Elsevier Ltd
-%% 
+%%
 %% This file is part of the 'Elsarticle Bundle'.
 %% ---------------------------------------------
-%% 
+%%
 %% It may be distributed under the conditions of the LaTeX Project Public
 %% License, either version 1.2 of this license or (at your option) any
 %% later version.  The latest version of this license is in
 %%    http://www.latex-project.org/lppl.txt
 %% and version 1.2 or later is part of all distributions of LaTeX
 %% version 1999/12/01 or later.
-%% 
+%%
 %% The list of all files belonging to the 'Elsarticle Bundle' is
 %% given in the file `manifest.txt'.
-%% 
+%%
 
 %% Template article for Elsevier's document class `elsarticle'
 %% with numbered style bibliographic references
@@ -29,8 +29,22 @@
 %% please give \usepackage{epsfig}
 
 %% The amssymb package provides various useful mathematical symbols
+\usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsfonts}
+
+%% Tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+
+%% Lists, links, listings
+\usepackage{enumitem}
 \usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+
 \setlength{\parindent}{0pt}
 %% The amsthm package provides extended theorem environments
 %% \usepackage{amsthm}
@@ -40,10 +54,40 @@
 %% for the whole article with \linenumbers.
 %\usepackage{lineno}
 
+%% ---- Listings style (transferred from the IEEE source) ---------------------
+\definecolor{backgroundColour}{HTML}{F8F8F8}
+\definecolor{keywordclr}{HTML}{AA00FF}
+\definecolor{commentclr}{HTML}{649696}
+\definecolor{stringsclr}{HTML}{11A579}
+\lstdefinestyle{PythonStyle}{
+    language=Python,
+    backgroundcolor=\color{backgroundColour},
+    keywordstyle=\color{keywordclr},
+    stringstyle=\color{stringsclr},
+    commentstyle=\color{commentclr},
+    upquote=true,
+    basicstyle=\ttfamily\linespread{0.9}\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\color{commentclr}\ttfamily\tiny,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    xleftmargin=2.25em,
+    frame=single,
+    framexleftmargin=1.25em,
+    morekeywords={assert,with,as,None}
+}
+\lstset{style=PythonStyle}
+
 \journal{SoftwareX}
 
 \begin{document}
-\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
 
 \begin{frontmatter}
 
@@ -57,54 +101,34 @@
 %% use the cortext command for theassociated footnote;
 %% use the ead command for the email address,
 %% and the form \ead[url] for the home page:
-%% \title{Title\tnoteref{label1}}
-%% \tnotetext[label1]{}
-%% \author{Name\corref{cor1}\fnref{label2}}
-%% \ead{email address}
-%% \ead[url]{home page}
-%% \fntext[label2]{}
-%% \cortext[cor1]{}
-%% \address{Address\fnref{label3}}
-%% \fntext[label3]{}
 
-\title{Title (SoftwareName: Then a short title)}
+\title{HiveWatch: Framework-Agnostic Observability for Federated and Distributed Machine Learning}
 
 %% use optional labels to link authors explicitly to addresses:
-%% \author[label1,label2]{}
-%% \address[label1]{}
-%% \address[label2]{}
 
-\author{A. Author}
+\author[anl,umass]{Abhijit Chunduru}
+\ead{schunduru@anl.gov}
 
-\address{Your institute, some address}
+\author[anl]{Zilinghan Li}
+\ead{zilinghan.li@anl.gov}
 
-\textbf{Before you begin: DELETE THIS SECTION BEFORE SUBMISSION}\\
+\author[anl,uchicago]{Ravi Madduri\corref{cor1}}
+\ead{madduri@anl.gov}
 
-\begin{itemize}
-	\item This template is for an original SoftwareX article. If you are submitting an update to a software article that has already been published, please use the software update template from the Guide for Authors.
-    \item The format of a software article is very different to a traditional research article. To help you write yours, we have created this template. We will only consider software articles submitted using this template. Any submission that deviates widely will likely face desk rejection.
-    \item It is mandatory to publicly share the code / software referred to in your software article. You’ll find information on our software sharing criteria in the SoftwareX Guide for Authors.  
-    \item It’s important to consult the Guide for Authors when preparing your manuscript; it highlights mandatory requirements and is packed with useful advice. Here are some key ones (please read):
+\cortext[cor1]{Corresponding author}
 
-    
-    \begin{itemize} 
-    	\item We only accept GitHub repositories within Metadata Tables. This is required for forking to our SoftwareX repository if your paper is published. We are unable accept other repositories.
-        \item GitHub repositories must have a well-documented README.md file, and a Licence.txt file. Your paper will be returned if these are missing.
-        \item Our word limit is 4,000 words. Please focus your paper on the software and place supporting information into your GitHub repository README.md file.
-        \item Limit figures to a maximum of six (6) and sparingly include any further display media.
-        \item We require the five (5) main templated sections outlined below. Your paper will be returned or rejected if these are missing.
-	\end{itemize}
-\end{itemize}\\
+\address[anl]{Argonne National Laboratory, Lemont, IL, USA}
+\address[umass]{University of Massachusetts Amherst, Amherst, MA, USA}
+\address[uchicago]{The University of Chicago, Chicago, IL, USA}
 
 \begin{abstract}
-%% Text of abstract 
-Ca. 100 words
-
+%% Text of abstract
+We present HiveWatch, an open-source, framework-agnostic observability toolkit for federated and distributed machine learning. HiveWatch provides a five-call runtime API and an FL-native event schema covering round starts, per-client updates, round summaries, communication metadata, system resource utilization, client geography, and failure events. A pluggable emitter interface simultaneously forwards the same event stream to local replayable JSONL artifacts and a map dashboard (SSEEmitter), Weights \& Biases (WandbEmitter), and MLflow (MLflowEmitter). We demonstrate integration into three FL frameworks with different communication stacks — APPFL, Flower, and NVIDIA FLARE — using the same API in each case. A microbenchmark shows that internal bookkeeping adds 5--37\,$\mu$s per call, with the disk-persisting emitter adding $\sim$2.8\,ms per call, negligible relative to typical FL round durations.
 \end{abstract}
 
 \begin{keyword}
 %% keywords here, in the form: keyword \sep keyword
-keyword 1 \sep keyword 2 \sep keyword 3
+Federated Learning \sep Distributed Machine Learning \sep Observability \sep Experiment Tracking \sep MLflow \sep Weights and Biases \sep Map Visualization \sep Software
 
 %% PACS codes here, in the form: \PACS code \sep code
 
@@ -126,96 +150,59 @@ keyword 1 \sep keyword 2 \sep keyword 3
 Ancillary data table required for subversion of the codebase. Kindly replace examples in right column with the correct information about your current code, and leave the left column as it is.
 
 \begin{table}[!h]
-\begin{tabular}{|l|p{6.5cm}|p{6.5cm}|}
+\begin{tabular}{|l|p{4.5cm}|p{7.5cm}|}
 \hline
 \textbf{Nr.} & \textbf{Code metadata description} & \textbf{Please fill in this column} \\
 \hline
-C1 & Current code version & For example v42 \\
+C1 & Current code version & v0.2.1 \\
 \hline
-C2 & Permanent GitHub link to code/repository used for this code version & For example: $https://github.com/mozart/mozart2$. Please note that a GitHub repository is mandatory and we will not proceed with your paper otherwise.\\
+C2 & Permanent GitHub link to code/repository used for this code version & \url{https://github.com/APPFL/hivewatch/releases/tag/v0.2.1} \\
 \hline
-C3 & Legal Code License   & List one of the approved licenses \\
+C3 & Legal Code License   & MIT License \\
 \hline
-C4 & Code versioning system used & For example svn, git, mercurial, etc. put none if none \\
+C4 & Code versioning system used & git \\
 \hline
-C5 & Software code languages, tools, and services used & For example C++, python, r, MPI, OpenCL, etc. \\
+C5 & Software code languages, tools, and services used & Python\,$\geq$\,3.8; optional: wandb\,$\geq$\,0.16 (Weights \& Biases backend), mlflow\,$\geq$\,2.0 (MLflow backend); no mandatory third-party dependencies for the core package \\
 \hline
-C6 & Compilation requirements, operating environments \& dependencies & \\
+C6 & Compilation requirements, operating environments \& dependencies & \texttt{pip install hivewatch} from source or PyPI; Linux, macOS, Windows; no compilation step required; full dependency specification in \texttt{pyproject.toml} \\
 \hline
-C7 & If available Link to developer documentation/manual & For example: $http://mozart.github.io/documentation/$ \\
+C7 & If available Link to developer documentation/manual & \url{https://hivewatch.readthedocs.io}; runnable examples for APPFL, Flower, and NVIDIA FLARE in \texttt{examples/} at the repository root \\
 \hline
-C8 & Support email for questions & \\
+C8 & Support email for questions & \{schunduru, zilinghan.li, madduri\}@anl.gov \\
 \hline
 \end{tabular}
 \caption{Code metadata (mandatory)}
-\label{} 
+\label{tab:codemeta}
 \end{table}
 
 \textbf{Main text}\\
 
-Maximum 6 pages in total (excluding metadata, tables, figures, references) with a
-4000-word limit (we ask that more priority is placed on the word limit versus the page count). Though we strictly insist on the author following the template, in exceptional
-circumstances, we can be flexible with the page numbers and word limit. In such cases, it should be
-discussed with the managing editor or publisher prior to submission. All queries regarding the same can be reached at softwarex@elsevier.com.\\
+\section{Motivation and significance}
+\label{sec:motivation}
+\input{sections/motivation}
 
-The description of your software  shall include:
+\section{Software description}
+\label{sec:software}
+\input{sections/software}
 
+\section{Illustrative examples}
+\label{sec:illustrative}
+\input{sections/illustrative}
 
+\section{Impact}
+\label{sec:impact}
+\input{sections/impact}
 
+\section{Conclusions}
+\label{sec:conclusion}
+\input{sections/conclusion}
 
-\begin{enumerate}
-
-\item Motivation and significance
-In this section, we want you to introduce the scientific background and the motivation for developing the software.
-
-\begin{itemize}
-    \item Explain why the software is important and describe the exact (scientific) problem(s) it solves.
-    \item Indicate in what way the software has contributed (or will contribute in the future) to the process of scientific discovery; if available, please cite a research paper using the software.
-    \item Provide a description of the experimental setting. (How does the user use the software?)
-    \item Introduce related work in literature (cite or list algorithms used, other software etc.).\\
-\end{itemize}
-
-\item Software description\\
-
-Describe the software. Provide enough detail to help the reader understand its impact. 
-
-\begin{enumerate}
-    \item Software architecture: Give a short overview of the overall software architecture; provide a pictorial overview where possible; for example, an image showing the components. If necessary, provide implementation details.
-    \item Software functionalities: Present the major functionalities of the software.
-    \item Sample code snippets analysis (optional).\\
-\end{enumerate}
-
-\item Illustrative examples\\
-
-Provide at least one illustrative example to demonstrate the major functions of your software/code.
-OPTIONAL: You may submit an explanatory video or screencast. Only one MP4 formatted video (max. size 150MB) is possible per article and this should be uploaded as a single supplementary file with your submission. Recommended video dimensions are 640 x 480 at a maximum of 30 frames / second.\\
-
-\item Impact\\
-
-This is the main section of the article and reviewers will weight it appropriately.
-Please indicate:
-
-\begin{itemize}
-    \item Any new research questions that can be pursued as a result of your software.
-    \item In what way, and to what extent, your software improves the pursuit of existing research questions.
-    \item Any ways in which your software has changed the daily practice of its users.
-    \item How widespread the use of the software is within and outside the intended user group (downloads, number of users if your software is a service, citable publications, etc.).
-    \item How the software is being used in commercial settings and/or how it has led to the creation of spin-off companies.\\
-Please note that points 1 and 2 are best demonstrated by references to citable publications.\\
-\end{itemize}
-
-
-\item Conclusions\\
-
-This is a mandatory section summarising your software based on the sections above.
-
-
-\end{enumerate}
+%% ---- Declarations ----------------------------------------------------------
+\input{sections/declarations}
 
 \section*{Acknowledgements}
 \label{}
-
-Optionally thank people and institutes you need to acknowledge. 
+This material is based upon work supported by the U.S.\ Department of Energy, Office of Science, under contract number DE-AC02-06CH11357. We also gratefully acknowledge Amazon Web Services for providing cloud computing credits that supported the experimental work for this manuscript.
 
 %% The Appendices part is started with the command \appendix;
 %% appendix sections are then done as normal sections
@@ -227,31 +214,36 @@ Optionally thank people and institutes you need to acknowledge.
 %% References:
 %% If you have bibdatabase file and want bibtex to generate the
 %% bibitems, please use
-%%
-%%  \bibliographystyle{elsarticle-num} 
-%%  \bibliography{<your bibdatabase>}
-
-%% else use the following coding to input the bibitems directly in the
-%% TeX file.
-\cite{banerjee2025flotilla}
 
 \bibliographystyle{elsarticle-num}
 \bibliography{references}
 
-% \begin{thebibliography}{00}
-
-% %% \bibitem{label}
-% %% Text of bibliographic item
-
-% \bibitem{} Use this style of ordering. References in-text should also use a similar style.
-
-% \end{thebibliography}
-
-
 \section*{Current executable software version}
 \label{}
 
-
+\begin{table}[!h]
+\begin{tabular}{|l|p{4.5cm}|p{7.5cm}|}
+\hline
+\textbf{Nr.} & \textbf{(Executable) software metadata description} & \textbf{Please fill in this column} \\
+\hline
+S1 & Current software version & v0.2.1 \\
+\hline
+S2 & Permanent link to executables of this version & \url{https://github.com/APPFL/hivewatch}; installable via \texttt{pip install hivewatch} \\
+\hline
+S3 & Legal Software License & MIT License \\
+\hline
+S4 & Computing platforms/Operating Systems & Linux, macOS, Windows (Python\,$\geq$\,3.8) \\
+\hline
+S5 & Installation requirements \& dependencies & \texttt{pip install hivewatch}; optional extras: \texttt{wandb\,$\geq$\,0.16}, \texttt{mlflow\,$\geq$\,2.0} \\
+\hline
+S6 & If available, link to user manual & \url{https://hivewatch.readthedocs.io}; \texttt{README.md} at repository root \\
+\hline
+S7 & Support email for questions & \{schunduru, zilinghan.li, madduri\}@anl.gov \\
+\hline
+\end{tabular}
+\caption{Software metadata}
+\label{tab:softwaremeta}
+\end{table}
 
 \end{document}
 \endinput
