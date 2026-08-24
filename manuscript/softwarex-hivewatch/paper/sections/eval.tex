@@ -1,0 +1,35 @@
+
+\subsection{Integration Across Frameworks}
+\label{subsec:integration}
+
+To evaluate framework-agnosticism directly, rather than only by design intent, we integrate HiveWatch into three FL frameworks with different communication stacks and execution models: APPFL~\cite{ryu2022appfl, li2025advances} (synchronous FedAvg over gRPC, with separate client and server processes), Flower~\cite{beutel2020flower} (its native client/server simulation API), and NVIDIA FLARE~\cite{roth2022nvidia} (its recipe and controller-based job abstraction, run in simulation mode). In every case, the underlying FL workflow — client selection, model distribution, local training, and aggregation — is left entirely to the host framework. The HiveWatch-specific changes are the same five call sites regardless of framework: \texttt{hivewatch.init()} once at server startup, \texttt{round\_start()} at the beginning of each round, \texttt{log\_client\_update()} as each client result arrives, \texttt{log\_round()} after aggregation, and \texttt{finish()} at shutdown. For example, our APPFL integration subclasses APPFL's \texttt{ServerAgent} and forwards each intercepted client update to HiveWatch, and our NVIDIA FLARE integration wraps its \texttt{FedAvg} controller so that \texttt{send\_model()}, \texttt{\_aggregate\_one\_result()}, and \texttt{\_get\_aggregated\_result()} call into the same three runtime functions. None of the three integrations require any change to HiveWatch's API or schema, which we take as direct evidence for framework-agnosticism rather than a claim based on architecture alone. All three examples are runnable end-to-end and are included with the HiveWatch source distribution.
+
+\subsection{Instrumentation Overhead}
+\label{subsec:overhead}
+
+Because HiveWatch sits on the server's critical path between aggregation and the start of the next round, its instrumentation overhead must be small relative to typical round durations (seconds to minutes in real FL deployments). We measure this overhead directly with a microbenchmark that drives \texttt{round\_start()}, \texttt{log\_client\_update()}, and \texttt{log\_round()} through 50 rounds with 20 clients per round (1{,}050 calls total), reporting wall-clock time per call. We compare two configurations: HiveWatch with no emitters attached (isolating the cost of internal bookkeeping, i.e. derived-metric computation and round-state tracking) and HiveWatch with a single \texttt{SSEEmitter} attached, which appends every event to a JSONL history file and rewrites a map-ready metadata snapshot to disk on every call — the most I/O-heavy of the three bundled emitters and therefore a conservative upper bound on instrumentation cost. Table~\ref{tab:overhead} reports the results.
+
+\begin{table}[t]
+\caption{Per-call instrumentation overhead (microseconds), 50 rounds $\times$ 20 clients = 1{,}050 calls.}
+\label{tab:overhead}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Call (configuration)} & \textbf{Mean} & \textbf{Median} & \textbf{p95} \\
+\midrule
+\texttt{log\_client\_update} (no emitter) & 5.0 & 4.7 & 5.9 \\
+\texttt{log\_round} (no emitter)           & 37.2 & 34.3 & 48.9 \\
+\texttt{log\_client\_update} (SSEEmitter)  & 2822.5 & 2759.0 & 4763.8 \\
+\texttt{log\_round} (SSEEmitter)           & 3005.4 & 2995.7 & 4723.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Internal bookkeeping alone — schema normalization, gradient-divergence and byte-total computation, and round-timing — costs single-digit microseconds per client update and tens of microseconds per round summary, confirming that HiveWatch's core runtime adds negligible cost regardless of which emitters are attached. With the local SSE emitter enabled, per-call overhead rises to roughly 2.8\,ms, almost entirely attributable to the synchronous file flush after every JSONL append and the full rewrite of the map metadata snapshot, rather than to HiveWatch's own logic; this is a deliberate consistency-over-throughput tradeoff so that a crashed run still leaves a complete, replayable artifact on disk. Summed across all 1{,}050 calls, total time spent inside HiveWatch is under 3\,s with the SSE emitter active, and the resulting per-round cost of $\approx$59\,ms (20 client updates plus one round summary) is small relative to a typical FL round, which is dominated by local training and communication rather than logging. For deployments where even this is undesirable, the WandbEmitter and MLflowEmitter offload persistence to an external service and batch network calls internally, and emitters can be mixed or omitted entirely since HiveWatch's bookkeeping cost is independent of which emitters, if any, are attached.
+
+For this same workload, the SSE emitter produced a 1.09\,MB JSONL event log and a 439\,KB map metadata snapshot, both of which are sufficient to fully reconstruct round-by-round and per-client history — including client geography, status transitions, and round summaries — via the bundled map dashboard, without re-running the original training job.
+
+\subsection{Diagnosing Stragglers and Failures}
+\label{subsec:fault}
+
+Beyond raw overhead, we evaluate whether the metadata HiveWatch records is sufficient to diagnose the failure modes it targets: stragglers, dropouts, and communication failures. Our examples include a fault-injection utility that deterministically delays or fails a configured client on a configured round (via \texttt{HIVEWATCH\_STRAGGLER\_*} and \texttt{HIVEWATCH\_FAIL\_*} environment variables), which we use to reproduce these failure modes on demand rather than waiting for them to occur naturally. In every case, the injected straggler or failure is visible directly in the resulting \texttt{RoundSummary} (\texttt{num\_stragglers}, \texttt{num\_failures}) and in the corresponding per-client record, without any additional instrumentation beyond the metadata that applications already report through \texttt{log\_client\_update()}. This confirms that the schema in Section~\ref{sec:algorithm} captures straggler and failure signals as a byproduct of routine metric logging, rather than requiring dedicated fault-detection code paths.

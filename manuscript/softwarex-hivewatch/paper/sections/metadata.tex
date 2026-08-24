@@ -1,0 +1,52 @@
+% ---- Software Metadata Table ------------------------------------------------
+\begin{table*}[h]
+\caption{Software metadata.}
+\label{tab:softwaremeta}
+\centering
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Nr} & \textbf{Metadata} \\
+\midrule
+S1 & Current software version: v0.2.1 \\
+S2 & Permanent link to code/repository:
+     \url{https://github.com/APPFL/hivewatch} \\
+S3 & Legal software license: MIT License \\
+S4 & Computing platforms / Operating Systems: Linux, macOS, Windows (Python\,$\geq$\,3.8) \\
+S5 & Installation requirements: \texttt{pip install hivewatch}; optional extras: \texttt{wandb\,$\geq$\,0.16}, \texttt{mlflow\,$\geq$\,2.0} \\
+S6 & Link to user manual / documentation: \url{https://hivewatch.readthedocs.io}; \texttt{README.md} at repository root \\
+S7 & Support email for questions: \{schunduru, zilinghan.li, madduri\}@anl.gov \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+% ---- Code Metadata Table ----------------------------------------------------
+\begin{table*}[h]
+\caption{Code metadata.}
+\label{tab:codemeta}
+\centering
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Nr} & \textbf{Code metadata description and metadata} \\
+\midrule
+C1 & Current code version: v0.2.1 \\
+C2 & Permanent link to code/repository used for this code version:
+     \url{https://github.com/APPFL/hivewatch/releases/tag/v0.2.1} \\
+C3 & Legal code license: MIT License \\
+C4 & Code versioning system used: git \\
+C5 & Software code languages, tools, and services: Python\,$\geq$\,3.8;
+     optional: wandb\,$\geq$\,0.16 (Weights \& Biases backend),
+     mlflow\,$\geq$\,2.0 (MLflow backend); no mandatory third-party dependencies
+     for the core package \\
+C6 & Compilation requirements, operating environments, and dependencies:
+     \texttt{pip install hivewatch} from source or PyPI;
+     Linux, macOS, Windows; no compilation step required;
+     full dependency specification in \texttt{pyproject.toml} \\
+C7 & If available, link to developer documentation / manual:
+     \url{https://hivewatch.readthedocs.io};
+     runnable examples for APPFL, Flower, and NVIDIA FLARE in
+     \texttt{examples/} at the repository root \\
+C8 & Support email for questions:
+     \{schunduru, zilinghan.li, madduri\}@anl.gov \\
+\bottomrule
+\end{tabularx}
+\end{table*}
