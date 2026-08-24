@@ -17,193 +17,185 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Federated Learning as a Driver Workload for the American Science Cloud\\
-\thanks{This work was supported in part by the U.S. Department of Energy, Office of Science, under Contract DE-AC02-06CH11357. }
+\title{Federated Learning on the American Science Cloud using APPFL
 }
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname [TODO: optional co-author]}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-
-\and
-\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname [TODO: Argonne co-author]}
-\IEEEauthorblockA{\textit{Mathematics and Computer Science Division} \\
-\textit{Argonne National Laboratory}\\
-Lemont, IL, USA \\
-email@anl.gov}
-\and
-\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname [TODO: optional co-author]}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
+\author{
+\IEEEauthorblockN{
+Zilinghan Li\IEEEauthorrefmark{1},
+Abhijit Chunduru\IEEEauthorrefmark{1}\IEEEauthorrefmark{2},
+Harinarayan Krishnan\IEEEauthorrefmark{3}, 
+Eric Chagnon\IEEEauthorrefmark{3},\\
+Peter Nugent\IEEEauthorrefmark{3}, 
+Kibaek Kim\IEEEauthorrefmark{1}, 
+Ravi Madduri\IEEEauthorrefmark{1}
+}
+\IEEEauthorblockA{
+\IEEEauthorrefmark{1}Argonne National Laboratory
+\IEEEauthorrefmark{2}University of Massachusetts Amherst
+\IEEEauthorrefmark{3}Lawrence Berkeley National Laboratory
+}
+\IEEEauthorblockA{
+\{zilinghan.li, schunduru, kimk, madduri\}@anl.gov, \{hkrishnan, echagnon, penugent\}@lbl.gov
+}
 }
 
 \maketitle
 
 \begin{abstract}
-The American Science Cloud (AmSC), established under the Genesis Mission of the U.S. Department of Energy (DOE), aims to integrate US's high-performance computing systems, experimental facilities, and data resources into a single, coordinated, AI-driven discovery platform. While early AmSC services emphasize the hosting and distribution of trained models and curated datasets, many scientific AI applications involve data that are institutionally siloed and cannot be centralized due to policy, privacy, or scale. Federated learning (FL) is the canonical example. In this paper, we argue that cross-facility FL is both a natural early workload for AmSC and a rigorous validation of its federated infrastructure. Using the Advanced Privacy-Preserving Federated Learning framework (APPFL) as a concrete reference implementation, we map the components of a production FL system, including aggregation services, distributed trainers, cross-site communication, and privacy mechanisms, onto the emerging AmSC service model. This mapping reveals gaps between current AmSC capabilities and the requirements of iterative, multi-facility learning workflows. We identify the platform services and research directions required to address these gaps, and argue that treating FL as a first-class AmSC workflow would benefit both privacy-preserving science and the platform's own development.
+The American Science Cloud (AmSC), established under the Genesis Mission of the U.S. Department of Energy (DOE), aims to integrate DOE high-performance computing systems, experimental facilities, and data resources into a single, coordinated, AI-driven discovery platform. AmSC's early services focus on curated artifacts, such as gated inference access to hosted models, experiment tracking, and function execution across computing facilities. However, what these services lack is a means to train a model across organizational boundaries where data cannot be centralized due to policy, privacy, or scale. This is, by definition,  a use case for federated learning (FL) and a growing class of scientific AI. In this paper, we show that this gap can be bridged by deploying the orchestration logic of the Advanced Privacy-Preserving Federated Learning (APPFL) framework as a scalable cloud service on top of the primitives AmSC already provides: project-scoped authentication that supports secure and reliable federation membership, function execution that drives distributed training at each site, experiment tracking that records round-level performance, and finally, the model-hosting and inference infrastructure that can be leveraged to distribute the federated trained models to authorized participants. We argue that offering federated computing as an important AmSC service would unlock privacy-constrained scientific collaborations, enabling public-private partnerships in model building  while exercising and enhancing the platform's own federated infrastructure. 
+% emphasize the hosting and distribution of trained models and curated datasets, 
+% Federated learning (FL) is the canonical example. In this paper, we argue that cross-facility FL is both a natural early workload for AmSC and a rigorous validation of its federated infrastructure. Using the Advanced Privacy-Preserving Federated Learning framework (APPFL) as a concrete reference implementation, we map the components of a production FL system, including aggregation services, distributed trainers, cross-site communication, and privacy mechanisms, onto the emerging AmSC service model. This mapping reveals gaps between current AmSC capabilities and the requirements of iterative, multi-facility learning workflows. We identify the platform services and research directions required to address these gaps, and argue that treating FL as a first-class AmSC workflow would benefit both privacy-preserving science and the platform's own development.
 \end{abstract}
 
 \begin{IEEEkeywords}
-federated learning, scientific workflows, multi-facility computing, American Science Cloud, high-performance computing, privacy-preserving machine learning
+Federated Learning, Multi-Facility Computing, American Science Cloud, High-Performance Computing, Privacy-Preserving Computing
 \end{IEEEkeywords}
 
 \section{Introduction}
-Scientific machine learning increasingly depends on data that cannot be moved. Experimental facilities generate petabyte-scale instrument data with strict residency requirements; biomedical collaborations operate under privacy regulation; industrial partners contribute proprietary measurements under restrictive agreements. In all of these settings, the classical workflow of ``gather the data, then train the model'' is not merely inconvenient but prohibited. Federated learning (FL)~\cite{mcmahan2017communication,kairouz2021advances} inverts this workflow: the model travels to the data, local updates are computed in place, and only model parameters or gradients are exchanged and aggregated. FL is therefore not simply a machine learning technique; it is an inherently \emph{multi-facility scientific workflow}, with all the orchestration, fault-tolerance, identity, and data-management challenges that the workflows community has long studied.
+% Scientific machine learning increasingly depends on data that cannot be moved. Experimental facilities generate petabyte-scale instrument data with strict data residency requirements; biomedical collaborations operate under privacy regulation; industrial partners contribute proprietary measurements under restrictive agreements. In all of these settings, the classical workflow of ``gather the data, then train the model'' is not merely inconvenient but prohibited. Federated learning (FL)~\cite{mcmahan2017communication,kairouz2021advances} inverts this workflow: the model travels to the data, local updates are computed in place, and only model parameters or gradients are exchanged and aggregated. FL is therefore not simply a machine learning technique; it is an inherently {multi-facility scientific workflow}, with all the orchestration, fault-tolerance, identity, and data-management challenges that the workflows community has long studied.
 
-Concurrently, the U.S. Department of Energy (DOE) has launched the Genesis Mission, a national initiative to connect its computing, data, and experimental facilities into a unified AI-driven discovery system. Its enabling platform is the American Science Cloud (AmSC), created under Section 50404 of Public Law 119-21 and seeded through an initial \$150M in expedited grants, with subsequent investments exceeding \$320M announced in late 2025~\cite{doe2025investments,obbb2025}. AmSC is envisioned as ``a system of United States government, academic, and private-sector programs and infrastructures utilizing cloud computing technologies to facilitate and support scientific research, data sharing, and computational analysis''~\cite{obbb2025}, realized in practice as a federated, cloud-like service layer over existing DOE HPC facilities and the Energy Sciences Network (ESnet). Early services emphasize hosting and distributing AI models and curated datasets, including inference-as-a-service capabilities in which trained models are stored centrally and executed on DOE HPC resources~\cite{doe2025investments}.
+The U.S. Department of Energy (DOE) has launched the Genesis Mission, a national initiative to connect its computing, data, and experimental facilities into a unified AI-driven discovery system. The enabling platform, the American Science Cloud (AmSC), 
+% created under Section 50404 of Public Law 119-21 and seeded through an initial \$150M in expedited grants, with subsequent investments exceeding \$320M announced in late 2025~\cite{doe2025investments,obbb2025}. AmSC is envisioned as ``a system of United States government, academic, and private-sector programs and infrastructures utilizing cloud computing technologies to facilitate and support scientific research, data sharing, and computational analysis''~\cite{obbb2025}, realized in practice as 
+is a federated, cloud-like service layer over existing DOE high-performance computing (HPC) facilities and the Energy Sciences Network (ESnet). AmSC's early services emphasize hosting and serving, for example, a model access gateway offering inference over hosted commercial and open-weight models, model cataloging and experiment tracking, an interface for cross-facility function execution and agentic job management, and shared data-catalog services~\cite{amscdocshome2026}.
+% hosting and distributing AI models and curated datasets, including inference-as-a-service capabilities in which trained models are stored centrally and executed on DOE HPC resources~\cite{doe2025investments}.
 
-This host-and-distribute model, while valuable, presumes that either the data or the trained model can be centralized. We argue that the workloads AmSC is ultimately mandated to serve, i.e., cross-institutional scientific AI spanning national laboratories, universities, and industry, will frequently violate this presumption, and that AmSC should treat \emph{federated training} as a first-class workflow alongside centralized training and inference. FL is, in a precise sense, the workload AmSC's architecture already implies: geographically distributed sites connected by ESnet, heterogeneous compute allocations, institutional trust boundaries, and secure enclaves for elevated-security data.
+This host-and-serve model, while valuable, presumes that either the data or the trained model can be generally centralized. However, the collaborations AmSC is ultimately meant to serve, i.e., cross-institutional scientific AI spanning national laboratories, universities, and industry partners, frequently violate such presumption: protected information, export-controlled measurements, and proprietary industrial data can be neither pooled nor shipped to a central trainer. Federated learning (FL)~\cite{mcmahan2017communication,kairouz2021advances} is the workflow that remains once such centralization is off the table: rather than gathering data into one place, FL sends the model to the data, computes local updates in place, and exchanges and aggregates only model parameters or gradients. It is a multi-facility scientific workflow that AmSC's current services are not primarily geared toward. Our position is that {federated computing} would be an important addition to AmSC's services, and, more consequentially, that AmSC can provide it with little new infrastructure development effort. 
 
-To ground this position, we use APPFL, the Advanced Privacy-Preserving Federated Learning framework developed at Argonne National Laboratory~\cite{ryu2022appfl,li2025advances}, as a reference implementation of production cross-silo FL. APPFL was designed for exactly the deployment regime AmSC targets: FL across HPC centers, campus clusters, and cloud resources, using communication backends such as gRPC and Globus Compute~\cite{chard2020funcx} that traverse institutional boundaries, with authentication handled through federated identity. Mapping APPFL's architecture onto AmSC's emerging service model lets us be concrete about what AmSC already provides, what it nearly provides, and what is missing.
+The capabilities such a service needs, including secure identity management, distributed execution, experiment tracking, and model distribution, are already present in AmSC's deployed services in different forms. The missing piece is a thin orchestration layer that composes them into an iterative federated training loop, which can be provided by APPFL, the Advanced Privacy-Preserving Federated Learning framework developed at Argonne National Laboratory~\cite{ryu2022appfl,li2025advances}. APPFL was designed for the deployment regime that AmSC targets: FL across HPC resources, institutional clusters, and commercial cloud environments, using communication back-ends such as gRPC and Globus Compute~\cite{chard2020funcx} that traverse institutional boundaries, with authentication handled through federated identity. 
+% Mapping APPFL's architecture onto AmSC's emerging service model lets us evaluate what AmSC already provides, what it nearly provides, and what is missing.
 
-The primary contributions of this paper are threefold. First, we articulate the position that FL is a natural early workload and stress test for AmSC (Section~\ref{sec:position}). Second, we present a component-level mapping between a production FL framework (APPFL) and the AmSC service model (Section~\ref{sec:mapping}). Third, we derive from this mapping a concrete gap analysis and research agenda spanning model-exchange services, federated identity and authorization, scheduling, and cross-facility observability (Section~\ref{sec:gaps}).
+The primary contributions of this paper are threefold. First, we identify a service gap in AmSC's current catalog: it can serve, invoke, and track curated artifacts, but lacks means to support the iterative, privacy-preserving, cross-institutional training that a large class of scientific AI requires. Second, we present a component-level design that bridges this gap by mapping each part of a production FL framework (APPFL) onto primitives AmSC already provides, thus showing that federated computing can be realized largely by composition rather than by building new infrastructure. Third, we derive from this mapping a small set of capabilities that AmSC needs to extend to better support servicing federated training.
+% a concrete gap analysis and research agenda spanning model-exchange services, federated identity and authorization, scheduling, and cross-facility observability (Section~\ref{sec:gaps}).
 
-\section{Background}
-\subsection{The American Science Cloud}
-AmSC (pronounced ``am-sec'') was established in 2025 as the platform-infrastructure cornerstone of the Genesis Mission~\cite{doe2025investments}. Distinct from commercial cloud offerings, AmSC is being constructed as a federated software layer over DOE Office of Science (SC) computing facilities, coordinated by Oak Ridge National Laboratory with SC laboratories participating as infrastructure partners~\cite{amsc2025call}. Its stated technical scope includes: (i) a cloud-like application programming interface (API) layer over Advanced Scientific Computing Research (ASCR) HPC and networking facilities; (ii) hosting and distribution of AI models and AI-ready scientific datasets; (iii) inference-as-a-service on DOE HPC systems; (iv) common workflow and data-transfer tooling shared across facilities; and (v) secure enclaves for elevated-security workloads and data~\cite{amsc2025call,doe2025investments}. A companion effort, the Transformational AI Models Consortium, develops the models that this infrastructure will host, with AmSC providing infrastructure and the consortium consuming it~\cite{doe2025investments}.
+\section{Background and Related Work}
+% \subsection{The American Science Cloud}
+% AmSC (pronounced ``am-sec'') was established in 2025 as the platform to acheive the objectives of the Genesis Mission~\cite{doe2025investments}. Distinct from commercial cloud offerings, AmSC is being built as a federated software layer over DOE Office of Science (SC) computing facilities, coordinated by Oak Ridge National Laboratory with SC laboratories participating as infrastructure partners~\cite{amsc2025call}. Its stated technical scope includes: (i) a cloud-like application programming interface (API) layer over Advanced Scientific Computing Research (ASCR) HPC and networking facilities; (ii) hosting and distribution of AI models and AI-ready scientific datasets; (iii) inference-as-a-service on DOE HPC systems; (iv) common workflow and data-transfer tooling shared across facilities; and (v) secure enclaves for elevated-security workloads and data~\cite{amsc2025call,doe2025investments}. A companion effort, the Transformational AI Models Consortium, develops the models that this infrastructure will host, with AmSC providing infrastructure and the consortium consuming it~\cite{doe2025investments}.
 
-Two aspects of this design bear directly on our argument. First, AmSC relies on existing ESnet connectivity rather than new network infrastructure, so multi-facility workloads must operate within the bandwidth and latency characteristics of the current wide-area network. Second, the early service catalog is oriented toward \emph{artifacts at rest}: models and datasets that are curated once and served many times. Iterative workloads, in which artifacts are repeatedly produced, exchanged, and consumed across facilities within a single logical job, have no counterpart in this catalog.
+% Two aspects of this design bear directly on our argument. First, AmSC relies on existing ESnet connectivity rather than new network infrastructure, so multi-facility workloads must operate within the bandwidth and latency characteristics of the current wide-area network. Second, the early service catalog is oriented toward \emph{artifacts at rest}: models and datasets that are curated once and served many times. Iterative workloads, in which artifacts are repeatedly produced, exchanged, and consumed across facilities within a single logical job, have no counterpart in this catalog.
 
 \subsection{APPFL: Cross-Silo Federated Learning for Science}
-APPFL~\cite{ryu2022appfl,li2025advances} is an open-source federated learning framework designed for cross-silo scientific deployments. Its architecture is organized into four components with distinct responsibilities. The \emph{server}, or aggregator, implements aggregation strategies ranging from synchronous FedAvg~\cite{mcmahan2017communication} to asynchronous and heterogeneity-aware schedulers such as FedCompass~\cite{li2024fedcompass}, which explicitly accounts for disparities in client computing capacity---a common condition when clients are HPC allocations at different facilities. The \emph{client}, or trainer, encapsulates local training and is independent of the surrounding orchestration. The \emph{communicator} abstracts the transport layer, supporting the Message Passing Interface (MPI) for single-facility deployments, gRPC for point-to-point cross-site exchange, and Globus Compute~\cite{chard2020funcx} for federated function execution across administrative domains, with authentication provided by Globus-based federated identity. The \emph{privacy layer} applies differential-privacy mechanisms and secure aggregation protocols to the exchanged model updates. In addition, APPFLx~\cite{hoang2025enabling} provides a hosted service layer through which institutions join federations via web-based authentication, reducing the operational burden of cross-institutional studies in domains such as biomedicine.
-
-APPFL is therefore representative of the requirements of any production FL system deployed on AmSC: it currently addresses cross-boundary transport, identity management, and client heterogeneity through mechanisms internal to the framework. A central question of this paper is which of these mechanisms should instead be provided by the platform
+APPFL is an open-source FL framework designed for cross-silo scientific deployments. Its architecture is organized into four components with distinct responsibilities in federated training loop. (1) The \emph{server} implements aggregation strategies ranging from synchronous FedAvg~\cite{mcmahan2017communication} to asynchronous and heterogeneity-aware algorithms such as FedCompass~\cite{li2024fedcompass} and FedQueue~\cite{li2026fedqueue}, which accounts for disparities in client computing capability and resource queuing time, common conditions when clients are HPC allocations at different facilities. (2) The \emph{client} handles local training and is independent of the server orchestration logic. (3) The \emph{communicator} abstracts the transport layer over multiple backends, including gRPC for request-response cross-site data exchange and Globus Compute~\cite{chard2020funcx} for federated function execution across administrative domains, with authentication provided by Globus-based federated identity~\cite{tuecke2016globus}. (4) The \emph{privacy} layer applies differential-privacy mechanisms and secure aggregation protocols to the exchanged model updates to further protect from information leakage. In addition, APPFL also provides a hosted service layer (APPFLx) through which institutions join federations via web-based authentication~\cite{hoang2025enabling}, reducing the operational burden of cross-institutional studies in domains such as biomedicine to reduce the entry barrier to launching FL experiments for domain experts.
 
 
-\section{Position: Federated Learning Is the Workload That AmSC's Architecture Implies}
-\label{sec:position}
-Our position rests on three observations.
+\subsection{Related Work}
+Several open-source frameworks target cross-silo federated learning, including FedML~\cite{he2020fedml}, Flower~\cite{beutel2020flower}, NVIDIA FLARE~\cite{roth2022nvflare}, and OpenFL~\cite{reina2021openfl}, alongside APPFL. Like APPFL, each is a largely self-contained stack: to run a federation, it supplies not only the learning logic but also its own identity handling, cross-site transport, and job orchestration, and several add a hosted control plane to lower the barrier to entry. Our work is orthogonal to this line. Rather than proposing another framework, we ask how an existing science platform can provide these surrounding capabilities once, so that any such framework reduces to the federated-learning logic that is genuinely its own; the resulting composition benefits the ecosystem broadly rather than a single framework. We adopt APPFL as the concrete reference because it aligns most closely with the AmSC setting. It targets cross-silo scientific federations rather than cross-device deployments, matching AmSC's model of institutions and HPC centers as clients; its heterogeneity- and queue-aware schedulers, FedCompass~\cite{li2024fedcompass} and FedQueue~\cite{li2026fedqueue}, directly address the disparate compute capacities and batch-queue wait times that dominate round-completion time across DOE facilities; and its reliance on Globus Compute and Globus-based federated identity~\cite{chard2020funcx,tuecke2016globus} already exercises the cross-domain execution and authentication that AmSC must provide, making the mapping in Section~\ref{sec:mapping} concrete rather than hypothetical.
 
-\textbf{(1) FL follows from AmSC's mandate.} AmSC's statutory definition centers on cross-sector data sharing and computational analysis under legal, regulatory, and privacy constraints~\cite{obbb2025}. Where these constraints permit data movement, centralized training on hosted datasets suffices. Where they do not---as with protected health information, export-controlled measurements, and proprietary industrial data---federated training is the only workflow capable of fulfilling the mandate. A platform whose stated purpose includes privacy-constrained collaboration, but whose services support only centralized artifacts, would be incomplete by its own definition.
+This perspective connects federated learning to the broader study of scientific workflows on multi-facility infrastructure. The workflows community has long examined the orchestration, fault-tolerance, and data-management demands of execution that spans administrative domains~\cite{da2021community,da2024workflows}, and work applying the FAIR principles to HPC-resident AI artifacts~\cite{wilkinson2025applying} anticipates the provenance requirements that iterative federated training places on a model store. Within DOE, the Integrated Research Infrastructure (IRI) program~\cite{miller2023integrated}, on which AmSC's research services build~\cite{doe2026scac}, identified the cross-facility patterns that federated training instantiates in a particularly demanding form. To our knowledge, this is the first work to realize federated learning as a composition of AmSC's platform services.
+% APPFL is therefore representative of the requirements of any production FL system deployed on AmSC: it currently addresses cross organization communication, identity management, and client heterogeneity through mechanisms internal to the framework. A central question of this paper is which of these mechanisms should instead be provided by the platform.
 
-\textbf{(2) FL exercises the most demanding AmSC subsystems.} A single federated training job engages nearly every subsystem that AmSC is expected to provide: federated identity and authorization across laboratory boundaries; repeated wide-area transfers of medium-sized artifacts (model updates ranging from megabytes to gigabytes) under latency constraints; co-scheduling of short, recurring computations at multiple facilities; secure enclaves for clients holding elevated-security data; and end-to-end monitoring across administrative domains. Batch inference, by contrast, engages few of these. Consistent with the established practice of using driver applications to guide infrastructure design, adopting FL as an early workload would expose integration deficiencies while the platform architecture remains open to revision.
+% \subsection{Related Work}
+% APPFL is not unique in reimplementing platform-level functionality inside the framework. Other cross-silo FL frameworks---FedML, Flower, NVIDIA FLARE, and OpenFL---similarly bundle their own transport, identity, and orchestration~\cite{kairouz2021advances}. The composition approach we develop below is therefore not specific to APPFL: absorbing these capabilities into shared platform services would benefit the ecosystem rather than any single framework, and we use APPFL only as a concrete, production reference. More broadly, the workflows community has long studied multi-facility orchestration and its fault-tolerance and data-management demands~\cite{da2021community,da2024workflows}, and recent work applying FAIR principles to HPC-resident AI artifacts~\cite{wilkinson2025applying} anticipates the provenance requirements that iterative federated training imposes on a model store. Within DOE, the Integrated Research Infrastructure (IRI) program~\cite{miller2023integrated}, on which AmSC's research services build~\cite{doe2026scac}, identified cross-facility workflow patterns that federated learning instantiates in a particularly demanding form. To our knowledge, this is the first work to analyze federated learning as a service for AmSC specifically.
 
-\textbf{(3) The FL community requires the infrastructure AmSC is constructing.} Conversely, scientific FL deployments are operationally fragile today precisely because each framework independently reimplements platform-level functionality: identity management, transport, endpoint management, and monitoring. If these capabilities were provided at the platform level, FL frameworks could concentrate on their scientific contributions---aggregation strategies, privacy mechanisms, and training logic---while relying on hardened, shared infrastructure. The mapping presented in the following section makes this division of responsibilities explicit.
 
-\section{Mapping APPFL onto the AmSC Service Model}
+% \section{Position: Federated Learning Is the Workload That AmSC's Architecture Implies}
+% \label{sec:position}
+% Our position rests on three observations.
+
+% \textbf{(1) FL follows from AmSC's mandate.} AmSC's statutory definition centers on cross organization data sharing and computational analysis under legal, regulatory, and privacy constraints~\cite{obbb2025}. Where these constraints permit data movement, centralized training on hosted datasets suffices. Where they do not---as with protected health information, export-controlled measurements, and proprietary industrial data---federated training is the only workflow capable of fulfilling the mandate. A platform whose stated purpose includes privacy-constrained collaboration, but whose services support only centralized artifacts, would be incomplete by its own definition.
+
+% \textbf{(2) FL exercises all of the AmSC subsystems.} A single federated training job engages nearly every subsystem that AmSC is expected to provide: federated identity and authorization across laboratory boundaries; repeated wide-area transfers of medium-sized artifacts (model updates ranging from megabytes to gigabytes) under latency constraints; co-scheduling of short, recurring computations at multiple facilities; secure enclaves for clients holding elevated-security data; and end-to-end monitoring across administrative domains. Batch inference, by contrast, engages few of these. Consistent with the established practice of using driver applications to guide infrastructure design, adopting FL as an early workload would expose integration deficiencies while the platform architecture remains open to revision.
+
+% \textbf{(3) The FL community requires the infrastructure AmSC is constructing.} Conversely, scientific FL deployments are operationally fragile today precisely because each framework independently re-implements platform-level functionality: identity management, transport, endpoint management, and monitoring. If these capabilities were provided at the platform level, FL frameworks could concentrate on their scientific contributions---aggregation strategies, privacy mechanisms, and training logic---while relying on hardened, shared infrastructure. The mapping presented in the following section makes this division of responsibilities explicit.
+
+\section{Federated Computing as a Composition of AmSC Primitives}
 \label{sec:mapping}
-Table~\ref{tab:mapping} summarizes the correspondence between APPFL components and AmSC services, distinguishing capabilities that exist, that partially exist, and that are absent. We discuss each row in turn.
+An FL framework supplies two very different kinds of functionality: (1) the federation logic such as aggregation strategies, client scheduling, and privacy mechanisms, and (2) the generic distributed systems infrastructure that surrounds it, such as identity management, data transfer, execution, and monitoring. Today APPFL, like every cross-silo framework, provides both itself. Our design aims to keep the first with APPFL and integrates the second to the AmSC ecosystem: each of APPFL's components is mapped to the AmSC service that can host it, so that a federation is assembled from AmSC primitives rather than run as a self-contained stack. Table~\ref{tab:mapping} summarizes this correspondence, distinguishing capabilities AmSC already provides, those it partially provides, and those still absent; Fig.~\ref{fig:architecture} shows the resulting workflow. We discuss each row in turn.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \caption{Mapping FL System Components onto AmSC Services}
 \label{tab:mapping}
 \centering
-\footnotesize
+% \footnotesize
 \renewcommand{\arraystretch}{1.15}
-\begin{tabular}{@{}
-    >{\raggedright\arraybackslash}p{1.9cm}
-    >{\raggedright\arraybackslash}p{2.4cm}
-    >{\raggedright\arraybackslash}p{3.4cm}@{}}
+\begin{tabular}{
+@{}
+    >{\raggedright\arraybackslash}p{3.8cm}
+    >{\raggedright\arraybackslash}p{4.0cm}
+    >{\raggedright\arraybackslash}p{8.2cm}@{}}
 \toprule
-\textbf{FL component (APPFL)} &
+\textbf{FL component} &
 \textbf{Closest AmSC capability} &
 \textbf{Status and required extension} \\
 \midrule
-Global model hosting and versioning &
-Model hosting; Model Access Gateway &
-\emph{Partial.} Inference-oriented; requires versioned, writable artifacts \\
-\addlinespace
 Aggregation server &
-Inference services on DOE resources &
-\emph{Partial.} Requires stateful, event-driven execution of user-supplied strategies \\
-\addlinespace
-Client trainers at facilities &
+Inference services &
+\emph{Prototype.} Requires on-demand launching of aggregation services. \\
+Client execution &
 HPC allocations via AmSC APIs &
-\emph{Partial.} Requires recurring or event-triggered short-job scheduling \\
-\addlinespace
-Communicator (gRPC, Globus Compute) &
-ESnet connectivity; common data-transfer tooling &
-\emph{Partial.} Requires a platform-level model-exchange service \\
-\addlinespace
-Federated identity (Globus Auth) &
+\emph{Partial.} Reliable job scheduling is supported on some DOE leadership computing facilities. \\
+Federated identity &
 AmSC identity provider; project-scoped tokens &
-\emph{Emerging.} Requires federation-scoped authorization and Globus interoperation \\
-\addlinespace
-Privacy layer (DP, secure aggregation) &
+\emph{Fulfilled.} AmSC identity provider or tokens can be used to authorize FL experiments. \\
+Privacy layer &
 Secure enclaves &
-\emph{Partial.} Enclaves protect data at rest, not aggregation protocols \\
-\addlinespace
+\emph{Addition.} Enclaves provides additional protection to data at rest \\
 Monitoring and observability &
 Facility-local monitoring &
-\emph{Absent.} No cross-facility workflow visibility \\
+\emph{Partial.} MLFlow provides partial observability, but lacks monitoring tools to oversee the whole distributed workflows \\
+Versioned global model hosting &
+Model Access Gateway &
+\emph{Partial.} Inference-oriented; requires versioned, writable artifacts \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\subsection{Model Hosting as the Federation's Shared State}
-APPFL's server maintains the authoritative global model between training rounds. On AmSC, this state maps to a versioned platform artifact: the global model is checkpointed at each round, and provenance records link each version to the participating clients and the aggregation metadata. Current AmSC model services do not support this pattern: the Model Access Gateway provides authenticated access to hosted models for inference, but no user-writable artifact store~\cite{amscdocs2026}. Federated training requires read/write access to versioned artifacts with append-only lineages; the round-level provenance this produces also aids reproducibility. The High Performance Data Facility, whose early-access system is being designed around AmSC data services~\cite{doe2026scac}, could host such a store.
+
 
 \subsection{From Inference-as-a-Service to Aggregation-as-a-Service}
-AmSC's inference services execute hosted models on DOE resources in response to authenticated requests. Aggregation is likewise a function invoked on demand---when a quorum of client updates arrives---but it is stateful across rounds and executes user-supplied code rather than platform-curated models. We propose \emph{aggregation-as-a-service}: a platform service with which aggregation strategies (FedAvg, asynchronous variants, FedCompass-style scheduling~\cite{li2024fedcompass}) are registered and executed on updates deposited by authorized clients. Frameworks such as APPFL would contribute strategies as plugins instead of operating standalone servers, and collaborations without a facility to host an aggregator could still participate.
+AmSC's inference services execute hosted models on DOE resources in response to authenticated requests. Federated aggregation or other FL-related operation is likewise a function invoked on demand when client updates arrives.  To verify this, we have already developed an early prototype of on-demand aggregation execution service that runs on NERSC's Spin~\cite{nersc_spin}, which can launch an aggregation server on-demand as a Jupyter notebook for FL clients to connect to for FL (\href{https://portal.trac.appflx.link/}{https://portal.trac.appflx.link/}). We propose to generalize it into \emph{aggregation-as-a-service}: a platform interface with which aggregation strategies (FedAvg, asynchronous variants, FedCompass-style scheduling~\cite{li2024fedcompass}) are executed on updates sent by connected authorized clients. Frameworks such as APPFL would contribute strategies as plugins instead of operating standalone servers, and collaborations without a facility to host an aggregator could still launch FL experiments as needed.
 
 \subsection{Client Execution and Scheduling}
-FL clients at HPC facilities run today as batch jobs or Globus Compute endpoints that the framework must keep available across rounds. Batch schedulers are designed for few long-running jobs; federated training consists of many short, recurring ones. Round-completion time is therefore dominated by queue delays and straggling clients rather than by computation or transfer. Recurring-reservation or event-triggered execution primitives in AmSC's API layer would allow a federation to specify that local training at a facility runs whenever a new global model version appears---a platform-level contract in place of per-site workarounds.
+FL clients at HPC facilities run today as batch jobs or Globus Compute endpoints that the framework must keep available across rounds. AmSC already exposes reliable job scheduling on some DOE leadership computing facilities to some authorized users, which covers part of this need, but two problems remain. First, this support is not uniform across the diverse facilities a federation may span. Second, batch schedulers are designed for few long-running jobs, however, FL training usually consists of many short, recurring ones for global synchronization, so round-completion time is dominated by queue delays and straggling clients rather than by computation or transfer. A recurring-reservation or event-triggered execution primitive in AmSC's API layer would let a federation specify that local training at a facility runs whenever a new global model version appears, which is a platform-level contract in place of per-site workarounds.
+
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.7\textwidth]{fl_amsc_architecture.pdf}
-\caption{Federated training as a multi-facility workflow on AmSC.
-Clients at DOE and external sites retrieve the current global model and
-deposit local updates through federation-scoped identity services and
-ESnet. An aggregation service produces each new global version, which is
-written back to the versioned model store, while raw data never leave
-the participating sites. Labels G1--G4 indicate the capability gaps
-analyzed in Section~\ref{sec:gaps}.}
+\includegraphics[width=0.85\textwidth]{fl_amsc_architecture.pdf}
+\caption{Federated training assembled from AmSC services. Client trainers at DOE facilities and external university or industry sites fetch the current global model and send local updates through the AmSC Integrated Research Infrastructure (IRI) APIs, under federation-scoped identity and authorization; raw data never leave the participating sites. On the platform side, aggregation-as-a-service produces each new global model and writes it to a versioned model store that keeps per-round checkpoints and provenance, while an observability toolkit collects training metadata across the federation. APPFL supplies the federated-learning logic that drives this loop.}
+
 \label{fig:architecture}
 \end{figure*}
 
-\subsection{Communication and Identity}
-APPFL's communicator moves model updates across institutional boundaries
-over gRPC or Globus Compute; each deployment negotiates firewall
-traversal and authentication separately. A platform
-\emph{model-exchange service}, providing authenticated transfer of model
-artifacts between registered federation members over ESnet, would
-replace the component of cross-silo FL that fails most often in our
-deployments. The service needs federation-scoped authorization: a client
-may deposit updates and retrieve global models only for federations to
-which it belongs. One integration problem is already visible. APPFL and
-APPFLx authenticate with Globus federated
-identity~\cite{hoang2025enabling}, whereas AmSC's identity
-infrastructure uses a platform identity provider with project-scoped
-tokens~\cite{amscdocs2026}. The two regimes must interoperate before
-existing FL deployments can adopt platform services.
+\subsection{Federated Identity}
+Identity, the prerequisite for any cross-institutional exchange, is the capability AmSC fully provides. Its project-scoped tokens, issued through the platform identity provider~\cite{amscdocshome2026}, already suffice to authorize the participants of a federated experiment: a token scoped to a project can gate who may join a federation and deposit or retrieve its models. Existing APPFL and APPFLx deployments authenticate through Globus federated identity~\cite{hoang2025enabling}, so a bridge between the two regimes would let current federations adopt platform identity incrementally, an integration convenience rather than a blocking gap. What remains on the communication side is a writable transport for the model updates themselves, which spares each deployment from separately negotiating firewall traversal and authentication.
 
 \subsection{Privacy Mechanisms and Secure Enclaves}
-AmSC's secure enclaves protect data and workloads at rest within a facility. FL adds protocol-level requirements: differential privacy applied to model updates, and secure aggregation, which prevents the aggregator itself from inspecting individual contributions. The two can be combined: executing aggregation-as-a-service inside an enclave gives federations a hardware trust anchor when members do not fully trust the hosting facility, alongside cryptographic protections.
+On the one hand, the FL framework already provides algorithmic privacy layers, including differential privacy applied to model updates, and secure aggregation, which prevents the aggregator from inspecting individual contributions. On the other hand, the AmSC platform's secure enclaves are additional privacy enhancements: executing aggregation inside an enclave adds a hardware trust anchor when federation members do not fully trust the hosting facility, complementing the framework's cryptographic protections.
 
 \subsection{Cross-Facility Observability}
-Cross-facility federated training constitutes a distributed workflow for which no complete view of execution state currently exists. Each facility monitors only the jobs executing on its own resources, while the FL framework captures only the events recorded in its own logs; consequently, the global state of a training run, including round progression, per-client staleness, communication timings, and failure attribution, cannot be reconstructed by any single party. The early AmSC service catalog does not address this requirement. Our development and operation of HiveWatch (\href{https://github.com/APPFL/hivewatch}{https://github.com/APPFL/hivewatch}), an observability toolkit for APPFL-based federations, has shown that the availability of such cross-site telemetry is a determining factor in whether failures within a federation can be diagnosed and attributed. We therefore contend that cross-facility observability must be provided as a platform capability rather than reimplemented as tooling within each FL framework.
+Cross-facility federated training constitutes a distributed workflow for which no complete view of the execution state currently exists. Each facility monitors only the jobs executing on its own resources, while the FL framework captures only the events recorded in its own logs; consequently, the global state of a training run, including round progression, per-client staleness, communication timings, and failure attribution, cannot be reconstructed by any single party. AmSC's experiment tracking (MLflow) captures per-run metrics and so provides partial visibility, but it does not reconstruct this federation-wide state. Our development and operation of HiveWatch (\href{https://github.com/APPFL/hivewatch}{https://github.com/APPFL/hivewatch}), an observability toolkit for general distributed training that can be easily integrated into federated learning framework such as APPFL, has shown that the availability of such cross-site telemetry is a determining factor in whether failures within a federation can be diagnosed and attributed. What is needed at the platform level is a standardized telemetry format for federated training rounds that covers round events, client participation, update provenance, and communication timings, all integrated with facility-level monitoring so that operators and scientists share a single view of a federation's state.
 
-\section{Gaps and Integration Objectives}
-\label{sec:gaps}
-The mapping in Section~\ref{sec:mapping} identifies four gaps, marked
-G1--G4 in Fig.~\ref{fig:architecture}. We frame each as a near-term
-research and integration objective appropriate to the current, formative
-phase of AmSC.
-
-\textbf{G1: Bidirectional, iterative model exchange.} The first objective is to evolve model hosting from read-oriented distribution into versioned, federation-scoped storage that supports both read and write access with round-level provenance. Several questions accompany this extension: which artifact granularity, whether full models, deltas, or compressed updates, is appropriate for repeated exchange over ESnet; what provenance schema adequately captures a training lineage; and how responsibility for such a store should be divided between AmSC model services and the High Performance Data Facility.
-
-\textbf{G2: Aggregation-as-a-service.} The second objective is a platform interface for pluggable aggregation, governed by quorum, staleness, and scheduling policies. Realizing this interface raises questions of multi-tenancy and isolation between federations, of the execution model for user-supplied aggregation code, of support for asynchronous and heterogeneity-aware strategies~\cite{li2024fedcompass}, and of enclave-hosted execution for federations with limited mutual trust.
-
-\textbf{G3: Federation-scoped identity and authorization.} The third objective concerns authorization semantics within AmSC's identity infrastructure that can express FL roles, namely aggregator, client, and observer, together with federation membership. Because existing deployments authenticate through Globus-based mechanisms~\cite{hoang2025enabling}, these semantics should interoperate with Globus identity so that current federations can migrate to platform services incrementally.
-
-\textbf{G4: Cross-facility workflow observability.} The final objective is a standardized telemetry format for federated training rounds, covering round events, client participation, update provenance, and communication timings, integrated with facility-level monitoring so that operators and scientists share a single view of a federation's state.
+\subsection{Model Hosting as the Federation's Shared State}
+After an FL training experiment, the server maintains the authoritative global model between training rounds. On AmSC, this state maps to a versioned platform artifact: the global model is checkpointed at each round, and provenance records link each version to the participating clients and the aggregation metadata. Current AmSC model services are not yet oriented toward this pattern: the Model Access Gateway provides authenticated access to hosted models for inference, but no user-writable artifact store. What federated training needs is read/write access to versioned artifacts with append-only lineages, whose round-level provenance also aids reproducibility. Realizing this raises several questions: which artifact granularity---full models, deltas, or compressed updates---is appropriate for repeated exchange over the wide-area network; what provenance schema adequately captures a training lineage; and how responsibility for such a store should be divided between AmSC model services and the High Performance Data Facility, whose early-access system is being designed around AmSC data services~\cite{doe2026scac}.
 
 
+% \section{Gaps and Integration Objectives}
+% \label{sec:gaps}
+% The mapping in Section~\ref{sec:mapping} identifies four gaps, marked
+% G1--G4 in Fig.~\ref{fig:architecture}. We frame each as a near-term
+% research and integration objective appropriate to the current, formative
+% phase of AmSC.
 
-\section{Related Work}
-Cross-silo FL frameworks beyond APPFL, including FedML, Flower, NVIDIA FLARE, and OpenFL, similarly re-implement transport, identity, and orchestration internally; our argument for platform absorption applies to them equally, and a platform-level solution would benefit the ecosystem rather than a single framework~\cite{kairouz2021advances}.  The workflows community has long advocated driver applications for hardening multi-facility infrastructure~\cite{da2021community,da2024workflows}, and recent work on FAIR principles for HPC-resident AI artifacts~\cite{wilkinson2025applying} anticipates the provenance requirements of G1. Within DOE, the Integrated Research Infrastructure program~\cite{miller2023integrated}, on which AmSC research services build~\cite{doe2026scac}, identified cross-facility workflow patterns that FL instantiates in a particularly demanding form. To our knowledge, this is the first work to analyze FL as a workload for AmSC specifically.
+% \textbf{G1: Bidirectional, iterative model exchange.} The first objective is to evolve model hosting from read-oriented distribution into versioned, federation-scoped storage that supports both read and write access with round-level provenance. Several questions accompany this extension: which artifact granularity, whether full models, deltas, or compressed updates, is appropriate for repeated exchange over ESnet; what provenance schema adequately captures a training lineage; and how responsibility for such a store should be divided between AmSC model services and the High Performance Data Facility.
+
+% \textbf{G2: Aggregation-as-a-service.} The second objective is a platform interface for pluggable aggregation, governed by quorum, staleness, and scheduling policies. Realizing this interface raises questions of multi-tenancy and isolation between federations, the execution model for user-supplied aggregation code, support for asynchronous and heterogeneity-aware strategies~\cite{li2024fedcompass}, and enclave-hosted execution for federations with limited mutual trust.
+
+% \textbf{G3: Federation-scoped identity and authorization.} The third objective concerns authorization semantics within AmSC's identity infrastructure that can express FL roles, namely aggregator, client, and observer, together with federation membership. Because existing deployments authenticate through Globus-based mechanisms~\cite{hoang2025enabling}, these semantics should interoperate with Globus identity so that current federations can migrate to platform services incrementally.
+
+% \textbf{G4: Cross-facility workflow observability.} The final objective is a standardized telemetry format for federated training rounds, covering round events, client participation, update provenance, and communication timings, integrated with facility-level monitoring so that operators and scientists share a single view of a federation's state.
+
+
+
+% % \section{Related Work}
+% % Cross-silo FL frameworks beyond APPFL, including FedML, Flower, NVIDIA FLARE, and OpenFL, similarly re-implement transport, identity, and orchestration internally; our argument for platform absorption applies to them equally, and a platform-level solution would benefit the ecosystem rather than a single framework~\cite{kairouz2021advances}.  The workflows community has long advocated driver applications for hardening multi-facility infrastructure~\cite{da2021community,da2024workflows}, and recent work on FAIR principles for HPC-resident AI artifacts~\cite{wilkinson2025applying} anticipates the provenance requirements of G1. Within DOE, the Integrated Research Infrastructure program~\cite{miller2023integrated}, on which AmSC research services build~\cite{doe2026scac}, identified cross-facility workflow patterns that FL instantiates in a particularly demanding form. To our knowledge, this is the first work to analyze FL as a workload for AmSC specifically.
+
 
 \section{Conclusion}
-The American Science Cloud is being built now, and the workloads chosen to drive its formative phase will shape its architecture for a decade. We have argued that cross-facility federated learning is both mandated by AmSC's purpose and uniquely effective at stress-testing its federated infrastructure, and we have used APPFL to make the required platform capabilities concrete: versioned model exchange, aggregation-as-a-service, federation-scoped identity, and cross-facility observability. Closing these gaps would simultaneously mature the platform and unlock privacy-constrained scientific collaborations that no host-and-distribute service can serve. We invite the workflows and AmSC communities to treat federated training as a first-class multi-facility workflow, and we offer the mapping and agenda here as a starting point.
+The American Science Cloud is being built now, and the services it settles on will shape a decade of scientific AI. We have argued that federated computing belongs in that catalog, and that it need not be built from scratch: identity, function execution, experiment tracking, and model hosting already exist as AmSC primitives, and a production framework, APPFL, supplies the federated-learning logic that composes them into an iterative training loop. Mapping APPFL onto these primitives shows how much is already in place and isolates the capabilities that remain to be extended: writable, federation-scoped model exchange; aggregation-as-a-service; recurring, event-triggered client execution; and cross-facility observability. Closing these gaps would let AmSC serve the privacy-constrained collaborations that a host-and-serve catalog cannot, while turning federated learning from a fragile, self-hosted stack into a first-class platform service. We offer the mapping and agenda here as a starting point.
 
 \section*{Acknowledgment}
-This material is based upon work supported by the U.S.
-Department of Energy, Office of Science, under contract num-
-ber DE-AC02-06CH11357.
+This material is based upon work supported by the US
+Department of Energy, Office of Science, under contract number DE-AC02-06CH11357.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
