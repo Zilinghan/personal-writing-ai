@@ -1,0 +1,30 @@
+Hi Mikala and the Ellis Porter Team,
+
+I wanted to flag that I have made several improvements to Dr. Xiaoyi Lu's recommendation letter and wanted to walk you through the changes. I have re-uploaded the updated letter and would appreciate it if you could review it at your convenience.
+
+- Strengthened the core citation evidence. The original letter mentioned that Dr. Lu's group had cited my work but did not go into specifics. I revised it to name both papers explicitly and describe how my work was used in each:
+  - FedDES (ACM/IEEE Symposium on Edge Computing, 2025): Dr. Lu's group selected my FedCompass algorithm as a primary comparison baseline, which signals a deliberate assessment of it as a meaningful contribution, not a passing citation.
+  - When RDMA Goes Long-Haul (HPDC 2026): Dr. Lu's group chose APPFL v1.8.0 as the primary federated learning framework for the entire FL case study section of the paper — running 32-client experiments across FedAvg, FedBuff, and FedAsync on DOE's ESnet infrastructure. This is a particularly strong data point since APPFL was the experimental platform the central findings of the paper depended on.
+
+- Removed a weak paragraph about peer review. The original draft included a speculative paragraph suggesting Dr. Lu may have encountered my work through peer review. Since he has no direct working relationship with me, this added little value and could appear unsubstantiated. It was removed in favor of more concrete evidence.
+
+- Tightened the broader research description. The original paragraph describing my FL contributions in detail was largely redundant with what Ravi Madduri's letter already covers. It has been condensed to a high-level summary appropriate for an independent recommender who knows the work through the literature, not through direct collaboration.
+
+- Revised the conclusion to reflect Dr. Lu's authentic independent perspective — grounding the endorsement in his group's firsthand experience building on my work, rather than making generic claims.
+
+I have also made several improvements to Dr. Hieu Le's recommendation letter, which I have re-uploaded as well:
+
+- Restructured the letter around Hieu's actual domain expertise. The original letter led with generic publication and citation counts before discussing the substantive work. The revised letter leads with Mr. Li's computational pathology contributions (TICON, PixCell, Gen-SIS, WSI compression), which is the area Hieu is best positioned to assess as a computer vision and medical imaging researcher.
+
+- Removed contributions outside Hieu's expertise. The original letter included discussion of the rare aortopathy LLM pipeline and genome-wide pleiotropy study, which are not related to Hieu's research background in computer vision and medical imaging. These were removed so the letter focuses on what Hieu can credibly evaluate.
+
+- Corrected Hieu's stated specialization. "Computational pathology" was removed from the description of his research focus, as his publication record is primarily in general computer vision (image generation, segmentation, video understanding) with some medical imaging work. His actual specialization — computer vision, medical imaging, and generative foundation models — is now accurately reflected.
+
+- Added expert credentialing. A sentence was added at the start of the substantive paragraph explicitly establishing that Hieu is well positioned to evaluate these contributions based on his own expertise in the underlying techniques.
+
+- Moved publication and citation counts to a supporting role. These now appear after the substantive discussion of the work, framed as corroborating evidence rather than the primary argument, with added context on the selectivity of venues like CVPR, ICLR, and ICML.
+
+Please let me know if you have any feedback or would like further adjustments.
+
+Best regards,
+Zilinghan Li
