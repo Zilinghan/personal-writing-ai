@@ -3,9 +3,9 @@
 
 HiveWatch is installed from PyPI in a single command:
 
-\begin{lstlisting}[language=bash,style=PythonStyle,caption={Installation.}]
-pip install hivewatch            # core only
-pip install hivewatch[all]       # with W&B and MLflow
+\begin{lstlisting}[style=PythonStyle,language=bash,caption={Installation.}]
+pip install hivewatch            # core only, no third-party deps
+pip install hivewatch[all]       # with W&B, MLflow, and geolocation
 \end{lstlisting}
 
 The following listing shows a minimal integration of HiveWatch into any FL server loop, requiring no knowledge of the underlying framework:
@@ -49,15 +49,17 @@ hivewatch.finish()
 
 We demonstrate framework-agnosticism by integrating the identical five-call API into three FL frameworks with different communication stacks. Full runnable examples ship with the HiveWatch source distribution.
 
-\textit{APPFL (gRPC).} The APPFL example subclasses \texttt{ServerAgent} and intercepts each client update in the aggregation callback. HiveWatch is called at the server side only; the client code is unchanged.
+\textit{APPFL (gRPC).} The APPFL example subclasses \texttt{ServerAgent} and intercepts each client update in \texttt{global\_update()}, calling \texttt{round\_start()} on each round transition and \texttt{log\_client\_update()} after aggregation returns. Every HiveWatch runtime call is made on the server.
 
-\textit{Flower.} The Flower example wraps Flower's \texttt{Strategy.aggregate\_fit()} hook. Per-client metrics from Flower's \texttt{FitRes} objects are forwarded to \texttt{log\_client\_update()} with no additional client-side changes.
+\textit{Flower.} The Flower example subclasses \texttt{FedAvg}, forwarding per-client metrics carried in Flower's \texttt{FitRes} objects to \texttt{log\_client\_update()} from \texttt{aggregate\_fit()}, and logging the round summary from \texttt{aggregate\_evaluate()} once the global metrics are available. Failed clients reported by Flower are recorded through \texttt{log\_dropout()}.
 
-\textit{NVIDIA FLARE.} The NVIDIA FLARE example subclasses \texttt{FedAvg} to inject HiveWatch calls into \texttt{send\_model()}, \texttt{\_aggregate\_one\_result()}, and \texttt{\_get\_aggregated\_result()}. All three integrations required fewer than 50 lines of framework-side bridging code each, and none required modifications to HiveWatch itself.
+\textit{NVIDIA FLARE.} The NVIDIA FLARE example subclasses \texttt{FedAvg} to inject HiveWatch calls into \texttt{send\_model()}, \texttt{\_aggregate\_one\_result()}, and \texttt{\_get\_aggregated\_result()}, and swaps the wrapped controller into the recipe's deployment map.
+
+The bridging layer is confined to a single server-side file per framework --- approximately 75 lines for APPFL and Flower, and 115 for NVIDIA FLARE, whose controller must additionally be reconstructed and swapped into the recipe's deployment map --- and none of the three required any modification to HiveWatch itself. Clients otherwise remain framework-native: the Flower example touches no HiveWatch code on the client at all, populating only Flower's own \texttt{fit()} metrics dictionary, which the strategy then forwards. The single optional client-side addition is a call to HiveWatch's \texttt{get\_location()} helper when geographic metadata is wanted for the map dashboard; the APPFL and NVIDIA FLARE examples use it to tag each update with the client's coordinates.
 
 \subsection{Instrumentation Overhead}
 
-Because HiveWatch runs on the server's critical path, its overhead must be small relative to typical round durations. We measure per-call overhead over 50 rounds with 20 clients per round (1{,}050 calls total), comparing no-emitter (bookkeeping only) and SSEEmitter (synchronous JSONL append plus full \texttt{.map.json} rewrite per call) configurations. Results are shown in Table~\ref{tab:overhead}.
+Because HiveWatch runs on the server's critical path, its overhead must be small relative to typical round durations. We measure per-call overhead over 50 rounds with 20 clients per round (1{,}050 calls total), comparing no-emitter (bookkeeping only) and SSEEmitter (synchronous JSONL append plus full \texttt{.map.json} rewrite per call) configurations. The workload is synthetic --- no model, dataset, or FL framework is involved --- so the reported times reflect instrumentation cost alone. The measurement script ships with the repository as \texttt{benchmarks/instrumentation\_overhead.py}, so the table can be regenerated on any machine. Results are shown in Table~\ref{tab:overhead}.
 
 \begin{table}[t]
 \caption{Per-call instrumentation overhead ($\mu$s), 50 rounds $\times$ 20 clients.}
