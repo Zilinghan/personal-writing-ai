@@ -1,0 +1,38 @@
+POSITION DESCRIPTION (DRAFT FOR RAVI'S REFERENCE)
+Argonne National Laboratory — Data Science and Learning Division
+
+Position Title: [POSITION TITLE]
+Division: Data Science and Learning Division
+Reports To: Group Leader, Data Science and Learning Division
+
+================================================================================
+POSITION SUMMARY
+================================================================================
+
+As a [POSITION TITLE], Mr. Li conducts independent applied research and leads the development of advanced AI software systems, with an emphasis on privacy-preserving federated learning, large language model post-training, and AI for scientific discovery. His key duties include designing and developing production-grade federated learning frameworks for deployment across DOE national laboratories, conceiving and implementing novel federated learning algorithms published at top-tier AI and computing venues, contributing to the post-training of large language models on DOE exascale supercomputers, mentoring graduate students and junior researchers, and establishing research collaborations with other national laboratories, universities, and federal agencies.
+
+================================================================================
+REQUIRED QUALIFICATIONS
+================================================================================
+
+- M.S. or Ph.D. in Computer Science, Electrical Engineering, or a closely related field
+- Demonstrated expertise in machine learning, distributed systems, or high-performance computing
+- Experience designing and implementing research-grade or production software systems
+- Track record of peer-reviewed publications at established scientific venues
+- Proficiency in Python and relevant ML frameworks (PyTorch, etc.)
+
+================================================================================
+PREFERRED QUALIFICATIONS
+================================================================================
+
+- Experience with federated learning, privacy-preserving AI, or multi-institution collaborative computing
+- Experience with HPC environments and job scheduling systems (PBS, Slurm, etc.)
+- Experience working with or deploying software across DOE national laboratory infrastructure
+- Record of open-source software development and community engagement
+- Experience mentoring graduate students or junior researchers
+
+================================================================================
+NOTE FOR RAVI
+================================================================================
+
+This draft is intended as a reference for the position description HR is requesting in connection with the recent title change. Given the research-intensive nature of the role, a title such as "Software Research Engineer" or "Research Software Engineer" may more accurately reflect the responsibilities above and the level of independent research this position entails. Please feel free to modify as appropriate.

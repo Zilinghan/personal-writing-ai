@@ -1,0 +1,26 @@
+Hi Ravi,
+
+First, I wanted to say thank you so much for the promotion — I truly appreciate your support and recognition!
+
+Forwarding this email from Michelle in HR regarding my employment confirmation letter for my EB-1B petition. She's asking whether we are working on an updated position description to go along with the title change.
+
+To help with the position description, I drafted a brief summary of the role for your reference — please feel free to revise as you see fit:
+
+"As a [POSITION TITLE], Mr. Li conducts independent applied research and leads the development of advanced AI software systems, with an emphasis on privacy-preserving federated learning, large language model post-training, and AI for scientific discovery. His key duties include designing and developing production-grade federated learning frameworks for deployment across DOE national laboratories, conceiving and implementing novel federated learning algorithms published at top-tier AI and computing venues, contributing to the post-training of large language models on DOE exascale supercomputers, mentoring graduate students and junior researchers, and establishing research collaborations with other national laboratories, universities, and federal agencies."
+
+Also, I wanted to raise a related question regarding the title. My previous title was "Machine Learning Engineer," and my new title after the promotion is "Software Engineer Assistant." In the context of an immigration petition, this transition may appear counterintuitive to a reviewer — the word "Assistant" typically signals a junior or entry-level role, and the shift from "Machine Learning Engineer" to "Software Engineer Assistant" could read as a demotion rather than a promotion, even though the compensation increase clearly indicates otherwise. Is there any flexibility to use a title that better reflects the seniority and research nature of the role, such as "Software Research Engineer" or "Computational Scientist"?
+
+Happy to discuss — thank you for your help with this!
+
+Best,
+Zilinghan
+
+---
+
+[Forwarded email from Michelle]:
+
+Hello Zilinghan,
+    I'm happy to provide the updated employment confirmation letter that the EP team is requesting. Before I do, I wanted to confirm whether you and your manager are working on an updated position description to go along with your title change.
+
+Sincerely,
+Michelle
