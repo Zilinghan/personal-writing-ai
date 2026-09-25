@@ -1,0 +1,89 @@
+Statement of Accomplishments – Zilinghan Li
+
+TIME PERIOD:  October 1, 2025 through September 30, 2026 (FY26)
+Narrative about Your Accomplishments 
+Provide a summary, consisting of one to two paragraphs of your highlights for the fiscal year.  Focus on significant research and activities that may not be apparent in the remainder of the document.  For the case that additional context is needed for current highlights, an additional paragraph about previous accomplishments can be included.
+
+Research Products 
+Refereed articles in highly prestigious venues (top tier conferences/journals)
+•	Third-author paper accepted at the Forty-Third International Conference on Machine Learning (ICML 2026), which introduces a novel queuing-time aware scheduling algorithm for time-efficient federated learning among clients running on HPC systems or clusters with a job queue scheduler. (26% acceptance rate)
+o	Li, Yijiang, Emon Dey, Zilinghan Li, Krishnan Raghavan, Ravi Madduri, and Kibaek Kim. "FedQueue: Queue-Aware Federated Learning for Cross-Facility HPC Training." In Proceedings of Forty-Third International Conference on Machine Learning (ICML 2026). 2026.
+•	Third-author paper submitted to The Fortieth Annual Conference on Neural Information Processing Systems (NeurIPS 2026), which extends PixCell to generate 32k x 32k synthetic whole slide images. (25.7% acceptance rate)
+o	Yellapragada, Srikar, Alexandros Graikos, Zilinghan Li, Kostas Triaridis, Tarak Nath Nandi, Ji Dong K Bai, Beatrice Knudsen, Tahsin Kurc, Prateek Prasanna, Rajarsi R. Gupta, Ravi K Madduri, Joel Saltz, Dimitris Samaras. “BigCell: Generating Gigapixel Whole-Slide Images.” 2026.
+•	Fifth-author paper accepted at the Findings of IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR 2026), which introduces an innovative algorithm to encode context information into the patch representation for the patches of whole slide images. (36% acceptance rate)
+o	Belagali, Varun, Saarthak Kapse, Pierre Marza, Srijan Das, Zilinghan Li, Sofiène Boutaj, Pushpak Pati et al. "Ticon: A slide-level tile contextualizer for histopathology representation learning." In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 5440-5451. 2026.
+•	[Included in Prior SOA – Status Change] Fourth-author paper accepted at Transactions on Machine Learning Research (TMLR), which introduces a novel self-supervised method using diverse synthetic images. (~40% acceptance rate)
+o	Belagali, Varun, Pierre Marza, Srikar Yellapragada, Zilinghan Li, Tarak Nath Nandi, Ravi K. Madduri, Joel Saltz, Stergios Christodoulidis, Maria Vakalopoulou, and Dimitris Samaras. "CDG-MAE: Cross-view Masked Modeling using Diffusion Generated Views." Transactions on Machine Learning Research.
+•	[Included in Prior SOA – Status Change] Fifth-author paper accepted at the DataCV workshop at the IEEE/CVF Conference on Computer Vision and Pattern Recognition (DataCV@CVPR 2026), which leverages self-augmentation to improve self-supervised learning. (Best paper)
+o	Belagali, Varun, Srikar Yellapragada, Alexandros Graikos, Saarthak Kapse, Zilinghan Li, Tarak Nath Nandi, Ravi K. Madduri, Prateek Prasanna, Joel Saltz, and Dimitris Samaras. "Gen-sis: Generative self-augmentation improves self-supervised learning." In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 2886-2896. 2026.
+•	[Included in Prior SOA – Status Change] Tenth-author paper accepted at The International Journal of High-Performance Computing Applications (IJHPCA), which describes methodologies for evaluating large language models as scientific research assistants.
+o	Cappello, Franck, Sandeep Madireddy, Robert Underwood, Neil Getty, Nicholas Lee-Ping Chia, Nesar Ramachandra, Josh Nguyen et al. "Eaira: Establishing a methodology for evaluating ai models as scientific research assistants." The International Journal of High Performance Computing Applications. 2026.
+•	[Included in Prior SOA – Status Change] Third-author paper submitted to IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI), which develops the first generative foundation model for digital histopathology. (Major revision submitted)
+o	Yellapragada, Srikar, Alexandros Graikos, Zilinghan Li, Kostas Triaridis, Varun Belagali, Saarthak Kapse, Tarak Nath Nandi et al. "PixCell: A generative foundation model for digital histopathology images." arXiv preprint arXiv:2506.05127 (2025).
+•	Fifth-author paper submitted to The Astrophysical Journal for AI-powered autonomous radio follow-up of multi-messenger transients.
+o	Hategan-Marandiuc, Mihael, Tanner O'Dwyer, Alessandra Corsi, E. Huerta, Zilinghan Li, I.T. Foster, Kyle Chard, et al. "Toward Autonomous Radio Follow-up of Multi-messenger Transients with RADAR: From Alert Parsing to Inference and Observation Scheduling." Astrophysical Journal (forthcoming).
+•	Seventh-author paper to be submitted, which proposes a new method to pretrain histopathology foundation model by distilling the global spatial context information for the tiles.
+o	Belagali, Varun, Pierre Marza, Srijan Das, Saarthak Kapse, Sofiène Boutaj, Jingwei Zhang, Zilinghan Li, Tarak Nath Nandi, Ravi K Madduri, Prateek Prasanna, Joel Saltz, Stergios Christodoulidis, Maria Vakalopoulou, Dimitris Samaras. “The Role of Spatial Context in the Pretraining of Histopathology Tile Encoders.” 2026.
+Publications in refereed conference proceedings
+•	First-author paper accepted at the Seventh IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications on the experiences building enterprise-level federated learning framework for AI for science.
+o	Li, Zilinghan, Aditya Sinha, Yijiang Li, Kyle Chard, Kibaek Kim, and Ravi Madduri. "Experiences building enterprise-level privacy-preserving federated learning to power ai for science." In 2025 IEEE 7th International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications (TPS-ISA), pp. 382-391. IEEE, 2025.
+•	First-author paper accepted at the 22nd IEEE International Conference on e-Science on envisioning federated learning architecture development on American Science Cloud.
+o	Li, Zilinghan, Abhijit Chunduru, Harinarayan Krishnan, Eric Chagnon, Peter Nugent, Kibaek Kim, and Ravi Madduri. "Federated Learning on the American Science Cloud using APPFL." arXiv preprint arXiv:2609.02238 (2026).
+•	First-coauthor paper accepted as poster at the 22nd IEEE International Conference on e-Science on international federated GWAS experiments using GA4GH TES.
+o	Chunduru, Abhijit, Matthew Joel, Zilinghan Li, and Ravi Madduri. "Towards Global Federated Genome-Wide Association Meta-Analysis Using GA4GH TES." arXiv preprint arXiv:2609.02227 (2026).
+•	Second-author paper submitted to SoftwareX for HiveWatch, a framework-agnostic observability toolkit for federated learning.
+o	Chunduru, Abhijit, Zilinghan Li, Matthew Joel, and Ravi Madduri. "HiveWatch: Framework-Agnostic Observability for Federated Learning."
+•	Second-author paper to be submitted for federated learning among DOE supercomputers.
+o	Li, Yijiang, Zilinghan Li, Kyle Chard, Ian Foster, Todd Munson, Ravi Madduri, and Kibaek Kim. "Scalable Cross-Facility Federated Learning for Scientific Foundation Models on Multiple Supercomputers." arXiv preprint arXiv:2603.19544 (2026).
+Talks
+•	Li, Zilinghan. “REU Site Tutorial: When Federated Learning Meets FABRIC.” At Research Experiences for Undergraduates (REU) program at the University of North Carolina at Chapel Hill, June 2026.
+•	Madduri, Ravi, Zilinghan Li, “Federated Learning Case Study on the Bridge2AI Voice Dataset Using APPFL.” With Ravi Madduri. At 2026 Voice AI Symposium & Hackathon, St Petersburg, Florida, May 2026.
+•	Li, Yijiang, Emon Dey, Zilinghan Li, Krishnan Raghavan, Kyle Chard, Ian Foster, Todd Munson, et al. " Towards Scalable Federated Learning for Scientific Computing." Slide presentation at the 2026 Trillion Parameter Consortium's 2026 all-hands conference and exhibition, May 31, 2026 - June 3, 2026.
+
+Software and equipment developed
+•	Continued leading the development of the open source APPFL framework with 111 commits (23,103 lines of code added, and 6,030 lines of code removed), including 4 version releases on PyPI in the past fiscal year. Integrated new features such as support for memory-efficient communication for large foundation models, privacy-enhancing algorithms, multi-user globus compute endpoint, virtual simulator, keycloack authentication, agentic skills, federated GWAS, and integration into NERSC Spin. APPFL has received more than 180 stars and 40 forks on GitHub. 
+•	Contributed to the design and the development of trac.appflx.link and forge.appflx.link, which host a web platform to authenticate users through keycloak, create secure federation, launch on-demand federated learning server with different backends (gRPC, globus compute, and IRI). 
+•	Supervised the design and development of HiveWatch from scratch, a monitoring and visualization toolkit for distributed and federated training experiments. Over the past year, I have contributed 21 commits (7,129 lines of code added, and 12,8453 lines of code removed), including 2 version releases on PyPI. 
+•	Contributed to the development of Apeiron with 6 commits (6,121 lines of code added and 07 lines of code removed). Apeiron is a continual learning framework that automatically detects concept drift in data streams and adapts models through JVP regularized retraining, as a research product of the ModCon BASE SIM (self-improving model) team. 
+•	Contributed to the development of RADAR-II with 5 commits (4,049 lines of code added and 461 lines of code removed). It’s a federated, privacy-enhancing framework for radio follow-up of gravitational-wave events with features including accelerated federated inference, LLM-assisted GCN parsing, and agentic VLA scheduling.
+
+Professional Activities and Recognitions 
+ANL
+•	Contributed to the recruitment of a Postdoc position by participating in the candidate selection and interviews.
+Professional Community (20 papers reviewed in total)
+•	Reviewed 4 papers NeurIPS 2026.
+•	Reviewed 4 papers for SoftwareX.
+•	Reviewed 3 papers for BMVC 2026.
+•	Reviewed 1 paper for ECCV 2026.
+•	Reviewed 1 paper for CVPR 2026.
+•	Reviewed 2 papers for NAACL Insight Workshop.
+•	Reviewed 1 paper for Scientific Data.
+•	Reviewed 1 paper for Journal of Medical Systems.
+•	Reviewed 1 paper for Journal of Supercomputing.
+•	Reviewed 1 paper International Journal of Cloud Computing.
+•	Reviewed 1 paper for Cluster Computing.
+•	Program Committee at The Workshop on Insights from Negative Results in NLP.
+Awards and Honors 
+•	Best paper award at the DataCV Workshop at the IEEE/CVF Conference on Computer Vision and Pattern Recognition (DataCV@CVPR 2026).
+
+Collaboration, Management, and Leadership
+•	Supervised two master’s students: Aditya Sinha from University of Illinois on cost-effective scientific workflow deployment, and Abhijit Chunduru from University of Massachusetts Amherst on federated learning monitoring and federated learning for science as a service; and one PhD student Fatema Siddika from Iowa State University for federated continual learning.
+•	Onboarded new pre-docs in the team (Matthew Joel and John Wu) for different projects.
+•	Closely collaborated with researchers from Lawrence Berkeley National Laboratory (Harinarayan Krishnan), Stony Brook University (Srikar Yellapragada, Varun Belagali, and Joel Saltz), Iowa State University (Lucas Nerone Rillo and Soumik Sarkar), and Johns Hopkins University (Tanner O’Dwyer, and Alessandra Corsi).
+•	Led the technical development of the APPFL framework by reviewing pull requests from collaborating developers and the community. 
+
+Core Values
+•	Impact: Contributed to advancing federated learning, high-performance computing, and AI for biomedicine through research projects and publications in top-tier conferences and journals, thereby strengthening Argonne’s scientific impact and reputation. 
+•	Safety: Strictly and consistently adhered to lab safety protocols during research activities. 
+•	Respect: Actively and respectfully sought feedback from managers, colleagues, and collaborators, and integrated their inputs to improve work outcomes and foster a culture of mutual respect.
+•	Integrity: Maintained the highest ethical standards by open-sourcing research code and actively maintaining it, ensuring transparency, reproducibility, and accessibility for the broader community.
+•	Teamwork: Collaborated effectively with researchers and students both within Argonne and across external institutions to build strong partnerships and advance joint and collaborative research. Regularly shared updates and offered support to collaborators to foster a cooperative and inclusive work environment. 
+
+Goals for FY27
+•	Design and develop a robust integration of American Science Cloud into APPFL and continue improving the gateway platform for providing federated learning as a service in various formats to make APPFL a de facto federated learning platform choice among DOE labs.
+•	Build a mature, decentralized computing infrastructure on top of APPFL to support various decentralized workflows on APPFL.
+•	Explore the intersection of agentic workflow, continual learning, and federated learning to close the loop of automatic self-improving federated learning workflow. 
+•	Explore the intersection of federated learning and multi-modal model learning for biomedical applications. 
+•	Continue to actively mentor and onboard new team members and student interns, providing guidance to help them contribute effectively to research efforts. 
+
+

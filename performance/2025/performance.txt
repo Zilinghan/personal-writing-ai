@@ -1,0 +1,89 @@
+Statement of Accomplishments - Zilinghan Li
+
+TIME PERIOD:  October 1, 2024 through September 30, 2025 (FY25)
+Summary
+During fiscal year 2025, my work primarily focused on advancing federated learning (FL) and developing AI solutions for biomedicine and general science. In FL, I continued to work as the lead developer for the Advanced Privacy-Preserving Federated Learning (APPFL) framework, with new features integrated for a broader application range within the scope of AI for science. In AI for biomedicine and general science, I collaborated with researchers from the University of Pennsylvania and Stony Brook University to build AI-powered tools that address critical challenges in biomedicine. I was also actively involved in the evaluation and post-pretraining teams for the AuroraGPT effort. 
+
+Research Products
+Refereed articles in highly prestigious venues (top tier conferences/journals)
+•	[Included in Prior SOA – Status Change] First-author paper accepted at the 25th IEEE International Symposium on Cluster, Cloud, and Internet Computing (CCGrid 2025), a top-tier conference for distributed and cloud computing, which details the design of the refactored APPFL framework and benchmarks its performance. (25% acceptance rate)
+o	Li, Zilinghan, Shilan He, Ze Yang, Minseok Ryu, Kibaek Kim, and Ravi Madduri. "Advances in APPFL: A comprehensive and extensible federated learning framework." In 2025 IEEE 25th International Symposium on Cluster, Cloud and Internet Computing (CCGrid), pp. 01-11. IEEE, 2025.
+•	Third-author paper accepted at the main conference of the 2025 Annual Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics (NAACL 2025), a top-tier conference for natural language processing, which proposes the first efficient federated pruning strategy for large language models. (~22% acceptance rate)
+o	Bai, Guangji, Yijiang Li, Zilinghan Li, Liang Zhao, and Kibaek Kim. "Fedspallm: Federated pruning of large language models." In Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics, pp. 8361-8373, 2025.
+•	Fourth-author paper accepted at the 28th International Conference on Medical Image Computing and Computer-Assisted Intervention (MICCAI 2025), a prestigious conference in medical image processing, which presents a novel lossy compression strategy for pathology images with pre-trained autoencoders. (29% acceptance rate)
+o	Yellapragada, Srikar, Alexandros Graikos, Kostas Triaridis, Zilinghan Li, Tarak Nath Nandi, Ravi K. Madduri, Prateek Prasanna, Joel Saltz, and Dimitris Samaras. "Pathology Image Compression with Pre-trained Autoencoders." To appear in The 28th International Conference on Medical Image Computing and Computer-Assisted Intervention (MICCAI 2025).
+•	Sixth-author paper accepted at The Astrophysical Journal Supplement Series, a top-tier journal for astrophysics, which presents a federated framework for gravitational wave event follow-up. 
+o	Patel, Parth, Alessandra Corsi, E. A. Huerta, Kara Merfeld, Victoria Tiki, Zilinghan Li, Tekin Bicer et al. "RADAR-Radio Afterglow Detection and AI-driven Response: A Federated Framework for Gravitational Wave Event Follow-Up." To appear in The Astrophysical Journal Supplement Series (ApJS).
+•	[Included in Prior SOA – Status Change] Sixth-author paper accepted at the Computational and Structural Biotechnology Journal, exploring the benefits of privacy-preserving capabilities of federated learning in biomedical applications. 
+o	Hoang, Trung-Hieu, Jordan Fuhrman, Marcus Klarqvist, Miao Li, Pranshu Chaturvedi, Zilinghan Li, Kibaek Kim et al. "Enabling end-to-end secure federated learning in biomedical research on heterogeneous computing environments with APPFLx." Computational and Structural Biotechnology Journal 28 (2025): 29-39.
+•	First-coauthor paper submitted to npj Digital Medicine, which builds a large language model-based workflow for early identification of undiagnosed patients with rare genetic diseases.
+o	Singhal, Pankhuri, Zilinghan Li, Ze Yang, Tarak Nandi, Colleen Morse, Zachary Rodriguez, Alex Rodriguez et al. "Leveraging Open-Source Large Language Models to Identify Undiagnosed Patients with Rare Genetic Aortopathies." medRxiv (2025): 2025-09.
+•	Third-author paper submitted to Nature Methods, which develops the first generative foundation model for digital histopathology. 
+o	Yellapragada, Srikar, Alexandros Graikos, Zilinghan Li, Kostas Triaridis, Varun Belagali, Saarthak Kapse, Tarak Nath Nandi et al. "PixCell: A generative foundation model for digital histopathology images." arXiv preprint arXiv:2506.05127 (2025).
+•	Fourth-author paper submitted to the Fourteenth International Conference on Learning Representations (ICLR 2026), which introduces a novel self-supervised method using diverse synthetic images. 
+o	Belagali, Varun, Pierre Marza, Srikar Yellapragada, Zilinghan Li, Tarak Nath Nandi, Ravi K. Madduri, Joel Saltz, Stergios Christodoulidis, Maria Vakalopoulou, and Dimitris Samaras. "CDG-MAE: Learning Correspondences from Diffusion Generated Views." arXiv preprint arXiv:2506.18164 (2025).
+•	Fifth-author paper submitted to Transactions on Machine Learning Research (TMLR), which leverages self-augmentation to improve self-supervised learning.
+o	Belagali, Varun, Srikar Yellapragada, Alexandros Graikos, Saarthak Kapse, Zilinghan Li, Tarak Nath Nandi, Ravi K. Madduri, Prateek Prasanna, Joel Saltz, and Dimitris Samaras. "Gen-sis: Generative self-augmentation improves self-supervised learning." arXiv preprint arXiv:2412.01672 (2024).
+•	Tenth-author paper submitted to The International Journal of High-Performance Computing Applications (IJHPCA), which describes methodologies for evaluating large language models as scientific research assistants.
+o	Cappello, Franck, Sandeep Madireddy, Robert Underwood, Neil Getty, Nicholas Lee-Ping Chia, Nesar Ramachandra, Josh Nguyen et al. "Eaira: Establishing a methodology for evaluating ai models as scientific research assistants." arXiv preprint arXiv:2502.20309 (2025).
+•	Twelfth-author paper submitted to Nature for genome-wide assessment of pleiotropy across >1000 traits from global biobanks. 
+o	Levin, Michael G., Satoshi Koyama, Jakob Woerner, David Y. Zhang, Alexis Rodriguez, Tarak Nandi, Buu Truong et al. "Genome-Wide Assessment of Pleiotropy Across> 1000 Traits from Global Biobanks." medRxiv (2025): 2025-04.
+
+Publications in refereed conference proceedings
+•	Second-author paper accepted at the 21st IEEE International Conference on e-Science on customizable assurance of AI data readiness in federated learning. 
+o	Hiniduma, Kaveen, Zilinghan Li, Aditya Sinha, Ravi Madduri, and Suren Byna. "CADRE: Customizable Assurance of Data Readiness in Privacy-Preserving Federated Learning." In 2025 IEEE 21st International Conference on e-Science. 
+•	Second-author paper accepted at the 61st Allerton Conference on Communication, Control, and Computing on cost-aware federated learning on the cloud.
+o	Sinha, Aditya, Zilinghan Li, Tingkai Liu, Volodymyr Kindratenko, Kibaek Kim, and Ravi Madduri. "FedCostAware: Enabling Cost-Aware Federated Learning on the Cloud." In 2025 61st Annual Allerton Conference on Communication, Control, and Computing.
+•	Second-author poster accepted at the 21st IEEE International Conference on e-Science on cost-aware federated learning on the cloud.
+o	Sinha, Aditya, Zilinghan Li, Tingkai Liu, Volodymyr Kindratenko, Kibaek Kim, and Ravi Madduri. "Cost-Aware Federated Learning on the Cloud." In 2025 IEEE 21st International Conference on e-Science (Poster).
+•	Fourth-author poster accepted at the European Human Genetics Conference on privacy-preserving federated GWAS across global biobanks.
+o	Rodriguez, Alexis, Youngdae Kim, Tarak Nandi, Zilinghan Li, and Ravi Madduri. “Scaling privacy-preserving federated GWAS across global biobanks with GPU acceleration and AI-driven multi-modal integration.” In 2025 European Human Genetics Conference (Poster).
+•	[Included in Prior SOA – Status Change] Second-author paper accepted at the Sixth IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications on an envisioned federated learning framework for enabling learning healthcare system.
+o	Madduri, Ravi, Zilinghan Li, Tarak Nandi, Kibaek Kim, Minseok Ryu, Alex Rodriguez. “Advances in Privacy Preserving Federated Learning to Realize a Truly Learning Healthcare System.” In The Sixth IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications.
+
+Talks
+•	Presenting “Leveraging Open-Source LLMs-Enabled Identification of Undiagnosed Patients with Rare Genetic Aortopathies” at the AMIA 2025 Informatics Summit.
+•	Presenting “Advances in Privacy-Preserving Federated Learning to Realize a Truly Learning Healthcare System” at the IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications.
+•	Presenting “When Federated Learning Meeting FABRIC” at FABIRC tutorials [Recording].
+•	Presenting “APPFL Framework and Its Integration with MONAI” at MONAI Federated Learning Working Group [Recording]. 
+•	Delivering a hands-on tutorial to NIH researchers on leveraging APPFL to train federated AI models using the AI-READI dataset at the Bridge2AI All Hands Conference and Open House.
+•	Presenting “Training Scalability of the APPFL Framework” at the Federated Learning at Scale BOF at the Trillion Parameter Consortium’s 2025 all-hands conference. 
+•	Presenting poster “Cost-Aware Federated Learning on the Cloud” at IEEE International Conference on e-Science.
+	
+Software and equipment developed
+•	Led the development of the open source APPFL framework with 215 commits (41,416 lines of code added, and 21,765 lines of code removed), including 13 monthly version releases on PyPI in the past fiscal year. Integrated new features such as support for GA4GH task execution service (TES), Ray communicator, multi-GPU model training, MONAI integration, Fed-SB integration, cloud-based and HPC-based federated learning tutorial, AI data readiness assurance, and wandb integration. APPFL has received more than 150 stars on GitHub, which is 80 more than last year. 
+•	Contributed to the maintenance of the SciCode repository, which has more than 140 stars on GitHub.
+
+Professional Activities and Recognitions 
+ANL
+•	Contributed to the recruitment of a Postdoc position by participating in the candidate interviews.
+Professional Community
+•	Built the APPFL YouTube Channel and created video tutorials on that.
+•	Reviewed one paper for Journal of Digital Health.
+•	Reviewed one paper for TPC Supercomputing Asia.
+•	Reviewed one paper for Medical Physics Journal.
+•	Reviewed two papers for NAACL Insight Workshop.
+•	Reviewed one paper for Electronics and Telecommunications Research Institute Journal.
+•	Reviewed one paper for the International Conference on Computer Vision (ICCV2025).
+•	Reviewed one paper for the Journal of Supercomputing. 
+•	Reviewed one paper for IEEE Transactions on Circuits and Systems for Video Technology.
+
+Collaboration, Management, and Leadership
+•	Supervised three master’s students from the University of Illinois Urbana-Champaign (Ze Yang, Rishi Mohan, and Aditya Sinha) on federated learning and large language model-related research projects.
+•	Closely collaborated with researchers from the University of Illinois Urbana-Champaign (Ze Yang, Tingkai Liu, Aditya Sinha, Rishi Mohan, and Volodymyr Kindratenko), University of Pennsylvania (Pankhuri Singhal and Anurag Verma), Stony Brook University (Srikar Yellapragada, Varun Belagali, and Joel Saltz), and Ohio State University (Kaveen Hiniduma and Suren Byna). 
+•	Led the technical development of the APPFL framework by reviewing pull requests from collaborating developers and the community. 
+
+Core Values
+•	Impact: Contributed to advancing federated learning and AI for biomedicine through research projects and publications in top-tier conferences and journals, thereby strengthening Argonne’s scientific impact and reputation.
+•	Safety: Strictly and consistently adhered to lab safety protocols during research activities. 
+•	Respect: Actively and respectfully sought feedback from managers, colleagues, and collaborators, and integrated their inputs to improve work outcomes and foster a culture of mutual respect.
+•	Integrity: Maintained the highest ethical standards by open-sourcing research code and actively maintaining it, ensuring transparency, reproducibility, and accessibility for the broader community.
+•	Teamwork: Collaborated effectively with researchers and students both within Argonne and across external institutions to build strong partnerships and advance joint and collaborative research. Regularly shared updates and offered support to collaborators to foster a cooperative and inclusive work environment. 
+
+Goals for FY26
+•	Deploy a secure, scalable, and reliable federated learning infrastructure among DOE supercomputers and extend its reach globally, further broadening the user community of APPFL.
+•	Improve the federated learning as-a-service platform by migrating it to the NERSC Spin platform and integrating new features such as cost-aware federated learning strategies to facilitate seamless, secure, and cost-effective FL experiments among cloud and HPC resources. 
+•	Explore the intersection of federated learning and multi-modal model learning for biomedical applications. 
+•	Advance the development of frontier AI models for biomedicine by deepening collaborations with current partners and establishing new connections with domain experts.
+•	Continue to actively mentor new team members and student interns, providing guidance to help them contribute effectively to research efforts. 
+

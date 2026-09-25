@@ -1,0 +1,64 @@
+Statement of Accomplishments - Zilinghan Li
+
+TIME PERIOD:  October 1, 2023 through September 30, 2024 (FY24)
+Summary
+During fiscal year 2024, my work primarily focused on two key research areas: federated learning (FL) and large language models (LLMs). In FL, I led the development and maintenance of the Advanced Privacy-Preserving Federated Learning (APPFL) framework. I also contributed to several FL-related research projects, with multiple papers accepted or submitted to top-tier machine learning and distributed computing conferences. In LLMs, I collaborated with the University of Pennsylvania Medical School to develop a model for screening patients with rare genetic aortopathy. Additionally, I served as the liaison between the post-pretraining and evaluation teams for the AuroraGPT effort.
+Research Products
+Refereed articles in highly prestigious venues (top tier conferences/journals)
+•	First-author paper accepted at The Twelfth International Conference on Learning Representations (ICLR 2024), a top-tier machine learning conference (30.52% acceptance rate), which proposes an asynchronous federated learning algorithm to resolve the computing efficiency problem within heterogeneous computing environments. 
+o	Li, Zilinghan, Pranshu Chaturvedi, Shilan He, Han Chen, Gagandeep Singh, Volodymyr Kindratenko, Eliu A. Huerta, Kibaek Kim, and Ravi Madduri. "FedCompass: Efficient Cross-Silo Federated Learning on Heterogeneous Client Devices Using a Computing Power-Aware Scheduler." In The Twelfth International Conference on Learning Representations.
+•	 Fourth-author paper accepted at the 44th IEEE International Conference on Distributed Computing Systems (ICDCS 2024), a prestigious conference in distributed computing (21.9% acceptance rate), which investigates the impact of lossy compression on federated learning. 
+o	Wilkins, Grant, Sheng Di, Jon C. Calhoun, Zilinghan Li, Kibaek Kim, Robert Underwood, Richard Mortier, and Franck Cappello. "FedSZ: Leveraging Error-Bounded Lossy Compression for Federated Learning Communications." In 2024 IEEE 44th International Conference on Distributed Computing Systems (ICDCS), pp. 577-588. IEEE, 2024.
+•	First-author paper submitted to the 39th IEEE International Parallel & Distributed Processing Symposium (IPDPS 2025), which details the new design of the APPFL framework and benchmarks its performance in communication, compression, privacy preservation, and computation efficiency.
+o	Li, Zilinghan, Shilan He, Ze Yang, Minseok Ryu, Kibaek Kim, and Ravi Madduri. "Advances in APPFL: A Comprehensive and Extensible Federated Learning Framework." In 2025 39th IEEE International Parallel & Distributed Processing Symposium (IPDPS).
+Refereed  journal   articles
+•	First-author paper accepted by the Computing in Sciences & Engineering Journal, focusing on federated fine-tuning of large language models.
+o	Li, Zilinghan, Shilan He, Pranshu Chaturvedi, Volodymyr Kindratenko, Eliu A. Huerta, Kibaek Kim, and Ravi Madduri. "Secure Federated Learning Across Heterogeneous Cloud and High-Performance Computing Resources-A Case Study on Federated Fine-tuning of LLaMA 2." Computing in Science & Engineering (2024).
+•	Sixth-author paper submitted to the Computational and Structural Biotechnology Journal, exploring the benefits and privacy-preserving abilities of FL in biomedical applications. 
+o	Hoang, Trung-Hieu, Jordan Fuhrman, Ravi Madduri, Miao Li, Pranshu Chaturvedi, Zilinghan Li, Kibaek Kim et al. "Enabling end-to-end secure federated learning in biomedical research on heterogeneous computing environments with APPFLx." Computational and Structural Biotechnology (2024).
+Publications in refereed conference proceedings
+•	First-author paper accepted by the 19th IEEE International Conference on e-Science, outlining a privacy-preserving federated learning service. 
+o	Li, Zilinghan, Shilan He, Pranshu Chaturvedi, Trung-Hieu Hoang, Minseok Ryu, E. A. Huerta, Volodymyr Kindratenko et al. "Appflx: Providing privacy-preserving cross-silo federated learning as a service." In 2023 IEEE 19th International Conference on e-Science (e-Science), pp. 1-4. IEEE, 2023.
+•	First-coauthor paper submitted to the Machine Learning for Health (ML4H) Symposium, analyzing the impact of fine-tuning large language models on patient disease screening.
+o	Singhal, Pankhuri*, Zilinghan Li*, Ze Yang*, Tarak Nath Nandi, Zachary Rodriguez, Theodore G. Drivas, Alexis A. Rodriguez, Ravi Madduri, Anurag Verma. “Fine-tuning: Not the Finest of Them All for Specialized Clinical Applications.” In 2024 Machine Learning for Health (ML4H) Symposium. 
+•	First-coauthor paper submitted to the AMIA 2025 Informatics Summit on building LLM-based tool for early identification of undiagnosed patients with rare genetic aortopathies.
+o	Singhal, Pankhuri*, Zilinghan Li*, Ze Yang*, Tarak Nath Nandi, Collen Morse, Zachary Rodriguez, Reed Pyeritz, Giorgio Sirugo, Alexis A. Rodriguez, Theodore G. Drivas, Ravi Madduri, Anurag Verma. “Leveraging Open-Source Large-Language Model-Enabled Identification of Undiagnosed Patients with Rare Genetic Aortopathies.” In AMIA 2025 Informatics Summit.
+•	Second-author paper submitted to The Sixth IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications on an envisioned federated learning framework for enabling learning healthcare system.
+o	Madduri, Ravi, Zilinghan Li, Tarak Nandi, Kibaek Kim, Minseok Ryu, Alex Rodriguez. “Advances in Privacy Preserving Federated Learning to Realize a Truly Learning Healthcare System.” In The Sixth IEEE International Conference on Trust, Privacy and Security in Intelligent Systems, and Applications.
+•	Second-author position paper accepted at the 2024 Energy-Efficient Computing for Science Workshop on energy efficient federated learning.
+o	Kim, Kibaek, Zilinghan Li, Krishnan Raghavan, Minseok Ryu, Ravi Madduri, Todd Munson. “Energy-Efficient Computing in Federated Learning.” In 2024 Energy-Efficient Computing for Science Workshop.
+•	First-author paper submitted to the SC TPC workshop on federated training of foundation models.
+o	Li, Zilinghan, Ze Yang, Ravi Madduri. “Federated Training and Fine-tuning of Science Foundation Models.” In Accelerating the Development and Use of Generative AI for Science and Engineering: The Trillion Parameter Consortium (TPC) workshop.
+Talks
+•	Delivered a tutorial on federated learning at the SciFM summer school, covering concepts, applications, challenges, and frameworks [Recording].
+•	Presented at ParslFest 2024 on using Globus Compute to streamline federated learning applications.
+Software and equipment developed
+•	Led the development of the open-source APPFL framework with 260 commits (76,159 lines of code added, 56,060 lines removed), including one major release and ten minor releases. Integrated new features such as end-to-end experiment configuration, Globus-based authentication, model compression, privacy preservation, and asynchronous aggregation, enhancing the framework's functionality and extensibility. APPFL has received more than 70 stars on GitHub.
+•	Contributed to building the AI4Science Benchmark Question Generation website, which has collected more than 1100 scientific questions from researchers and students across various domains.
+•	Contributed to developing the Skill, Safety, Trust and Reliability (STaR) evaluation framework for AuroraGPT.
+Professional Activities and Recognitions 
+•	Helped review one paper for the Future Generation Computer Systems.
+•	Helped review one paper for the IEEE Transactions on Parallel and Distributed Systems.
+•	Contributed to the NAIRR Pilot proposal, which was awarded thousands of node hours on multiple HPC systems to advance privacy-preserving federated learning.
+Diversity, Equity, Inclusion and Accessibility (DEIA):  
+•	Worked on a research project leveraging LLMs for the early identification of undiagnosed patients with rare genetic aortopathies. This project enables early diagnosis for underserved and underdiagnosed populations and fosters equitable access to life-saving treatments.
+•	Provided hands-on supports to researchers from external institutions by assisting with the APPFL framework I developed, offering individualized problem-solving sessions via Zoom/Teams.
+•	Ensured that APPFL software documentation was accessible to users of varying abilities by offering both written and video tutorials, enabling inclusive access to resources.
+•	Encouraged diverse perspectives in team discussions and helped to ensure that all voices were considered in decision-making.
+•	Contributed to recruitment efforts by participating in interviews and ensuring fair, unbiased evaluation of candidates from varied backgrounds.
+Core Values
+•	Impact: Led key research projects in federated learning and LLMs, contributing to advancements in the field through publications in top-tier conferences, thereby enhancing Argonne's scientific influence and reputation.
+•	Safety: Ensured adherence to lab safety protocols during research activities. 
+•	Respect: Actively and respectfully sought feedback from leaders and peers, incorporating their insights into my work to continuously improve outcomes and foster mutual respect within the team.
+•	Integrity: Upheld the highest ethical standards by open-sourcing research code and actively maintaining it, ensuring transparency, reproducibility, and accessibility for the broader scientific community.
+•	Teamwork: Collaborated effectively with researchers and students both within Argonne and across external institutions, strengthening partnerships and enhancing collaborative research. Regularly shared ideas and provided assistance to teammates, fostering a supportive and cooperative work environment.
+Goals for FY25
+•	Actively engage in diverse research projects across AI for science and biomedicine, expanding expertise and contributions in these areas.
+•	Build stronger ties with external research institutions to foster joint research projects, knowledge exchange, and co-authored publications.
+•	Enlarge the user community for the APPFL framework by advertising it at various events, delivering more tutorials, and organizing community activities.
+•	Connect popular cloud computing providers within the APPFL framework and provide solutions for cost-effective federated learning for real-world biomedical applications.
+•	Deepen knowledge of privacy-enhancing technologies, such as trusted execution environments, homomorphic encryption, and secure multiparty computation, and integrate them into the framework's development.
+•	Actively mentor new team members and students and help them navigate projects.
+Supports needed
+•	Continued access to high-performance computing resources and collaboration with internal and external experts.
+•	Opportunities to lead student projects and collaborate with visiting students.
