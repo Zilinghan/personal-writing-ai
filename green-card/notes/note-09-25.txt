@@ -1,0 +1,15 @@
+Hi Mikala and the Ellis Porter Team,
+
+I wanted to provide a quick update on a few items:
+
+First, I have uploaded an updated (and hopefully the final) version of my CV. The main changes are:
+
+- Updated citation counts and metrics to reflect the current state as of September 2026: total citations have increased to 323, h-index to 11, and i10-index to 12.
+- Added the new journal publication: "EAIRA: Establishing a Methodology for Evaluating LLMs as Scientific Research Assistants," now officially accepted and published in the International Journal of High Performance Computing Applications (IJHPCA). 
+
+Second, regarding the employment confirmation letter: after discussing with HR, my business title remains "Machine Learning Engineer" following the promotion — the change was a pay grade adjustment rather than a title change. Michelle should be able to proceed with issuing the updated employment confirmation letter using my current title.
+
+Please let me know if you need anything else from me.
+
+Best regards,
+Zilinghan Li

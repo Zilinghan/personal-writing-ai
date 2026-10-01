@@ -1,0 +1,25 @@
+Subject: Sharing Globus Compute Endpoints Across a Federation
+
+===
+
+Hi Ryan,
+
+We have recently been exploring a new way of "sharing" Globus Compute endpoints for running federated learning, and we would love to get your thoughts on it before we try it in a real deployment.
+
+Previously, for a federation (federated learning group, i.e., a group of people or institutions), we had two ways to share endpoints within the group:
+
+(i) Invite everyone in the federation to a Globus group, and then ask Globus support to share each endpoint with that group. This is a legacy solution from about three years ago.
+(ii) Use a multi-user Globus Compute endpoint. This is the official solution, but it requires root access on the machine where the endpoint runs.
+
+Now we are wondering whether the following would work:
+
+1) APPFL creates an APPFL-specific Globus account.
+2) For each federation, we create a service account under that APPFL-specific account.
+3) We then obtain the client ID and client secret for that federation-specific service account.
+4) All clients create their own Globus Compute endpoints using that client ID and client secret, which can be shared among the clients through a web dashboard.
+5) With these steps, all client endpoints would belong to the federation-specific service account and be accessible across the federation for running federated learning experiments.
+
+I would appreciate your thoughts on this approach. I have also copied my colleagues who may plan to use it.
+
+Best,
+Zilinghan

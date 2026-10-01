@@ -1,0 +1,19 @@
+Subject: Follow-up on ADKO Integration into APPFL
+
+===
+
+Hi All,
+
+This is Zilinghan Li, an engineer at Argonne leading the development of APPFL. I wanted to follow up on the integration of ADKO into APPFL that we discussed in our last meeting.
+
+We have now completed the integration in a working branch of APPFL:
+https://github.com/APPFL/APPFL/tree/daisy/prototype
+
+The prototype supports three communication modes: (i) serial mode in a single process for easy setup; (ii) MPI mode for large-scale testing; and (iii) gRPC mode for distributed, decentralized deployment. All three modes have been tested and are working.
+
+John and I are now in the final stage of verification, reproducing the results of the original ADKO repository both with and without LLM usage (we are currently working on the scientific_discovery example). If you have any suggestions on how to set up another simple reproduction test, we would greatly appreciate them.
+
+With the integration nearly complete, we would also like to discuss what the best next steps would be for our collaboration on moving DAISY forward. Thanks a lot!
+
+Best,
+Zilinghan
