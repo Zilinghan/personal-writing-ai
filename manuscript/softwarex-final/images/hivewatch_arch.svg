@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="580" viewBox="0 0 800 580" font-family="Arial, Helvetica, sans-serif">
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#333" stroke-width="1.3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-lt" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#888" stroke-width="1.3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-w" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#fff" stroke-width="1.3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ══════════════════════════════════════════
+       ROW 1 — FL CLIENTS
+       ══════════════════════════════════════════ -->
+  <text x="36" y="24" font-size="11" fill="#666" font-style="italic">Federated learning clients (any framework)</text>
+
+  <rect x="36"  y="32" width="148" height="58" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.9"/>
+  <text x="110" y="56" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">Client i</text>
+  <text x="110" y="74" font-size="11" text-anchor="middle" fill="#555">local training metrics</text>
+
+  <rect x="200" y="32" width="148" height="58" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.9"/>
+  <text x="274" y="56" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">Client j</text>
+  <text x="274" y="74" font-size="11" text-anchor="middle" fill="#555">local training metrics</text>
+
+  <text x="378" y="65" font-size="16" text-anchor="middle" fill="#999">· · ·</text>
+
+  <rect x="406" y="32" width="148" height="58" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.9"/>
+  <text x="480" y="56" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">Client N</text>
+  <text x="480" y="74" font-size="11" text-anchor="middle" fill="#555">local training metrics</text>
+
+  <text x="588" y="52" font-size="11" fill="#999" font-style="italic">any transport layer</text>
+  <text x="588" y="67" font-size="11" fill="#999" font-style="italic">(gRPC, HTTP, MPI)</text>
+
+  <!-- arrows down to FL server -->
+  <line x1="110" y1="90"  x2="110" y2="138" stroke="#555" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="274" y1="90"  x2="274" y2="138" stroke="#555" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="480" y1="90"  x2="480" y2="138" stroke="#555" stroke-width="1" marker-end="url(#arr)"/>
+
+  <!-- ══════════════════════════════════════════
+       ROW 2 — FL SERVER
+       ══════════════════════════════════════════ -->
+  <text x="36" y="133" font-size="11" fill="#666" font-style="italic">FL server</text>
+
+  <rect x="36" y="138" width="560" height="54" rx="5" fill="#ddd" stroke="#555" stroke-width="0.9"/>
+  <text x="316" y="161" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">FL server aggregator</text>
+  <text x="316" y="179" font-size="11" text-anchor="middle" fill="#555">receives client updates, triggers logging at each round</text>
+
+  <line x1="316" y1="192" x2="316" y2="224" stroke="#333" stroke-width="1.1" marker-end="url(#arr)"/>
+
+  <!-- ══════════════════════════════════════════
+       ROW 3 — HIVEWATCH CORE  (dashed box)
+       ══════════════════════════════════════════ -->
+  <rect x="26" y="224" width="748" height="186" rx="6"
+        fill="none" stroke="#aaa" stroke-width="0.9" stroke-dasharray="6 3"/>
+  <text x="40" y="240" font-size="11" fill="#888" font-style="italic">HiveWatch monitoring core</text>
+
+  <!-- Run orchestrator — dark primary box -->
+  <rect x="42" y="248" width="220" height="84" rx="5" fill="#222" stroke="#222" stroke-width="0.9"/>
+  <text x="152" y="271" font-size="13" font-weight="bold" text-anchor="middle" fill="#fff">Run orchestrator</text>
+  <line x1="42" y1="278" x2="262" y2="278" stroke="#555" stroke-width="0.5"/>
+  <text x="152" y="294" font-size="11" text-anchor="middle" fill="#ccc">computes round duration</text>
+  <text x="152" y="309" font-size="11" text-anchor="middle" fill="#ccc">gradient divergence</text>
+  <text x="152" y="324" font-size="11" text-anchor="middle" fill="#ccc">byte totals per round</text>
+
+  <!-- Data schema box -->
+  <rect x="278" y="248" width="192" height="84" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.8"/>
+  <text x="374" y="271" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">Data schema</text>
+  <line x1="278" y1="278" x2="470" y2="278" stroke="#bbb" stroke-width="0.5"/>
+  <text x="374" y="294" font-size="11" text-anchor="middle" fill="#444">client update record</text>
+  <text x="374" y="309" font-size="11" text-anchor="middle" fill="#444">round summary record</text>
+  <text x="374" y="324" font-size="11" text-anchor="middle" fill="#777">preserves unknown fields</text>
+
+  <!-- Location resolver box -->
+  <rect x="486" y="248" width="192" height="84" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.8"/>
+  <text x="582" y="271" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">Location resolver</text>
+  <line x1="486" y1="278" x2="678" y2="278" stroke="#bbb" stroke-width="0.5"/>
+  <text x="582" y="294" font-size="11" text-anchor="middle" fill="#444">IP address → coordinates</text>
+  <text x="582" y="309" font-size="11" text-anchor="middle" fill="#444">city, country lookup</text>
+  <text x="582" y="324" font-size="11" text-anchor="middle" fill="#777">opt-in map metadata</text>
+
+  <!-- Plugin interface box -->
+  <rect x="694" y="248" width="68" height="84" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.8" stroke-dasharray="4 2"/>
+  <text x="728" y="280" font-size="11" font-weight="bold" text-anchor="middle" fill="#555">Custom</text>
+  <text x="728" y="295" font-size="11" font-weight="bold" text-anchor="middle" fill="#555">plugin</text>
+  <text x="728" y="318" font-size="9.5" text-anchor="middle" fill="#999">4-hook API</text>
+
+  <!-- inner arrows -->
+  <line x1="262" y1="290" x2="276" y2="290" stroke="#777" stroke-width="0.8" marker-end="url(#arr-lt)"/>
+  <line x1="470" y1="290" x2="484" y2="290" stroke="#777" stroke-width="0.8" marker-end="url(#arr-lt)"/>
+  <line x1="678" y1="290" x2="692" y2="290" stroke="#777" stroke-width="0.8" marker-end="url(#arr-lt)"/>
+
+  <!-- ══════════════════════════════════════════
+       ROW 4 — BACKENDS
+       ══════════════════════════════════════════ -->
+  <text x="36" y="432" font-size="11" fill="#666" font-style="italic">Observability backends</text>
+
+  <!-- fan-out paths from core bottom -->
+  <!-- to W&B (x=138) -->
+  <path d="M 248 410 L 248 424 L 138 424 L 138 440"
+        fill="none" stroke="#333" stroke-width="1" marker-end="url(#arr)"/>
+  <!-- to MLflow (x=400) -->
+  <path d="M 316 410 L 316 440"
+        fill="none" stroke="#333" stroke-width="1" marker-end="url(#arr)"/>
+  <!-- to Live dashboard (x=610) -->
+  <path d="M 390 410 L 390 424 L 610 424 L 610 440"
+        fill="none" stroke="#333" stroke-width="1" marker-end="url(#arr)"/>
+
+  <!-- Weights & Biases backend -->
+  <rect x="36" y="440" width="204" height="82" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.8"/>
+  <text x="138" y="462" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">Weights &amp; Biases</text>
+  <line x1="36" y1="469" x2="240" y2="469" stroke="#bbb" stroke-width="0.5"/>
+  <text x="138" y="484" font-size="11" text-anchor="middle" fill="#555">per-round accuracy &amp; loss</text>
+  <text x="138" y="499" font-size="11" text-anchor="middle" fill="#555">per-client system metrics</text>
+  <text x="138" y="514" font-size="11" text-anchor="middle" fill="#888">→ wandb.ai dashboard</text>
+
+  <!-- MLflow backend -->
+  <rect x="254" y="440" width="204" height="82" rx="5" fill="#f0f0f0" stroke="#555" stroke-width="0.8"/>
+  <text x="356" y="462" font-size="13" font-weight="bold" text-anchor="middle" fill="#222">MLflow</text>
+  <line x1="254" y1="469" x2="458" y2="469" stroke="#bbb" stroke-width="0.5"/>
+  <text x="356" y="484" font-size="11" text-anchor="middle" fill="#555">metrics, params, artifacts</text>
+  <text x="356" y="499" font-size="11" text-anchor="middle" fill="#555">thread-safe batch logging</text>
+  <text x="356" y="514" font-size="11" text-anchor="middle" fill="#888">→ localhost UI</text>
+
+  <!-- Live dashboard backend — dark -->
+  <rect x="472" y="440" width="280" height="82" rx="5" fill="#222" stroke="#222" stroke-width="0.8"/>
+  <text x="612" y="462" font-size="13" font-weight="bold" text-anchor="middle" fill="#fff">Live map dashboard</text>
+  <line x1="472" y1="469" x2="752" y2="469" stroke="#555" stroke-width="0.5"/>
+  <text x="612" y="484" font-size="11" text-anchor="middle" fill="#ccc">event log saved to disk per run</text>
+  <text x="612" y="499" font-size="11" text-anchor="middle" fill="#ccc">real-time stream to browser</text>
+  <text x="612" y="514" font-size="11" text-anchor="middle" fill="#aaa">supports live and historical replay</text>
+
+</svg>
