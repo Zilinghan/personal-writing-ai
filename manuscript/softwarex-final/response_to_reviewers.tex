@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+
+\newenvironment{reviewer}{\begin{quote}\itshape\color{blue}}{\end{quote}}
+% Comment heading
+\newcommand{\comment}[2]{\subsection*{R#1: #2}}
+\newcommand{\response}{\noindent\textbf{Our reply:} }
+\newcommand{\location}[1]{\noindent\textbf{Changes in the manuscript:} #1}
+\newcommand{\HW}{\texttt{HiveWatch}}
+
+\begin{document}
+
+\begin{center}
+{\Large\textbf{Author Responses to the Reviewer Comments}}\\[4pt]
+\HW: Framework-Agnostic Observability for Federated Learning\\
+Manuscript SOFTX-D-26-01314\\[2pt]
+Abhijit Chunduru, Zilinghan Li, Matthew Joel, Ravi Madduri (Argonne National Laboratory)
+\end{center}
+
+We are grateful to the Editor and the Reviewers for the time they spent on our manuscript and for their helpful suggestions. In this document, each reviewer comment is reproduced in blue, followed by our reply and a description of the corresponding changes in the manuscript. We provide two versions of the revised manuscript: one with highlighted changes, in which all new or rewritten text also appears in blue, and a clean version without any highlighting.
+
+\section*{Overview of the revision}
+The main revisions are listed below; the reviewer comments motivating each item are given in parentheses.
+\begin{itemize}[noitemsep]
+    \item A new comparison table (Table~2) in Section~1 compares \HW{} with general-purpose experiment trackers and the native monitoring facilities of APPFL, Flower, NVIDIA FLARE, and Fedstellar across framework independence, FL-native schema, staleness, failure tracking, communication statistics, and multi-backend support (R1.1).
+    \item Section~1 now explicitly credits the built-in experiment tracking of mature FL platforms such as NVIDIA FLARE and states the remaining gap more precisely, and Section~4 positions \HW{} as complementary to these facilities (R3.1).
+    \item The term ``gradient divergence'' was replaced by ``gradient-norm dispersion'' throughout, with a justification of the magnitude-only design and its limitation in Section~2.2 (R1.3).
+    \item Section~2.3 now describes how failing emitters are handled, and Section~3.3 characterizes the expected latency of the MLflow and Weights \& Biases emitters and explains why native framework logging is not a like-for-like baseline (R1.5, R3.2, R3.3).
+    \item The FL background and related work were broadened with the seven references suggested by the Reviewers (R1.2, R1.4, R3.4).
+    \item The software was updated to \HW{}~v0.3.1, which renames the metric in the code (keeping the old name as a deprecated alias) and extends the existing lock to \texttt{round\_start()} and \texttt{log\_round()}, with new unit tests. The code metadata table and the abstract were updated accordingly.
+\end{itemize}
+
+%% =============================================================================
+\section*{Comments from Reviewer 1}
+
+We thank Reviewer~1 for the positive assessment of the practical motivation and organization of the manuscript.
+
+\comment{1.1}{Comparison with existing FL monitoring and experiment-tracking tools}
+\begin{reviewer}
+The motivation section could be further strengthened by providing a clearer comparison between HiveWatch and existing FL monitoring or experiment-tracking tools. In particular, a brief table comparing framework independence, FL-native metrics, staleness monitoring, failure tracking, communication statistics, and multi-backend support would help readers better understand the main advantages of HiveWatch.
+\end{reviewer}
+\response We thank the Reviewer for this suggestion. We added a new comparison table (Table~2) to Section~1. It compares \HW{} with general-purpose experiment trackers (Weights \& Biases, MLflow, TensorBoard) and with the native monitoring facilities of FL frameworks and platforms (APPFL's Weights \& Biases logging, Flower's built-in metrics history, NVIDIA FLARE's experiment tracking, and the Fedstellar dashboard) along the six dimensions the Reviewer proposed: framework independence, FL-native schema, staleness monitoring, failure tracking, communication statistics, and multi-backend support. The table also credits existing tools where they already provide a capability. A sentence referring to the table was added at the end of Section~1.
+
+\location{Section~1, last paragraph; new Table~2.}
+
+\comment{1.2}{Asynchronous and unreliable FL systems}
+\begin{reviewer}
+The manuscript highlights heterogeneous resources, communication costs, failures, and staleness as important challenges in practical FL systems. The authors may wish to further enrich this discussion by considering recent studies on asynchronous and unreliable FL systems, for example: ``Adaptive Semi-Asynchronous Federated Learning in Wireless Edge Networks,'' IEEE TCOM 2024; and ``Robust Federated Learning for Unreliable and Resource-limited Wireless Networks,'' IEEE TWC, 2024. These studies may provide useful context for motivating the monitoring of staleness, resource heterogeneity, and client failures.
+\end{reviewer}
+\response We thank the Reviewer for pointing us to these studies. Both works are now cited in Section~1, where we motivate the monitoring problem: once where we describe the heterogeneous compute, communication costs, and failure modes of practical FL deployments, and once where we discuss prior research on heterogeneity, staleness, and straggler management that identifies the FL-specific metrics \HW{} records. The semi-asynchronous FL study is also cited in Section~4, where we discuss how the staleness, straggler, and failure signals logged by \HW{} expose the conditions that asynchronous-aggregation methods are designed to address.
+
+\location{Section~1, first and second paragraphs; Section~4, ``FL-native diagnostics''.}
+
+\comment{1.3}{Definition of ``gradient divergence''}
+\begin{reviewer}
+The manuscript defines ``gradient divergence'' as the standard deviation of per-client gradient norms. It would be helpful if the authors could briefly justify this definition, since variations in gradient norms may not fully capture differences in gradient directions. Alternatively, a more specific term such as ``gradient-norm dispersion'' may improve clarity.
+\end{reviewer}
+\response We thank the Reviewer for this careful observation and agree that the original term was imprecise. The quantity measures the spread of per-client update {magnitudes} and does not capture differences in gradient {direction}. We adopted the Reviewer's suggested term, {gradient-norm dispersion}, throughout the manuscript, and added a sentence in Section~2.2 explaining the design choice and its limitation. The metric is a lightweight, magnitude-only indicator of client-update heterogeneity: it requires only the scalar gradient norm reported with each client update, so it can be computed cheaply on the server's critical path for any framework. Direction-aware measures such as cosine similarity between client updates would instead require processing the full update vectors on the server.
+
+For consistency between the paper and the software, we also renamed the metric in the code and released it as \HW{}~v0.3.1. The round-summary field and the logged metric are now \texttt{gradient\_norm\_dispersion} and \texttt{agg/gradient\_norm\_dispersion}, respectively. The previous name, \texttt{gradient\_divergence}, remains accepted as a deprecated alias, and runs recorded with v0.3.0 can still be replayed in the map dashboard. The change does not affect the per-call costs measured in Section~3.3, which are dominated by bookkeeping and \texttt{GeoEmitter} persistence. The code metadata table and the abstract now refer to v0.3.1.
+
+\location{Section~1, second and third paragraphs; Section~2.2, ``Event Schema''; Section~4, ``FL-native diagnostics''; Abstract and code metadata table (version).}
+
+\comment{1.4}{Participation frequency and client contribution history}
+\begin{reviewer}
+Since HiveWatch records client-selection and participation-related information, the authors may also wish to discuss whether metrics such as participation frequency or client contribution history could be useful additions. This would be relevant for studying client-selection behavior in FL. A related reference that may be useful is ``Exploring Representativity in Device Scheduling for Wireless Federated Learning,'' IEEE TWC, 2024.
+\end{reviewer}
+\response We agree that participation frequency and client contribution history are valuable for studying client-selection behavior. \HW{} already records the information needed to derive them: every client-update event carries the client identifier and round, and every round summary records the numbers of selected and completed clients, from which the Weights \& Biases and MLflow emitters already log a per-round participation rate (\texttt{round/participation\_rate}). Per-client participation frequency and contribution history can therefore be reconstructed directly from \HW{}'s replayable event log without re-running training, and we plan to expose them as native derived metrics in a future release. In the manuscript, we now cite the suggested work on representativity in device scheduling in Section~4, where we discuss how the signals logged by \HW{} expose the conditions addressed by client-selection methods.
+
+\location{Section~4, ``FL-native diagnostics''.}
+
+\comment{1.5}{Scalability of the synchronous GeoEmitter; slow or unavailable emitters}
+\begin{reviewer}
+The GeoEmitter currently performs synchronous persistence, and the manuscript also notes that the snapshot cost may increase with scale. It would be helpful to briefly discuss the scalability of this design with a larger number of clients, as well as how HiveWatch handles a slow or temporarily unavailable emitter.
+\end{reviewer}
+\response We thank the Reviewer for raising this practical point.
+
+\emph{Unavailable emitters.} Every emitter call made during training is wrapped in an exception handler, so a backend that becomes unavailable mid-run (for example, an MLflow server that can no longer be reached) is logged and skipped without interrupting training or the other configured emitters. Configuration or connection errors at initialization are raised immediately, so they surface before training starts. The revised Section~2.3 now states this explicitly.
+
+\emph{Slow emitters and scalability.} Emitter calls are synchronous by design. This favors artifact consistency, since every event is persisted before the call returns, but it also means that a slow backend adds directly to server-side latency. Because all runtime calls are serialized by the lock, per-round overhead grows linearly with the number of clients. Extrapolating from the measured means in Table~4, 1{,}000 client updates per round would add approximately 7\,ms of bookkeeping without an emitter. With the synchronous \texttt{GeoEmitter}, persistence becomes the dominant cost, and the snapshot rewrite also grows with run size. Section~5 already lists this synchronous snapshot rewrite as a current limitation, and incremental or asynchronous snapshot persistence is part of our planned future work.
+
+\location{Section~2.3, Implementation Notes.}
+
+%% =============================================================================
+\section*{Comments from Reviewer 3}
+
+We thank Reviewer~3 for recognizing the relevance of the problem, the effectiveness of the overhead evaluation, and the reproducibility of the results.
+
+\comment{3.1}{Native experiment tracking in existing FL frameworks}
+\begin{reviewer}
+The manuscript slightly overstates the lack of native integration in existing tools. For example, NVIDIA FLARE already natively supports streaming metrics directly to MLflow, Weights \& Biases, and TensorBoard without requiring custom client-side code changes. While HiveWatch's value lies in standardizing this across multiple frameworks, the claim that practitioners must currently manually build these connections from scratch is not entirely accurate for mature platforms.
+\end{reviewer}
+\response We agree, and we thank the Reviewer for this correction. Our original wording understated the tracking support already available in mature FL platforms. We revised Section~1 to acknowledge explicitly that NVIDIA FLARE can stream client- and server-side metrics to TensorBoard, MLflow, and Weights \& Biases through its built-in experiment-tracking components, and that platforms such as Fedstellar include their own monitoring dashboards. We also removed the implication that practitioners must build these connections from scratch. The revised text states the remaining gap more precisely: native facilities are specific to each runtime, metric names and the granularity of per-client records differ across frameworks, and FL-specific signals such as staleness, failures, and communication volume are largely left to the user to define. In line with the Reviewer's observation, Section~4 now states that \HW{} complements, rather than replaces, native tracking facilities such as those of NVIDIA FLARE and APPFL, and that its contribution is a common FL-native schema whose derived metrics remain consistent when the framework changes. The new comparison table (Table~2) also credits NVIDIA FLARE with multi-backend support.
+
+\location{Section~1, first and second paragraphs; new Table~2; Section~4, ``Portable instrumentation across FL frameworks''.}
+
+\comment{3.2}{Comparison with native logging; lock contention at large scale}
+\begin{reviewer}
+The evaluation only benchmarks the server-side micro-overhead. It does not compare HiveWatch's latency against the native logging baselines of Flower, APPFL, or FLARE. Furthermore, the authors note that internal state is protected by a single threading.Lock. While acceptable for 20 clients, the lack of a high-concurrency baseline (e.g., 1,000+ simultaneous clients) leaves questions about potential lock contention in massive cross-device FL scenarios. It might be interesting to see the effectivness of the framework at scale
+\end{reviewer}
+\response We appreciate these suggestions. We addressed the concern about lock contention through additional analysis and a small software update, and we explain below why we did not add a latency comparison against native framework logging.
+
+\emph{Lock contention at scale.} We agree that this deserves discussion. The lock protects only \HW{}'s in-memory bookkeeping and the emitter dispatch of each runtime call. Without an emitter, this critical section takes 7.3\,$\mu$s per call on average (Table~4), so even 1{,}000 simultaneous client updates would be serialized in approximately 7\,ms per round, which is small relative to FL round durations. In standard CPython, the global interpreter lock already serializes this pure-Python work, so the lock adds little additional contention. With the synchronous \texttt{GeoEmitter}, the dominant cost at this scale is persistence rather than lock contention, as discussed in our reply to R1.5. While reviewing the concurrency design, we also extended the lock, which previously covered only \texttt{log\_client\_update()}, to \texttt{round\_start()} and \texttt{log\_round()}, so that round summaries and client updates logged from different server threads can no longer interleave. This change is included in \HW{}~v0.3.1 together with two new unit tests. We note that these estimates are extrapolated from the measured per-call costs rather than obtained from a new 1{,}000-client experiment.
+
+\emph{Comparison with native logging.} We did not add a latency comparison against the native logging of Flower, APPFL, or NVIDIA FLARE, because these facilities record different sets of metrics at different granularities. For example, Flower records aggregated round-level metrics, whereas \HW{} records per-client events and derived round summaries. Such a comparison would therefore measure different workloads rather than the overhead of the same functionality. As the Reviewer notes, \HW{}'s main value lies in standardization across frameworks, and it is designed to run alongside a framework's native logging rather than replace it (Section~4). The revised Section~3.3 now states this reasoning.
+
+\location{Section~2.3, Implementation Notes; Section~3.3, final paragraph.}
+
+\comment{3.3}{End-to-end latency of MLflow and W\&B emitters}
+\begin{reviewer}
+Excluding MLflow and W\&B from the benchmarks is okay, but it means we do not get an empirical estimate of the end-to-end latency when using the primary third-party tools the paper argues.
+\end{reviewer}
+\response We agree that the end-to-end latency of the third-party emitters is of practical interest. We kept them out of the benchmark because their latency is dominated by factors outside \HW{}, such as the SDK operating mode, network conditions, tracking-server location, and backend load, so a single measurement would be difficult to reproduce or generalize. To nonetheless give readers a concrete expectation, the revised Section~3.3 characterizes their cost qualitatively based on the implementation. \texttt{MLflowEmitter} issues at least one synchronous \texttt{log\_batch} request per event, so its per-call latency is dominated by the round trip to the tracking server. \texttt{WandbEmitter}, in contrast, hands records to the W\&B SDK, which by default uploads them asynchronously from a background process.
+
+\location{Section~3.3, final paragraph.}
+
+\comment{3.4}{Related work and FL background}
+\begin{reviewer}
+Overlooks some of the recent related work and also a bit of a broader discussion on federated learning and its background. It will be interesting to add, specially for people who are not familiar to FL or are new to FL. Consider the following references. [1] Que, Citong, and Faisal Nadeem Khan. ``A scalable federated learning-based approach for accurate traffic prediction in edge computing-enabled metro optical networks.'' Computers \& Industrial Engineering 203 (2025): 111004. [2] Zaland, Obaidullah, Sajib Mistry, and Monowar Bhuyan. ``Guarding the middle: Protecting intermediate representations in federated split learning.'' 2025 IEEE International Conference on Big Data (BigData). IEEE, 2025. [3] Beltr\'an, Enrique Tom\'as Mart\'inez, et al. ``Fedstellar: A platform for decentralized federated learning.'' Expert Systems with Applications 242 (2024): 122861. [4] Zaland, Obaidullah, et al. ``Federated learning for large-scale cloud robotic manipulation: Opportunities and challenges.'' 2025 International Conference on Machine Learning and Cybernetics (ICMLC). IEEE, 2025.
+\end{reviewer}
+\response We thank the Reviewer for these suggestions. We have broadened the FL background in Section~1 and added all four suggested works: the federated split-learning study [2] is cited in the opening description of FL as privacy-preserving collaborative training; the metro optical network traffic prediction study [1] is cited among edge-computing applications of FL; and the cloud robotic manipulation study [4] is cited in a newly added robotics application domain. Fedstellar [3] is cited in Section~1 as an FL platform with its own monitoring dashboard, and it is included as a row in the new comparison table (Table~2; see also our reply to R1.1).
+
+\location{Section~1, first and second paragraphs; Table~2.}
+
+%% =============================================================================
+\section*{Concluding remarks}
+The revised manuscript now refers to \HW{}~v0.3.1 (\url{https://github.com/APPFL/hivewatch/releases/tag/v0.3.1}). The only software changes in this release are the metric renaming and the lock extension described in our replies to R1.3 and R3.2. The instrumentation-overhead results are unchanged from the original submission, as no additional experiments were performed. We believe the Reviewers' suggestions have made the manuscript clearer and more accurate and the software more robust, and we thank them once more for their input.
+
+\end{document}

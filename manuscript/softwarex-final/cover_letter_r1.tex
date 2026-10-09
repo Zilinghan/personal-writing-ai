@@ -1,0 +1,45 @@
+\documentclass[10pt]{letter}
+\usepackage[margin=2.5cm, top=2cm, bottom=3cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+\begin{document}
+
+\today
+
+Editor-in-Chief\\
+SoftwareX
+
+Dear Editor-in-Chief,
+
+We are submitting a revised version of our manuscript SOFTX-D-26-01314, ``\texttt{HiveWatch}: Framework-Agnostic Observability for Federated Learning,'' which received a minor-revision decision. We appreciate the Reviewers' thoughtful feedback, and we have revised both the manuscript and the software in response to every comment from Reviewers~1 and~3.
+
+In brief, the revision:
+\begin{itemize}
+    \setlength{\itemsep}{0pt}
+    \item adds a table comparing \texttt{HiveWatch} with general-purpose experiment trackers and with the monitoring facilities built into APPFL, Flower, NVIDIA FLARE, and Fedstellar;
+    \item acknowledges the experiment-tracking support already available in mature FL platforms such as NVIDIA FLARE, and describes more precisely the gap that \texttt{HiveWatch} fills;
+    \item renames ``gradient divergence'' to the more accurate ``gradient-norm dispersion'' and explains why this magnitude-only indicator was chosen;
+    \item discusses how \texttt{HiveWatch} behaves when an emitter fails, what latency to expect from the MLflow and Weights \& Biases emitters, and why native framework logging is not a suitable latency baseline; and
+    \item expands the federated learning background and related work using the references recommended by the Reviewers.
+\end{itemize}
+
+Alongside the manuscript, we released \texttt{HiveWatch}~v0.3.1 so that the code matches the revised text. This release renames the metric (the previous name remains available as a deprecated alias) and extends the existing lock to all round-level runtime calls; the abstract and code metadata table point to it. We did not run any new experiments, so the reported measurements are identical to those in the original submission.
+
+Together with this letter, we provide our replies to the Reviewers, the revised manuscript, and a copy of the revised manuscript with all new or rewritten text highlighted in blue. The authorship is the same as in the original submission, and the manuscript stays within the SoftwareX length limit.
+
+We hope the revised manuscript is now suitable for publication in SoftwareX, and we thank you for handling our submission.
+
+Best regards,
+
+Ravi Madduri\\
+Senior Scientist and Group Leader\\
+Data Science and Learning Division, Argonne National Laboratory\\
+Lemont, IL 60439, United States\\
+madduri@anl.gov\\
+On behalf of all authors
+
+\end{document}

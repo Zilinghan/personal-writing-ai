@@ -1,0 +1,17 @@
+Hi @Abhijit Chunduru and @Ravi Madduri,
+
+I've prepared the revision package for our SoftwareX minor revision (SOFTX-D-26-01314). It includes:
+
+1. Revised manuscript with all changes highlighted in blue
+2. Revised manuscript without highlights (same content)
+3. Point-by-point response to the reviewers
+4. Cover letter to the editor
+
+All files are in our Overleaf project. As part of the revision, I also released HiveWatch v0.3.1 (a small update that renames one metric and tightens thread safety), and the manuscript now references this version.
+
+@Abhijit Chunduru: Could you please review the files and make any edits you think are needed? Also, do you have access to submit the revision, or does only Ravi have access?
+
+@Ravi Madduri: If you are the only one who can submit, could you please handle the submission once you and Abhijit have reviewed the changes? If it's easier, I'm also happy to take care of the submission. Just let me know what works best for you.
+
+Thanks!
+Zilinghan
