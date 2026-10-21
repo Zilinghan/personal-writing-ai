@@ -1,0 +1,12 @@
+Hi Mikala,
+
+I reviewed the forms and everything looks great — thank you for the thorough preparation! I did notice one small typo in the I-140 that I wanted to flag before filing.
+
+On page 8, Part 11 (the job description field referencing Part 6, Item 3), the text reads "privacy-preserving federal learning," but it should be "privacy-preserving federated learning." Federated learning is the specific research area I work in, so I want to make sure it is accurately described.
+
+Could you please correct this before mailing? Everything else looks correct to me.
+
+Thank you!
+
+Best regards,
+Zilinghan Li
