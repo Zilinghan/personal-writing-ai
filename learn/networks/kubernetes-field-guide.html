@@ -1,0 +1,1712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Kubernetes Field Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: beginner field manual — sticky chapter rail with time budget on the left, one readable column on the right, a figure for nearly every idea. Light only, system fonts, no external files, so it works offline. */
+:root {
+  --paper: #f4f7f8;
+  --panel: #ffffff;
+  --ink: #15222c;
+  --muted: #5a6b78;
+  --rule: #d3dce2;
+  --accent: #1d5f8a;
+  --accent-soft: #e2edf4;
+  --signal: #b4531b;
+  --signal-soft: #f8ebe2;
+  --ok: #2c7a4d;
+  --ok-soft: #e3f1e8;
+  --code-bg: #e9eff2;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 16.5px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.shell { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 56px; padding-block: 40px 96px; }
+@media (max-width: 900px) { .shell { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 24px 64px; } }
+
+/* Rail */
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; font-size: 14px; }
+@media (max-width: 900px) { .rail { position: static; max-height: none; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: 14px 16px; } }
+.rail h2 { font-family: var(--font-body); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
+.rail .part { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 12px 0 2px; display: block; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.rail li { display: grid; grid-template-columns: 18px minmax(0,1fr) auto; gap: 8px; align-items: baseline; }
+.rail li.partrow { display: block; }
+.rail a { color: var(--ink); text-decoration: none; padding: 3px 0; }
+.rail a:hover { color: var(--accent); }
+.rail .min { color: var(--muted); font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.rail input { margin: 0; accent-color: var(--ok); transform: translateY(2px); }
+.rail li.done a { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
+.meter { margin: 18px 0 6px; height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; }
+.meter span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .3s; }
+.meter-label { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.rail details summary { cursor: pointer; display: none; }
+@media (max-width: 900px) { .rail details summary { display: block; font-weight: 600; } .rail details[open] summary { margin-bottom: 12px; } }
+
+/* Main column */
+main { min-width: 0; max-width: 76ch; }
+.masthead { border-bottom: 2px solid var(--ink); padding-bottom: 22px; margin-bottom: 8px; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 8px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.2; }
+h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); margin: 0 0 12px; font-weight: 600; letter-spacing: -.01em; }
+.lede { font-size: 1.12rem; color: var(--muted); margin: 0; max-width: 62ch; }
+.part-banner { margin-top: 64px; padding: 14px 0 0; border-top: 2px solid var(--ink); }
+.part-banner p { margin: 0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.part-banner h2 { font-size: 1.5rem; margin: 4px 0 0; color: var(--muted); font-weight: 500; }
+section.chapter { padding-top: 44px; scroll-margin-top: 16px; }
+.ch-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; border-top: 1px solid var(--rule); padding-top: 18px; margin-bottom: 6px; }
+.ch-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); font-weight: 600; }
+.ch-time { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-left: auto; }
+section.chapter h2 { font-size: 1.85rem; margin: 0; font-weight: 600; width: 100%; }
+h3 { font-size: 1.25rem; margin: 32px 0 8px; font-weight: 600; }
+h4 { font-size: 1rem; margin: 22px 0 6px; }
+p { margin: 0 0 14px; }
+ul, ol { padding-left: 1.3em; margin: 0 0 14px; }
+li { margin: 4px 0; }
+a { color: var(--accent); }
+a:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+strong { font-weight: 650; }
+code { font-family: var(--font-mono); font-size: .86em; background: var(--code-bg); padding: 1px 5px; border-radius: 3px; }
+pre { background: var(--code-bg); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 13.5px; line-height: 1.6; margin: 0 0 18px; }
+pre code { background: none; padding: 0; font-size: inherit; }
+pre .c { color: var(--muted); }
+.table-wrap { overflow-x: auto; margin: 0 0 18px; border: 1px solid var(--rule); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--panel); }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--paper); }
+tr:last-child td { border-bottom: none; }
+
+/* Callouts by role */
+.idea, .warn, .lab, .analogy { border-radius: 6px; padding: 14px 16px; margin: 0 0 18px; font-size: 15.5px; }
+.idea p:last-child, .warn p:last-child, .lab p:last-child, .analogy p:last-child, .lab pre:last-child { margin-bottom: 0; }
+.tag { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+.idea { background: var(--accent-soft); border-left: 3px solid var(--accent); }
+.idea .tag { color: var(--accent); }
+.analogy { background: var(--panel); border: 1px solid var(--rule); }
+.analogy .tag { color: var(--muted); }
+.warn { background: var(--signal-soft); border-left: 3px solid var(--signal); }
+.warn .tag { color: var(--signal); }
+.lab { background: var(--panel); border: 1px dashed var(--rule); }
+.lab .tag { color: var(--ok); }
+
+/* Optional deep dives */
+details.deep { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); margin: 0 0 18px; }
+details.deep > summary { cursor: pointer; padding: 12px 16px; font-weight: 600; font-size: 15px; color: var(--accent); }
+details.deep > summary span { color: var(--muted); font-weight: 400; }
+details.deep[open] > summary { border-bottom: 1px solid var(--rule); }
+details.deep > .inner { padding: 14px 16px 4px; font-size: 15.5px; }
+
+/* Concept cards */
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0 0 20px; }
+@media (max-width: 620px) { .cards { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; min-width: 0; }
+.card h4 { margin: 0 0 4px; font-family: var(--font-mono); font-size: 15px; color: var(--accent); }
+.card p { margin: 0 0 6px; font-size: 15px; }
+.card .like { color: var(--muted); font-size: 14px; margin: 0; }
+
+/* Figures */
+figure { margin: 6px 0 24px; }
+.diagram { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: 12px; }
+.diagram svg { display: block; min-width: 600px; width: 100%; height: auto; }
+figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+figcaption b { color: var(--ink); font-weight: 600; }
+svg .box { fill: var(--panel); stroke: var(--rule); stroke-width: 1.5; }
+svg .zone { fill: var(--paper); stroke: var(--rule); stroke-width: 1.5; }
+svg .hot { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.8; }
+svg .warm { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.8; }
+svg .good { fill: var(--ok-soft); stroke: var(--ok); stroke-width: 1.8; }
+svg .dashbox { stroke-dasharray: 6 4; }
+svg .t { fill: var(--ink); font-family: var(--font-body); font-size: 13px; }
+svg .tb { font-weight: 600; }
+svg .ts { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+svg .tw { fill: var(--signal); }
+svg .tg { fill: var(--ok); }
+svg .th { fill: var(--muted); font-family: var(--font-body); font-size: 11px; letter-spacing: .1em; font-weight: 600; }
+svg .ln { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+svg .dash { stroke-dasharray: 5 4; }
+svg .path { stroke: var(--accent); stroke-width: 2.2; fill: none; }
+svg .lnw { stroke: var(--signal); stroke-width: 2; fill: none; }
+svg .lng { stroke: var(--ok); stroke-width: 2.2; fill: none; }
+svg .am { fill: var(--muted); }
+svg .ap { fill: var(--accent); }
+svg .aw { fill: var(--signal); }
+svg .ag { fill: var(--ok); }
+svg .step { fill: var(--accent); }
+svg .stept { fill: var(--panel); font-family: var(--font-mono); font-size: 11px; font-weight: 700; }
+
+ol.trace { list-style: none; padding: 0; counter-reset: s; display: grid; gap: 10px; }
+ol.trace li { counter-increment: s; display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; margin: 0; }
+ol.trace li::before { content: counter(s); font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 50%; width: 24px; height: 24px; display: grid; place-items: center; margin-top: 1px; }
+
+details.q { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: 12px 16px; margin-bottom: 10px; }
+details.q summary { cursor: pointer; font-weight: 600; }
+details.q[open] summary { margin-bottom: 8px; }
+details.q p:last-child { margin-bottom: 0; }
+
+dl.gloss { display: grid; grid-template-columns: minmax(120px, 180px) minmax(0, 1fr); gap: 8px 18px; margin: 0; font-size: 15px; }
+dl.gloss dt { font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; padding-top: 2px; }
+dl.gloss dd { margin: 0; }
+@media (max-width: 560px) { dl.gloss { grid-template-columns: minmax(0,1fr); gap: 2px; } dl.gloss dd { margin-bottom: 10px; } }
+
+.chapter-done { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; color: var(--muted); cursor: pointer; }
+.chapter-done input { accent-color: var(--ok); width: 16px; height: 16px; }
+.foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13.5px; }
+</style>
+
+<!-- Shared arrowheads for every figure -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ap" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="aw" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ag" d="M0,0 L10,5 L0,10 z"/></marker>
+  </defs>
+</svg>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters">
+    <details id="rail-details" open>
+      <summary>Chapters &amp; progress</summary>
+      <h2>Flight plan · about 4 hours</h2>
+      <ol id="toc"></ol>
+      <div class="meter" aria-hidden="true"><span id="meter-fill"></span></div>
+      <div class="meter-label" id="meter-label"></div>
+    </details>
+  </nav>
+
+  <main>
+    <header class="masthead">
+      <p class="eyebrow">Beginner guide · works offline</p>
+      <h1>Kubernetes Field Guide</h1>
+      <p class="lede">Kubernetes from zero, in plain words and pictures. No cloud or distributed-systems background needed. We start with the basic ideas, then the parts of Kubernetes, then how it moves network traffic around.</p>
+    </header>
+
+    <section class="chapter" id="start" data-min="5" data-title="How to use this guide" data-part="Start here">
+      <div class="ch-head"><span class="ch-num">00</span><h2>How to use this guide</h2><span class="ch-time">5 min</span></div>
+      <p>Read the chapters in order. Each one builds on the last. Every idea comes with a picture; look at the picture first, then read.</p>
+      <ul>
+        <li><strong>Blue boxes</strong> hold the one idea to remember from a section.</li>
+        <li><strong>Orange boxes</strong> warn about a common mistake.</li>
+        <li><strong>“Go deeper” panels</strong> are optional. Skip them on a first read; nothing later depends on them.</li>
+        <li><strong>Try it</strong> boxes have commands to type. They're optional too.</li>
+      </ul>
+      <p>Tick the checkbox at the end of each chapter. The bar on the left shows how much reading time is left. Take a break after chapter 6 and after chapter 10.</p>
+      <details class="deep">
+        <summary>Want to try the commands on the plane? <span>Set up before boarding (optional)</span></summary>
+        <div class="inner">
+          <p>You can run a small practice Kubernetes on your Mac. A tool called <code>kind</code> runs it inside Docker. Do this while you still have internet, because it downloads things:</p>
+<pre><code><span class="c"># needs Docker Desktop installed and running</span>
+brew install kubectl kind
+kind create cluster --name lab
+
+<span class="c"># download the practice images now, so they work offline later</span>
+for img in nginx:1.27 nicolaka/netshoot:latest; do
+  docker pull $img && kind load docker-image $img --name lab
+done
+
+kubectl get nodes      <span class="c"># should print one line ending in "Ready"</span></code></pre>
+          <p>If this feels like too much, skip it. The guide is complete without it.</p>
+        </div>
+      </details>
+      <label class="chapter-done"><input type="checkbox" data-done="start"> Mark chapter done</label>
+    </section>
+
+    <!-- ===================== PART 1 ===================== -->
+    <div class="part-banner"><p>Part 1</p><h2>The ideas underneath</h2></div>
+
+    <section class="chapter" id="blocks" data-min="20" data-title="Computers, apps and containers" data-part="Part 1 · The ideas underneath">
+      <div class="ch-head"><span class="ch-num">01</span><h2>Computers, apps and containers</h2><span class="ch-time">20 min</span></div>
+      <p>Before Kubernetes makes sense, you need three ideas: a <em>server</em>, a <em>cluster</em> and a <em>container</em>.</p>
+
+      <h3>From one computer to many</h3>
+      <p>A <strong>server</strong> is just a computer that runs programs for other people, usually sitting in a data center with no screen. When you use “the cloud” (like AWS), you're renting servers from someone else.</p>
+      <p>One server can only handle so much. Big websites and AI training jobs need many servers working together. A group of servers working as one team is called a <strong>cluster</strong>. In Kubernetes, each server in the cluster is called a <strong>node</strong>.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 220" role="img" aria-label="One computer running one app, compared with a cluster of four computers, called nodes, sharing several apps">
+            <rect class="box" x="20" y="40" width="180" height="140" rx="6"/>
+            <text class="th" x="34" y="62">ONE COMPUTER</text>
+            <rect class="hot" x="45" y="100" width="130" height="38" rx="4"/>
+            <text class="t" x="110" y="124" text-anchor="middle">your app</text>
+            <line class="ln" x1="210" y1="110" x2="268" y2="110" marker-end="url(#am)"/>
+            <text class="ts" x="239" y="100" text-anchor="middle">grows</text>
+            <rect class="zone" x="280" y="20" width="420" height="180" rx="6"/>
+            <text class="th" x="294" y="42">CLUSTER · MANY COMPUTERS ACTING AS ONE</text>
+            <g>
+              <rect class="box" x="295" y="58" width="92" height="126" rx="4"/>
+              <text class="t tb" x="341" y="78" text-anchor="middle">node 1</text>
+              <rect class="hot" x="305" y="90" width="72" height="26" rx="3"/><text class="ts" x="341" y="107" text-anchor="middle">app</text>
+              <rect class="hot" x="305" y="124" width="72" height="26" rx="3"/><text class="ts" x="341" y="141" text-anchor="middle">app</text>
+            </g>
+            <g>
+              <rect class="box" x="397" y="58" width="92" height="126" rx="4"/>
+              <text class="t tb" x="443" y="78" text-anchor="middle">node 2</text>
+              <rect class="hot" x="407" y="90" width="72" height="26" rx="3"/><text class="ts" x="443" y="107" text-anchor="middle">app</text>
+              <rect class="hot" x="407" y="124" width="72" height="26" rx="3"/><text class="ts" x="443" y="141" text-anchor="middle">database</text>
+            </g>
+            <g>
+              <rect class="box" x="499" y="58" width="92" height="126" rx="4"/>
+              <text class="t tb" x="545" y="78" text-anchor="middle">node 3</text>
+              <rect class="hot" x="509" y="90" width="72" height="26" rx="3"/><text class="ts" x="545" y="107" text-anchor="middle">app</text>
+              <rect class="hot" x="509" y="124" width="72" height="26" rx="3"/><text class="ts" x="545" y="141" text-anchor="middle">AI job</text>
+            </g>
+            <g>
+              <rect class="box" x="601" y="58" width="92" height="126" rx="4"/>
+              <text class="t tb" x="647" y="78" text-anchor="middle">node 4</text>
+              <rect class="hot" x="611" y="90" width="72" height="26" rx="3"/><text class="ts" x="647" y="107" text-anchor="middle">AI job</text>
+            </g>
+          </svg>
+        </div>
+        <figcaption><b>A cluster is a team of computers.</b> Each computer is a <em>node</em>. Work is spread across them, and if one breaks, the others carry on.</figcaption>
+      </figure>
+
+      <h3>The problem containers solve</h3>
+      <p>Every app needs other software to run: a specific Python version, some libraries, system tools. Put two apps on one computer and their needs can clash. App A needs Python 3.8; App B needs Python 3.12. You can't easily have both as “the” Python.</p>
+      <p>A <strong>container</strong> fixes this. It packs an app <em>together with everything it needs</em> into one sealed box. Each box has its own private copy of its tools, so boxes can't step on each other. Many containers can share one computer safely.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 230" role="img" aria-label="Without containers, two apps fight over one shared Python. With containers, each app carries its own Python and both run on the same machine.">
+            <rect class="zone" x="20" y="20" width="330" height="200" rx="6"/>
+            <text class="th" x="34" y="42">WITHOUT CONTAINERS</text>
+            <rect class="box" x="40" y="54" width="135" height="46" rx="4"/>
+            <text class="t tb" x="107" y="74" text-anchor="middle">App A</text>
+            <text class="ts" x="107" y="91" text-anchor="middle">needs Python 3.8</text>
+            <rect class="box" x="195" y="54" width="135" height="46" rx="4"/>
+            <text class="t tb" x="262" y="74" text-anchor="middle">App B</text>
+            <text class="ts" x="262" y="91" text-anchor="middle">needs Python 3.12</text>
+            <line class="lnw" x1="107" y1="100" x2="107" y2="120"/>
+            <line class="lnw" x1="262" y1="100" x2="262" y2="120"/>
+            <rect class="warm" x="40" y="120" width="290" height="46" rx="4"/>
+            <text class="t tb" x="185" y="140" text-anchor="middle">one shared Python</text>
+            <text class="ts tw" x="185" y="157" text-anchor="middle">can't be 3.8 and 3.12 at once</text>
+            <rect class="box" x="40" y="178" width="290" height="30" rx="4"/>
+            <text class="ts" x="185" y="197" text-anchor="middle">the computer's operating system</text>
+
+            <rect class="zone" x="370" y="20" width="330" height="200" rx="6"/>
+            <text class="th" x="384" y="42">WITH CONTAINERS</text>
+            <rect class="hot" x="390" y="54" width="135" height="112" rx="4"/>
+            <text class="t tb" x="457" y="74" text-anchor="middle">App A</text>
+            <rect class="box" x="402" y="84" width="111" height="32" rx="3"/>
+            <text class="ts" x="457" y="104" text-anchor="middle">own Python 3.8</text>
+            <rect class="box" x="402" y="124" width="111" height="32" rx="3"/>
+            <text class="ts" x="457" y="144" text-anchor="middle">own libraries</text>
+            <rect class="hot" x="545" y="54" width="135" height="112" rx="4"/>
+            <text class="t tb" x="612" y="74" text-anchor="middle">App B</text>
+            <rect class="box" x="557" y="84" width="111" height="32" rx="3"/>
+            <text class="ts" x="612" y="104" text-anchor="middle">own Python 3.12</text>
+            <rect class="box" x="557" y="124" width="111" height="32" rx="3"/>
+            <text class="ts" x="612" y="144" text-anchor="middle">own libraries</text>
+            <rect class="good" x="390" y="178" width="290" height="30" rx="4"/>
+            <text class="ts tg" x="535" y="197" text-anchor="middle">same computer, no conflict</text>
+          </svg>
+        </div>
+        <figcaption><b>Each container carries its own tools.</b> The two blue boxes on the right are containers. They share the computer but not their software.</figcaption>
+      </figure>
+      <div class="analogy"><span class="tag">Analogy</span><p>Think of real shipping containers. Before them, every cargo ship was loaded by hand with sacks and barrels of every shape. Standard containers made any cargo fit any ship, crane or truck. Software containers do the same for apps: any app, packed the same way, runs on any machine.</p></div>
+
+      <h3>Image vs. container</h3>
+      <p>Two words you'll see constantly:</p>
+      <ul>
+        <li>An <strong>image</strong> is the packed, frozen box sitting on a shelf. It's a file. Nothing is running.</li>
+        <li>A <strong>container</strong> is an image that has been started and is running.</li>
+      </ul>
+      <p>You can start many containers from one image, the way you can cook many identical dishes from one recipe.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 170" role="img" aria-label="One image is started three times, producing three identical running containers">
+            <rect class="box" x="20" y="50" width="220" height="70" rx="4"/>
+            <text class="t tb" x="130" y="78" text-anchor="middle">image  web:2.4</text>
+            <text class="ts" x="130" y="98" text-anchor="middle">frozen package: app + tools</text>
+            <line class="ln" x1="240" y1="85" x2="358" y2="35" marker-end="url(#am)"/>
+            <line class="ln" x1="240" y1="85" x2="358" y2="85" marker-end="url(#am)"/>
+            <line class="ln" x1="240" y1="85" x2="358" y2="135" marker-end="url(#am)"/>
+            <text class="ts" x="290" y="78" text-anchor="middle">start</text>
+            <rect class="hot" x="360" y="14" width="200" height="40" rx="4"/>
+            <text class="t" x="460" y="39" text-anchor="middle">running container #1</text>
+            <rect class="hot" x="360" y="64" width="200" height="40" rx="4"/>
+            <text class="t" x="460" y="89" text-anchor="middle">running container #2</text>
+            <rect class="hot" x="360" y="114" width="200" height="40" rx="4"/>
+            <text class="t" x="460" y="139" text-anchor="middle">running container #3</text>
+            <text class="ts" x="580" y="80">identical copies,</text>
+            <text class="ts" x="580" y="96">same behavior</text>
+          </svg>
+        </div>
+        <figcaption><b>An image is the recipe; containers are the dishes.</b> Images are usually built with Docker and stored in a “registry”, an online shelf of images.</figcaption>
+      </figure>
+      <label class="chapter-done"><input type="checkbox" data-done="blocks"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="idea" data-min="15" data-title="What Kubernetes does" data-part="Part 1 · The ideas underneath">
+      <div class="ch-head"><span class="ch-num">02</span><h2>What Kubernetes does, in one idea</h2><span class="ch-time">15 min</span></div>
+      <p>Containers solved packing. They didn't solve <em>managing</em>. Picture 200 containers spread across 20 computers. Someone has to keep answering:</p>
+      <ul>
+        <li>Which computer has room for this new container?</li>
+        <li>A container crashed at 3 a.m. Who restarts it?</li>
+        <li>A whole computer died. Who moves its containers somewhere else?</li>
+        <li>Traffic tripled. Who starts more copies, and who removes them later?</li>
+        <li>How do apps find each other when they keep moving between computers?</li>
+      </ul>
+      <p><strong>Kubernetes</strong> (often written <strong>K8s</strong>, because there are 8 letters between K and s) is software that answers all of these for you, automatically. The name is Greek for “helmsman”, the person who steers a ship. Google built it from its own internal tools and gave it away in 2014.</p>
+
+      <h3>The big idea: you describe the goal, it keeps it true</h3>
+      <p>You don't give Kubernetes step-by-step orders. You give it a <strong>description of how things should look</strong>, like “keep 3 copies of my web app running”. Kubernetes then checks, over and over, whether reality matches. If not, it fixes the difference.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 270" role="img" aria-label="A loop: you write that you want 3 copies; Kubernetes reads the goal, looks at reality and sees 2, starts 1 more, and repeats forever">
+            <rect class="box" x="40" y="14" width="180" height="44" rx="4"/>
+            <text class="t tb" x="130" y="34" text-anchor="middle">You write:</text>
+            <text class="ts" x="130" y="50" text-anchor="middle">"I want 3 copies"</text>
+            <line class="ln" x1="130" y1="58" x2="130" y2="98" marker-end="url(#am)"/>
+            <rect class="hot" x="40" y="100" width="180" height="60" rx="4"/>
+            <text class="t tb" x="130" y="125" text-anchor="middle">1. Read the goal</text>
+            <text class="ts" x="130" y="144" text-anchor="middle">want: 3</text>
+            <rect class="hot" x="270" y="30" width="180" height="60" rx="4"/>
+            <text class="t tb" x="360" y="55" text-anchor="middle">2. Look at reality</text>
+            <text class="ts" x="360" y="74" text-anchor="middle">see: 2 running</text>
+            <rect class="hot" x="500" y="100" width="180" height="60" rx="4"/>
+            <text class="t tb" x="590" y="125" text-anchor="middle">3. Fix the gap</text>
+            <text class="ts" x="590" y="144" text-anchor="middle">start 1 more</text>
+            <line class="path" x1="220" y1="115" x2="268" y2="75" marker-end="url(#ap)"/>
+            <line class="path" x1="450" y1="75" x2="498" y2="115" marker-end="url(#ap)"/>
+            <path class="path" d="M590 160 Q 360 270 132 162" marker-end="url(#ap)"/>
+            <text class="t" x="360" y="232" text-anchor="middle">repeat forever, every few seconds</text>
+          </svg>
+        </div>
+        <figcaption><b>The reconcile loop.</b> This one loop is the heart of Kubernetes. A thermostat works the same way: you set 21 °C, it keeps checking and switching the heat on or off.</figcaption>
+      </figure>
+      <div class="idea"><span class="tag">Remember</span><p>You tell Kubernetes <em>what</em> you want, not <em>how</em> to do it. It keeps comparing “what you want” with “what is” and closes the gap, forever.</p></div>
+      <p>This one idea explains a lot:</p>
+      <ul>
+        <li><strong>It heals itself.</strong> Delete one of the 3 copies by hand, and Kubernetes sees only 2 and starts a new one.</li>
+        <li><strong>Changes take a few seconds.</strong> When you submit a change, Kubernetes accepts it right away, then works toward it. You watch it happen.</li>
+        <li><strong>Your setup lives in text files.</strong> The “description” is a short text file (in a format called YAML). You can save it, share it, and recreate the same setup anywhere.</li>
+      </ul>
+
+      <h3>What it can do for you</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Job</th><th>In plain words</th></tr></thead>
+        <tbody>
+          <tr><td>Placing work</td><td>Finds a computer with enough free CPU, memory or GPU for each container.</td></tr>
+          <tr><td>Self-healing</td><td>Restarts crashed containers; moves work off broken computers.</td></tr>
+          <tr><td>Finding each other</td><td>Gives each app a fixed name other apps can call, even as containers move.</td></tr>
+          <tr><td>Safe updates</td><td>Replaces old versions with new ones a few at a time, and can undo.</td></tr>
+          <tr><td>Scaling</td><td>Adds copies when busy, removes them when quiet. Can even add computers.</td></tr>
+          <tr><td>Settings &amp; passwords</td><td>Hands configuration to apps without baking it into the image.</td></tr>
+          <tr><td>Storage</td><td>Attaches disks that keep data even when containers restart.</td></tr>
+          <tr><td>Add-ons</td><td>Can be extended to manage new kinds of things, such as Ray clusters for AI work.</td></tr>
+        </tbody>
+      </table></div>
+      <label class="chapter-done"><input type="checkbox" data-done="idea"> Mark chapter done</label>
+    </section>
+
+    <!-- ===================== PART 2 ===================== -->
+    <div class="part-banner"><p>Part 2</p><h2>The parts of Kubernetes</h2></div>
+
+    <section class="chapter" id="concepts" data-min="20" data-title="The 8 words to know" data-part="Part 2 · The parts of Kubernetes">
+      <div class="ch-head"><span class="ch-num">03</span><h2>The 8 words to know</h2><span class="ch-time">20 min</span></div>
+      <p>Almost everything in Kubernetes uses these eight words. Learn them first, and the rest of the guide will read easily. Start with the picture: things fit inside each other like boxes.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 300" role="img" aria-label="Nested boxes: a cluster contains nodes, nodes contain pods, pods contain containers">
+            <rect class="zone" x="20" y="20" width="680" height="262" rx="8"/>
+            <text class="th" x="36" y="42">CLUSTER · the whole team of computers</text>
+            <rect class="box" x="40" y="58" width="390" height="208" rx="6"/>
+            <text class="th" x="56" y="80">NODE 1 · one computer</text>
+            <rect class="hot" x="60" y="94" width="170" height="156" rx="5"/>
+            <text class="ts" x="74" y="114">POD  web-a</text>
+            <rect class="box" x="74" y="126" width="142" height="48" rx="3"/>
+            <text class="t" x="145" y="147" text-anchor="middle">container</text>
+            <text class="ts" x="145" y="163" text-anchor="middle">the web app</text>
+            <rect class="box" x="74" y="186" width="142" height="48" rx="3"/>
+            <text class="t" x="145" y="207" text-anchor="middle">container</text>
+            <text class="ts" x="145" y="223" text-anchor="middle">a log helper</text>
+            <rect class="hot" x="246" y="94" width="170" height="156" rx="5"/>
+            <text class="ts" x="260" y="114">POD  api-a</text>
+            <rect class="box" x="260" y="126" width="142" height="48" rx="3"/>
+            <text class="t" x="331" y="147" text-anchor="middle">container</text>
+            <text class="ts" x="331" y="163" text-anchor="middle">the api app</text>
+            <rect class="box" x="450" y="58" width="230" height="208" rx="6"/>
+            <text class="th" x="466" y="80">NODE 2 · another computer</text>
+            <rect class="hot" x="470" y="94" width="190" height="156" rx="5"/>
+            <text class="ts" x="484" y="114">POD  web-b</text>
+            <rect class="box" x="484" y="126" width="162" height="48" rx="3"/>
+            <text class="t" x="565" y="147" text-anchor="middle">container</text>
+            <text class="ts" x="565" y="163" text-anchor="middle">the web app</text>
+          </svg>
+        </div>
+        <figcaption><b>Cluster ⊃ node ⊃ pod ⊃ container.</b> Kubernetes never handles a bare container; it always wraps it in a pod. Most pods hold just one container.</figcaption>
+      </figure>
+
+      <div class="cards">
+        <div class="card"><h4>Cluster</h4><p>All the computers Kubernetes manages, treated as one big computer.</p><p class="like">Like: a whole restaurant.</p></div>
+        <div class="card"><h4>Node</h4><p>One computer in the cluster. It can be a real machine or a rented cloud server.</p><p class="like">Like: one cooking station in the kitchen.</p></div>
+        <div class="card"><h4>Container</h4><p>A running app, sealed with everything it needs (chapter 1).</p><p class="like">Like: one dish being cooked.</p></div>
+        <div class="card"><h4>Pod</h4><p>The smallest thing Kubernetes runs: one or a few containers that always live together on the same node and share one network address.</p><p class="like">Like: one plate. Usually one dish, sometimes a main plus a side.</p></div>
+        <div class="card"><h4>Deployment</h4><p>Your instruction “keep N copies of this pod running”. It handles replacing and updating pods.</p><p class="like">Like: a standing order: “always have 3 plates of soup ready”.</p></div>
+        <div class="card"><h4>Service</h4><p>A fixed name and address that sends traffic to the right pods, even as pods come and go.</p><p class="like">Like: the restaurant's phone number, which stays the same whoever answers.</p></div>
+        <div class="card"><h4>Namespace</h4><p>A labeled folder inside the cluster that keeps one team's or project's things apart from another's.</p><p class="like">Like: separate sections of the menu.</p></div>
+        <div class="card"><h4>Control plane</h4><p>The “brain” of Kubernetes: the programs that store your goals and make decisions. Chapter 4 opens it up.</p><p class="like">Like: the restaurant's manager and order desk.</p></div>
+      </div>
+
+      <h3>Two more ideas that show up everywhere</h3>
+      <p><strong>Pods are temporary.</strong> Kubernetes freely deletes and recreates pods: when updating, when a node fails, when scaling down. Each new pod gets a new name and a new network address. Never rely on a particular pod sticking around. That's why Deployments (to recreate them) and Services (to find them) exist.</p>
+      <p><strong>Labels connect things.</strong> A <em>label</em> is a sticky note on an object, like <code>app=web</code>. Kubernetes objects find each other by label, not by name. A Deployment says “the pods with sticker <code>app=web</code> are mine”. A Service says “send traffic to pods with sticker <code>app=web</code>”. Chapter 5 shows this in a picture.</p>
+      <label class="chapter-done"><input type="checkbox" data-done="concepts"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="arch" data-min="20" data-title="Who does what inside" data-part="Part 2 · The parts of Kubernetes">
+      <div class="ch-head"><span class="ch-num">04</span><h2>Who does what inside Kubernetes</h2><span class="ch-time">20 min</span></div>
+      <p>Kubernetes isn't one program. It's a handful of small programs, each with one job. They split into two groups:</p>
+      <ul>
+        <li>The <strong>control plane</strong> (the brain) stores what you want and decides what should happen. It usually runs on its own computers. With cloud versions like Amazon EKS, the cloud company runs it for you and you never see those computers.</li>
+        <li>The <strong>worker nodes</strong> (the muscle) actually run your containers.</li>
+      </ul>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 760 500" role="img" aria-label="The control plane holds the API server, etcd, scheduler, controller manager and cloud controller. Each worker node runs a kubelet, kube-proxy and a container runtime. Everything talks only through the API server.">
+            <rect class="box" x="290" y="6" width="180" height="42" rx="4"/>
+            <text class="t tb" x="380" y="24" text-anchor="middle">you (kubectl)</text>
+            <text class="ts" x="380" y="40" text-anchor="middle">send your wish list</text>
+            <line class="ln" x1="380" y1="48" x2="380" y2="98" marker-end="url(#am)"/>
+
+            <rect class="zone" x="20" y="62" width="720" height="178" rx="6"/>
+            <text class="th" x="34" y="82">CONTROL PLANE · THE BRAIN</text>
+            <rect class="box" x="40" y="92" width="210" height="56" rx="4"/>
+            <text class="t tb" x="145" y="115" text-anchor="middle">scheduler</text>
+            <text class="ts" x="145" y="134" text-anchor="middle">picks a node for each pod</text>
+            <rect class="box" x="40" y="164" width="210" height="56" rx="4"/>
+            <text class="t tb" x="145" y="187" text-anchor="middle">controller manager</text>
+            <text class="ts" x="145" y="206" text-anchor="middle">notices gaps, fixes them</text>
+            <rect class="hot" x="285" y="100" width="190" height="80" rx="4"/>
+            <text class="t tb" x="380" y="128" text-anchor="middle">API server</text>
+            <text class="ts" x="380" y="148" text-anchor="middle">the front desk:</text>
+            <text class="ts" x="380" y="163" text-anchor="middle">every request goes here</text>
+            <rect class="box" x="510" y="92" width="210" height="56" rx="4"/>
+            <text class="t tb" x="615" y="115" text-anchor="middle">etcd</text>
+            <text class="ts" x="615" y="134" text-anchor="middle">notebook: what should exist</text>
+            <rect class="box" x="510" y="164" width="210" height="56" rx="4"/>
+            <text class="t tb" x="615" y="187" text-anchor="middle">cloud controller</text>
+            <text class="ts" x="615" y="206" text-anchor="middle">talks to AWS / Google Cloud</text>
+            <line class="ln" x1="250" y1="120" x2="283" y2="128" marker-end="url(#am)"/>
+            <line class="ln" x1="250" y1="192" x2="283" y2="160" marker-end="url(#am)"/>
+            <line class="ln" x1="477" y1="132" x2="508" y2="120" marker-start="url(#am)" marker-end="url(#am)"/>
+            <line class="ln" x1="508" y1="192" x2="477" y2="160" marker-end="url(#am)"/>
+
+            <rect class="zone" x="20" y="290" width="350" height="200" rx="6"/>
+            <text class="th" x="34" y="310">WORKER NODE 1 · THE MUSCLE</text>
+            <rect class="zone" x="390" y="290" width="350" height="200" rx="6"/>
+            <text class="th" x="404" y="310">WORKER NODE 2</text>
+            <g>
+              <rect class="box" x="35" y="322" width="155" height="50" rx="4"/>
+              <text class="t tb" x="112" y="343" text-anchor="middle">kubelet</text>
+              <text class="ts" x="112" y="361" text-anchor="middle">the node's foreman</text>
+              <rect class="box" x="205" y="322" width="150" height="50" rx="4"/>
+              <text class="t tb" x="280" y="343" text-anchor="middle">kube-proxy</text>
+              <text class="ts" x="280" y="361" text-anchor="middle">sets traffic rules</text>
+              <rect class="box" x="35" y="384" width="320" height="34" rx="4"/>
+              <text class="ts" x="195" y="405" text-anchor="middle">container runtime: starts the containers</text>
+              <rect class="hot" x="35" y="430" width="96" height="44" rx="4"/><text class="t" x="83" y="457" text-anchor="middle">pod</text>
+              <rect class="hot" x="147" y="430" width="96" height="44" rx="4"/><text class="t" x="195" y="457" text-anchor="middle">pod</text>
+              <rect class="hot" x="259" y="430" width="96" height="44" rx="4"/><text class="t" x="307" y="457" text-anchor="middle">pod</text>
+            </g>
+            <g>
+              <rect class="box" x="405" y="322" width="155" height="50" rx="4"/>
+              <text class="t tb" x="482" y="343" text-anchor="middle">kubelet</text>
+              <text class="ts" x="482" y="361" text-anchor="middle">the node's foreman</text>
+              <rect class="box" x="575" y="322" width="150" height="50" rx="4"/>
+              <text class="t tb" x="650" y="343" text-anchor="middle">kube-proxy</text>
+              <text class="ts" x="650" y="361" text-anchor="middle">sets traffic rules</text>
+              <rect class="box" x="405" y="384" width="320" height="34" rx="4"/>
+              <text class="ts" x="565" y="405" text-anchor="middle">container runtime: starts the containers</text>
+              <rect class="hot" x="405" y="430" width="96" height="44" rx="4"/><text class="t" x="453" y="457" text-anchor="middle">pod</text>
+              <rect class="hot" x="517" y="430" width="96" height="44" rx="4"/><text class="t" x="565" y="457" text-anchor="middle">pod</text>
+            </g>
+            <line class="ln dash" x1="112" y1="322" x2="345" y2="182" marker-end="url(#am)"/>
+            <line class="ln dash" x1="280" y1="322" x2="368" y2="182" marker-end="url(#am)"/>
+            <line class="ln dash" x1="482" y1="322" x2="395" y2="182" marker-end="url(#am)"/>
+            <line class="ln dash" x1="650" y1="322" x2="418" y2="182" marker-end="url(#am)"/>
+          </svg>
+        </div>
+        <figcaption><b>Everyone talks only to the API server.</b> The dashed lines show each worker node constantly asking the front desk “is there any work for me?”. No part talks directly to another.</figcaption>
+      </figure>
+
+      <h3>Each part, in plain words</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Part</th><th>Where</th><th>Its one job</th><th>Restaurant version</th></tr></thead>
+        <tbody>
+          <tr><td><strong>API server</strong></td><td>brain</td><td>Receives every request, checks you're allowed, saves it. The only door in.</td><td>The order desk</td></tr>
+          <tr><td><strong>etcd</strong></td><td>brain</td><td>A small, very reliable database holding every goal and every status. If it's lost, the cluster forgets everything, so it's backed up.</td><td>The order book</td></tr>
+          <tr><td><strong>scheduler</strong></td><td>brain</td><td>For each new pod, picks which node it should run on, based on free space. It only <em>decides</em>; it doesn't start anything.</td><td>The host who assigns tables</td></tr>
+          <tr><td><strong>controller manager</strong></td><td>brain</td><td>Runs many small “reconcile loops” (chapter 2). One keeps the right number of pods, one watches nodes, and so on.</td><td>The floor manager checking orders are on track</td></tr>
+          <tr><td><strong>cloud controller</strong></td><td>brain</td><td>Asks the cloud company for things like load balancers and disks.</td><td>Calls suppliers</td></tr>
+          <tr><td><strong>kubelet</strong></td><td>each node</td><td>Watches for pods assigned to its node, starts them, checks they're healthy, reports back.</td><td>The chef at each station</td></tr>
+          <tr><td><strong>container runtime</strong></td><td>each node</td><td>The program that actually unpacks images and runs containers (usually one called <code>containerd</code>).</td><td>The stove</td></tr>
+          <tr><td><strong>kube-proxy</strong></td><td>each node</td><td>Sets up traffic rules on the node so Services work (Part 3).</td><td>The waiter who knows which table gets which plate</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Follow one request from start to finish</h3>
+      <p>Say you ask for 3 copies of a web app. Here's who does what. Notice how each part does its small job and the next part picks up from there.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 230" role="img" aria-label="Six steps from your request to a running pod: you send the wish, the API server saves it, the controller creates pod records, the scheduler picks nodes, the node starts containers, the pod becomes ready">
+            <rect class="hot" x="20" y="20" width="210" height="70" rx="4"/>
+            <circle class="step" cx="42" cy="55" r="11"/><text class="stept" x="42" y="59" text-anchor="middle">1</text>
+            <text class="t tb" x="62" y="50">You send the wish</text>
+            <text class="ts" x="62" y="68">kubectl apply -f web.yaml</text>
+            <rect class="hot" x="255" y="20" width="210" height="70" rx="4"/>
+            <circle class="step" cx="277" cy="55" r="11"/><text class="stept" x="277" y="59" text-anchor="middle">2</text>
+            <text class="t tb" x="297" y="50">Front desk saves it</text>
+            <text class="ts" x="297" y="68">API server → etcd</text>
+            <rect class="hot" x="490" y="20" width="210" height="70" rx="4"/>
+            <circle class="step" cx="512" cy="55" r="11"/><text class="stept" x="512" y="59" text-anchor="middle">3</text>
+            <text class="t tb" x="532" y="50">3 pod records made</text>
+            <text class="ts" x="532" y="68">by the controller</text>
+            <rect class="hot" x="490" y="140" width="210" height="70" rx="4"/>
+            <circle class="step" cx="512" cy="175" r="11"/><text class="stept" x="512" y="179" text-anchor="middle">4</text>
+            <text class="t tb" x="532" y="170">Each gets a node</text>
+            <text class="ts" x="532" y="188">by the scheduler</text>
+            <rect class="hot" x="255" y="140" width="210" height="70" rx="4"/>
+            <circle class="step" cx="277" cy="175" r="11"/><text class="stept" x="277" y="179" text-anchor="middle">5</text>
+            <text class="t tb" x="297" y="170">Node starts them</text>
+            <text class="ts" x="297" y="188">kubelet + runtime</text>
+            <rect class="good" x="20" y="140" width="210" height="70" rx="4"/>
+            <circle class="step" cx="42" cy="175" r="11"/><text class="stept" x="42" y="179" text-anchor="middle">6</text>
+            <text class="t tb" x="62" y="170">Ready for traffic</text>
+            <text class="ts" x="62" y="188">health check passed</text>
+            <line class="path" x1="230" y1="55" x2="253" y2="55" marker-end="url(#ap)"/>
+            <line class="path" x1="465" y1="55" x2="488" y2="55" marker-end="url(#ap)"/>
+            <line class="path" x1="595" y1="90" x2="595" y2="138" marker-end="url(#ap)"/>
+            <line class="path" x1="490" y1="175" x2="467" y2="175" marker-end="url(#ap)"/>
+            <line class="path" x1="255" y1="175" x2="232" y2="175" marker-end="url(#ap)"/>
+          </svg>
+        </div>
+        <figcaption><b>A relay race through the API server.</b> Each runner watches the API server for its cue, does one thing, writes the result back. The whole relay takes a few seconds.</figcaption>
+      </figure>
+      <div class="idea"><span class="tag">Remember</span><p>Kubernetes is a notebook (etcd) with a front desk (API server) and a crew of helpers who each watch for one kind of change and do one job. When something gets stuck, ask: “which helper should have acted next, and why didn't it?”</p></div>
+      <label class="chapter-done"><input type="checkbox" data-done="arch"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="objects" data-min="25" data-title="Writing down what you want" data-part="Part 2 · The parts of Kubernetes">
+      <div class="ch-head"><span class="ch-num">05</span><h2>Writing down what you want</h2><span class="ch-time">25 min</span></div>
+      <p>You describe what you want in short text files written in <strong>YAML</strong>, a simple format of <code>name: value</code> lines where indentation shows what belongs to what. Each file describes one or more <em>objects</em> (a Deployment, a Service, and so on). Every object has the same four parts:</p>
+<pre><code>apiVersion: apps/v1     <span class="c"># which version of the rules this follows (copy it from examples)</span>
+kind: Deployment        <span class="c"># what kind of thing this is</span>
+metadata:               <span class="c"># its name, and its labels (sticky notes)</span>
+  name: web
+spec:                   <span class="c"># "spec" = specification: what you WANT</span>
+  ...
+<span class="c"># Kubernetes adds a "status" part itself: what IS actually happening</span></code></pre>
+
+      <h3>A Deployment, explained line by line</h3>
+      <p>This is the file you'll write most often. It says “run 3 copies of my web app”.</p>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web                     <span class="c"># call this Deployment "web"</span>
+spec:
+  replicas: 3                   <span class="c"># keep 3 copies running at all times</span>
+  selector:
+    matchLabels:
+      app: web                  <span class="c"># "pods with the sticker app=web are mine"</span>
+  template:                     <span class="c"># the blueprint for each pod</span>
+    metadata:
+      labels:
+        app: web                <span class="c"># put the sticker app=web on each new pod</span>
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.27       <span class="c"># which image to run (a free web server)</span>
+        ports:
+        - containerPort: 80     <span class="c"># the app listens on port 80 (see chapter 7)</span>
+        resources:
+          requests:             <span class="c"># how much of a computer this needs</span>
+            cpu: 250m           <span class="c"># a quarter of one CPU core</span>
+            memory: 128Mi       <span class="c"># 128 megabytes of memory</span></code></pre>
+
+      <h3>How objects find each other: labels</h3>
+      <p>A Deployment doesn't control pods directly. It creates a helper called a <strong>ReplicaSet</strong>, whose only job is keeping the count right, and that helper makes the pods. Every pod gets the sticker <code>app=web</code>. A Service (chapter 9) later finds the same pods by looking for that sticker.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 300" role="img" aria-label="A Deployment creates a ReplicaSet, which creates three pods labeled app=web. A Service selects those pods by the same label.">
+            <rect class="hot" x="100" y="14" width="260" height="52" rx="4"/>
+            <text class="t tb" x="230" y="36" text-anchor="middle">Deployment "web"</text>
+            <text class="ts" x="230" y="54" text-anchor="middle">wants 3 copies, handles updates</text>
+            <line class="ln" x1="230" y1="66" x2="230" y2="98" marker-end="url(#am)"/>
+            <text class="ts" x="240" y="86">creates</text>
+            <rect class="box" x="100" y="100" width="260" height="52" rx="4"/>
+            <text class="t tb" x="230" y="122" text-anchor="middle">ReplicaSet</text>
+            <text class="ts" x="230" y="140" text-anchor="middle">keeps the count at exactly 3</text>
+            <line class="ln" x1="200" y1="152" x2="92" y2="188" marker-end="url(#am)"/>
+            <line class="ln" x1="230" y1="152" x2="245" y2="188" marker-end="url(#am)"/>
+            <line class="ln" x1="260" y1="152" x2="398" y2="188" marker-end="url(#am)"/>
+            <text class="ts" x="300" y="172">creates</text>
+            <rect class="hot" x="20" y="190" width="140" height="56" rx="4"/>
+            <text class="t" x="90" y="213" text-anchor="middle">pod web-x7f2</text>
+            <text class="ts" x="90" y="233" text-anchor="middle">sticker: app=web</text>
+            <rect class="hot" x="175" y="190" width="140" height="56" rx="4"/>
+            <text class="t" x="245" y="213" text-anchor="middle">pod web-k9p1</text>
+            <text class="ts" x="245" y="233" text-anchor="middle">sticker: app=web</text>
+            <rect class="hot" x="330" y="190" width="140" height="56" rx="4"/>
+            <text class="t" x="400" y="213" text-anchor="middle">pod web-m3q8</text>
+            <text class="ts" x="400" y="233" text-anchor="middle">sticker: app=web</text>
+            <rect class="box" x="520" y="100" width="180" height="56" rx="4"/>
+            <text class="t tb" x="610" y="122" text-anchor="middle">Service "web"</text>
+            <text class="ts" x="610" y="142" text-anchor="middle">looks for app=web</text>
+            <path class="ln dash" d="M610 156 V276 H90 V250" marker-end="url(#am)"/>
+            <path class="ln dash" d="M245 276 V250" marker-end="url(#am)"/>
+            <path class="ln dash" d="M400 276 V250" marker-end="url(#am)"/>
+            <text class="ts" x="620" y="226">finds pods</text>
+            <text class="ts" x="620" y="241">by sticker</text>
+          </svg>
+        </div>
+        <figcaption><b>Owners and finders both use stickers.</b> Solid arrows: “creates”. Dashed arrows: “finds by label”. If a sticker has a typo, the Service finds nothing; this is one of the most common beginner bugs.</figcaption>
+      </figure>
+
+      <h3>Other kinds of workload</h3>
+      <p>Deployments are for apps where every copy is the same and any copy can be replaced. Some jobs need something different:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Kind</th><th>Use it when</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Deployment</strong></td><td>Copies are interchangeable</td><td>Websites, APIs</td></tr>
+          <tr><td><strong>StatefulSet</strong></td><td>Each copy needs its own fixed name and its own disk</td><td>Databases. Copies are named <code>db-0</code>, <code>db-1</code>, <code>db-2</code> and keep those names forever.</td></tr>
+          <tr><td><strong>DaemonSet</strong></td><td>You need exactly one copy on every node</td><td>A program that collects logs from each computer</td></tr>
+          <tr><td><strong>Job</strong></td><td>Work that runs once and finishes</td><td>Process a batch of files, train a model</td></tr>
+          <tr><td><strong>CronJob</strong></td><td>A Job on a timetable</td><td>Nightly backup at 2 a.m.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Settings and passwords</h3>
+      <p>You don't want settings baked into the image, or you'd have to rebuild it for every change. Kubernetes keeps them separately and hands them to the pod when it starts:</p>
+      <ul>
+        <li>A <strong>ConfigMap</strong> holds ordinary settings, like <code>LOG_LEVEL=info</code>.</li>
+        <li>A <strong>Secret</strong> holds sensitive ones, like passwords. (By default it is only lightly scrambled, not truly encrypted, so access to Secrets should be limited.)</li>
+      </ul>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 200" role="img" aria-label="A ConfigMap is handed to the container as an environment variable, and a Secret is handed to it as a file">
+            <rect class="box" x="20" y="30" width="200" height="60" rx="4"/>
+            <text class="t tb" x="120" y="54" text-anchor="middle">ConfigMap</text>
+            <text class="ts" x="120" y="74" text-anchor="middle">LOG_LEVEL=info</text>
+            <rect class="warm" x="20" y="116" width="200" height="60" rx="4"/>
+            <text class="t tb" x="120" y="140" text-anchor="middle">Secret</text>
+            <text class="ts" x="120" y="160" text-anchor="middle">DB_PASSWORD=••••••</text>
+            <rect class="zone" x="380" y="16" width="320" height="170" rx="6"/>
+            <text class="th" x="396" y="38">POD</text>
+            <rect class="hot" x="400" y="50" width="280" height="118" rx="4"/>
+            <text class="t tb" x="540" y="72" text-anchor="middle">your app's container</text>
+            <text class="ts" x="414" y="104">setting LOG_LEVEL = info</text>
+            <text class="ts" x="414" y="146">file /secrets/db-password</text>
+            <line class="path" x1="220" y1="60" x2="398" y2="100" marker-end="url(#ap)"/>
+            <text class="ts" x="236" y="58">as a setting</text>
+            <text class="ts" x="236" y="72">(environment variable)</text>
+            <line class="path" x1="220" y1="146" x2="398" y2="142" marker-end="url(#ap)"/>
+            <text class="ts" x="236" y="134">as a file</text>
+          </svg>
+        </div>
+        <figcaption><b>Same image, different settings.</b> The test and production versions of your app can use the same image with different ConfigMaps and Secrets.</figcaption>
+      </figure>
+
+      <h3>Keeping data: storage</h3>
+      <p>Anything a container writes to its own files is lost when it restarts. To keep data (a database, model checkpoints), you attach a disk. Kubernetes splits this in two so app writers don't need to know the details of the cloud:</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 140" role="img" aria-label="Your pod asks for storage with a claim; the storage class decides what kind of disk; an actual disk is created and attached">
+            <rect class="hot" x="20" y="30" width="145" height="64" rx="4"/>
+            <text class="t tb" x="92" y="56" text-anchor="middle">your pod</text>
+            <text class="ts" x="92" y="76" text-anchor="middle">needs to keep files</text>
+            <rect class="box" x="200" y="30" width="145" height="64" rx="4"/>
+            <text class="t tb" x="272" y="56" text-anchor="middle">storage request</text>
+            <text class="ts" x="272" y="76" text-anchor="middle">"I need 50 GB"</text>
+            <rect class="box" x="380" y="30" width="145" height="64" rx="4"/>
+            <text class="t tb" x="452" y="56" text-anchor="middle">StorageClass</text>
+            <text class="ts" x="452" y="76" text-anchor="middle">which kind of disk</text>
+            <rect class="good" x="560" y="30" width="145" height="64" rx="4"/>
+            <text class="t tb" x="632" y="56" text-anchor="middle">the actual disk</text>
+            <text class="ts" x="632" y="76" text-anchor="middle">e.g. an AWS EBS disk</text>
+            <line class="ln" x1="165" y1="62" x2="198" y2="62" marker-end="url(#am)"/>
+            <line class="ln" x1="345" y1="62" x2="378" y2="62" marker-end="url(#am)"/>
+            <line class="ln" x1="525" y1="62" x2="558" y2="62" marker-end="url(#am)"/>
+            <text class="ts" x="272" y="118" text-anchor="middle">PersistentVolumeClaim</text>
+            <text class="ts" x="632" y="118" text-anchor="middle">PersistentVolume</text>
+          </svg>
+        </div>
+        <figcaption><b>Ask, choose, create.</b> The official names are on the bottom row. If the pod moves to another node, the disk is detached and re-attached there.</figcaption>
+      </figure>
+      <div class="lab"><span class="tag">Try it</span>
+<pre><code>kubectl create deployment web --image=nginx:1.27 --replicas=3   <span class="c"># make a Deployment</span>
+kubectl get pods                    <span class="c"># see 3 pods with random-looking names</span>
+kubectl get pods --show-labels      <span class="c"># see their app=web stickers</span>
+kubectl delete pod &lt;one-pod-name&gt;   <span class="c"># delete one...</span>
+kubectl get pods                    <span class="c"># ...and a new one has already replaced it</span></code></pre>
+      </div>
+      <label class="chapter-done"><input type="checkbox" data-done="objects"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="health" data-min="20" data-title="Updates, healing, scaling" data-part="Part 2 · The parts of Kubernetes">
+      <div class="ch-head"><span class="ch-num">06</span><h2>Updates, self-healing and scaling</h2><span class="ch-time">20 min</span></div>
+
+      <h3>Updating without downtime</h3>
+      <p>When you change the image from version 1 to version 2, Kubernetes doesn't stop everything and restart. It does a <strong>rolling update</strong>: start one new copy, wait until it's healthy, remove one old copy, repeat. Users are served the whole time.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 250" role="img" aria-label="Rolling update in five steps: three v1 copies; a v2 copy starts; v2 is healthy and one v1 stops; repeat; finally three v2 copies">
+            <g>
+              <text class="t tb" x="20" y="42">Step 1</text>
+              <rect class="box" x="100" y="20" width="96" height="34" rx="4"/><text class="t" x="148" y="42" text-anchor="middle">v1</text>
+              <rect class="box" x="208" y="20" width="96" height="34" rx="4"/><text class="t" x="256" y="42" text-anchor="middle">v1</text>
+              <rect class="box" x="316" y="20" width="96" height="34" rx="4"/><text class="t" x="364" y="42" text-anchor="middle">v1</text>
+              <text class="ts" x="540" y="42">3 copies of v1</text>
+            </g>
+            <g>
+              <text class="t tb" x="20" y="88">Step 2</text>
+              <rect class="box" x="100" y="66" width="96" height="34" rx="4"/><text class="t" x="148" y="88" text-anchor="middle">v1</text>
+              <rect class="box" x="208" y="66" width="96" height="34" rx="4"/><text class="t" x="256" y="88" text-anchor="middle">v1</text>
+              <rect class="box" x="316" y="66" width="96" height="34" rx="4"/><text class="t" x="364" y="88" text-anchor="middle">v1</text>
+              <rect class="hot dashbox" x="424" y="66" width="96" height="34" rx="4"/><text class="t" x="472" y="88" text-anchor="middle">v2 starting</text>
+              <text class="ts" x="540" y="88">1 new copy starts</text>
+            </g>
+            <g>
+              <text class="t tb" x="20" y="134">Step 3</text>
+              <rect class="box" x="100" y="112" width="96" height="34" rx="4"/><text class="t" x="148" y="134" text-anchor="middle">v1</text>
+              <rect class="box" x="208" y="112" width="96" height="34" rx="4"/><text class="t" x="256" y="134" text-anchor="middle">v1</text>
+              <rect class="hot" x="316" y="112" width="96" height="34" rx="4"/><text class="t" x="364" y="134" text-anchor="middle">v2</text>
+              <text class="ts" x="540" y="134">v2 healthy, 1 v1 stops</text>
+            </g>
+            <g>
+              <text class="t tb" x="20" y="180">Step 4</text>
+              <rect class="box" x="100" y="158" width="96" height="34" rx="4"/><text class="t" x="148" y="180" text-anchor="middle">v1</text>
+              <rect class="hot" x="208" y="158" width="96" height="34" rx="4"/><text class="t" x="256" y="180" text-anchor="middle">v2</text>
+              <rect class="hot" x="316" y="158" width="96" height="34" rx="4"/><text class="t" x="364" y="180" text-anchor="middle">v2</text>
+              <text class="ts" x="540" y="180">repeat</text>
+            </g>
+            <g>
+              <text class="t tb" x="20" y="226">Step 5</text>
+              <rect class="good" x="100" y="204" width="96" height="34" rx="4"/><text class="t" x="148" y="226" text-anchor="middle">v2</text>
+              <rect class="good" x="208" y="204" width="96" height="34" rx="4"/><text class="t" x="256" y="226" text-anchor="middle">v2</text>
+              <rect class="good" x="316" y="204" width="96" height="34" rx="4"/><text class="t" x="364" y="226" text-anchor="middle">v2</text>
+              <text class="ts tg" x="540" y="226">done, no downtime</text>
+            </g>
+          </svg>
+        </div>
+        <figcaption><b>One at a time, gated on health.</b> If v2 never becomes healthy, the update simply stops at step 2 and v1 keeps serving. <code>kubectl rollout undo</code> goes back to v1.</figcaption>
+      </figure>
+
+      <h3>Health checks</h3>
+      <p>How does Kubernetes know a copy is “healthy”? You tell it how to check, usually “ask this web address and expect an OK”. There are two main checks:</p>
+      <ul>
+        <li><strong>Readiness check</strong>: “Can this copy take customers right now?” If it fails, Kubernetes stops sending it traffic but leaves it running. Used while an app is warming up.</li>
+        <li><strong>Liveness check</strong>: “Is this copy stuck?” If it fails, Kubernetes restarts the container.</li>
+      </ul>
+
+      <h3>Self-healing</h3>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 230" role="img" aria-label="Before: node 1 runs pods A and B, node 2 runs pod C. After node 1 dies, Kubernetes recreates A and B on node 2.">
+            <rect class="zone" x="20" y="14" width="330" height="204" rx="6"/>
+            <text class="th" x="34" y="36">BEFORE</text>
+            <rect class="box" x="35" y="50" width="145" height="150" rx="4"/>
+            <text class="t tb" x="107" y="72" text-anchor="middle">node 1</text>
+            <rect class="hot" x="50" y="88" width="115" height="30" rx="3"/><text class="t" x="107" y="108" text-anchor="middle">pod A</text>
+            <rect class="hot" x="50" y="126" width="115" height="30" rx="3"/><text class="t" x="107" y="146" text-anchor="middle">pod B</text>
+            <rect class="box" x="190" y="50" width="145" height="150" rx="4"/>
+            <text class="t tb" x="262" y="72" text-anchor="middle">node 2</text>
+            <rect class="hot" x="205" y="88" width="115" height="30" rx="3"/><text class="t" x="262" y="108" text-anchor="middle">pod C</text>
+
+            <rect class="zone" x="370" y="14" width="330" height="204" rx="6"/>
+            <text class="th" x="384" y="36">AFTER NODE 1 DIES</text>
+            <rect class="warm" x="385" y="50" width="145" height="150" rx="4"/>
+            <text class="t tb tw" x="457" y="72" text-anchor="middle">node 1</text>
+            <line class="lnw" x1="410" y1="95" x2="505" y2="175"/>
+            <line class="lnw" x1="505" y1="95" x2="410" y2="175"/>
+            <text class="ts tw" x="457" y="192" text-anchor="middle">broken</text>
+            <rect class="box" x="540" y="50" width="145" height="150" rx="4"/>
+            <text class="t tb" x="612" y="72" text-anchor="middle">node 2</text>
+            <rect class="hot" x="555" y="88" width="115" height="30" rx="3"/><text class="t" x="612" y="108" text-anchor="middle">pod C</text>
+            <rect class="good" x="555" y="126" width="115" height="30" rx="3"/><text class="t" x="612" y="146" text-anchor="middle">pod A (new)</text>
+            <rect class="good" x="555" y="162" width="115" height="30" rx="3"/><text class="t" x="612" y="182" text-anchor="middle">pod B (new)</text>
+          </svg>
+        </div>
+        <figcaption><b>Nobody gets paged.</b> Kubernetes notices node 1 has stopped reporting in, marks its pods as lost, and the Deployment's loop creates replacements on a node that's still alive.</figcaption>
+      </figure>
+
+      <h3>How much room does a pod need?</h3>
+      <p>Each pod says how much CPU and memory it needs (the <code>requests</code> in chapter 5). The scheduler adds these up and only places a pod on a node that still has enough room. If no node has room, the pod waits in a state called <strong>Pending</strong>.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 190" role="img" aria-label="A node with 4 CPU cores: pod A uses 1, pod B uses 1.5, leaving 1.5 free. A new pod needing 2 does not fit and waits.">
+            <text class="t tb" x="40" y="36">one node: 4 CPU cores</text>
+            <rect class="hot" x="40" y="50" width="130" height="40"/>
+            <text class="t" x="105" y="75" text-anchor="middle">pod A · 1</text>
+            <rect class="hot" x="170" y="50" width="195" height="40"/>
+            <text class="t" x="267" y="75" text-anchor="middle">pod B · 1.5</text>
+            <rect class="box" x="365" y="50" width="195" height="40"/>
+            <text class="t" x="462" y="75" text-anchor="middle">free · 1.5</text>
+            <line class="ln" x1="40" y1="96" x2="560" y2="96"/>
+            <line class="ln" x1="40" y1="92" x2="40" y2="100"/><text class="ts" x="40" y="112" text-anchor="middle">0</text>
+            <line class="ln" x1="170" y1="92" x2="170" y2="100"/><text class="ts" x="170" y="112" text-anchor="middle">1</text>
+            <line class="ln" x1="300" y1="92" x2="300" y2="100"/><text class="ts" x="300" y="112" text-anchor="middle">2</text>
+            <line class="ln" x1="430" y1="92" x2="430" y2="100"/><text class="ts" x="430" y="112" text-anchor="middle">3</text>
+            <line class="ln" x1="560" y1="92" x2="560" y2="100"/><text class="ts" x="560" y="112" text-anchor="middle">4 cores</text>
+            <rect class="warm dashbox" x="365" y="130" width="260" height="40"/>
+            <text class="t tw" x="495" y="155" text-anchor="middle">new pod needs 2 → doesn't fit</text>
+            <text class="ts" x="640" y="155">Pending</text>
+          </svg>
+        </div>
+        <figcaption><b>Drawn to scale.</b> The new pod needs 2 cores but only 1.5 are free, so it waits until room appears or a new node is added. <code>250m</code> in a file means 0.25 of a core.</figcaption>
+      </figure>
+      <p>There are also <code>limits</code>: a ceiling a pod can't go above. Go over the memory limit and the container is killed and restarted (you'll see <code>OOMKilled</code>, short for “out of memory”). Go over the CPU limit and it's just slowed down.</p>
+
+      <h3>Growing and shrinking automatically</h3>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 210" role="img" aria-label="Three stages of autoscaling: traffic grows and pods are busy; the pod autoscaler adds pods; when the node is full, the cluster autoscaler adds a node">
+            <text class="t tb" x="20" y="22">1 · traffic grows</text>
+            <rect class="box" x="20" y="34" width="210" height="130" rx="4"/>
+            <text class="ts" x="34" y="54">node 1</text>
+            <rect class="warm" x="34" y="66" width="86" height="34" rx="3"/><text class="t tw" x="77" y="88" text-anchor="middle">90% busy</text>
+            <rect class="warm" x="130" y="66" width="86" height="34" rx="3"/><text class="t tw" x="173" y="88" text-anchor="middle">90% busy</text>
+            <text class="ts" x="125" y="188" text-anchor="middle">the 2 pods are overloaded</text>
+
+            <text class="t tb" x="255" y="22">2 · more pods</text>
+            <rect class="box" x="255" y="34" width="210" height="130" rx="4"/>
+            <text class="ts" x="269" y="54">node 1 (now full)</text>
+            <rect class="hot" x="269" y="66" width="86" height="34" rx="3"/><text class="t" x="312" y="88" text-anchor="middle">pod</text>
+            <rect class="hot" x="365" y="66" width="86" height="34" rx="3"/><text class="t" x="408" y="88" text-anchor="middle">pod</text>
+            <rect class="good" x="269" y="112" width="86" height="34" rx="3"/><text class="t" x="312" y="134" text-anchor="middle">new pod</text>
+            <rect class="good" x="365" y="112" width="86" height="34" rx="3"/><text class="t" x="408" y="134" text-anchor="middle">new pod</text>
+            <text class="ts" x="360" y="188" text-anchor="middle">pod autoscaler adds pods</text>
+
+            <text class="t tb" x="490" y="22">3 · more nodes</text>
+            <rect class="box" x="490" y="34" width="100" height="130" rx="4"/>
+            <text class="ts" x="502" y="54">node 1</text>
+            <text class="ts" x="540" y="105" text-anchor="middle">full</text>
+            <rect class="good" x="600" y="34" width="100" height="130" rx="4"/>
+            <text class="ts" x="612" y="54">node 2 (new)</text>
+            <rect class="good" x="608" y="66" width="84" height="34" rx="3"/><text class="t" x="650" y="88" text-anchor="middle">new pod</text>
+            <text class="ts" x="595" y="188" text-anchor="middle">cluster autoscaler adds a node</text>
+            <line class="ln" x1="230" y1="100" x2="253" y2="100" marker-end="url(#am)"/>
+            <line class="ln" x1="465" y1="100" x2="488" y2="100" marker-end="url(#am)"/>
+          </svg>
+        </div>
+        <figcaption><b>Two separate helpers.</b> The <em>Horizontal Pod Autoscaler</em> adds pods when they're busy. When pods no longer fit anywhere, a <em>cluster autoscaler</em> (on AWS, often one called Karpenter) rents another computer. Both shrink things back when traffic drops, which saves money.</figcaption>
+      </figure>
+      <details class="deep">
+        <summary>Go deeper: steering pods to particular nodes <span>(optional)</span></summary>
+        <div class="inner">
+          <p>Sometimes a pod must run on a certain kind of node, for example a GPU node for AI training. A few tools control this:</p>
+          <ul>
+            <li><strong>nodeSelector</strong>: “only run on nodes with this label”, e.g. <code>gpu=true</code>.</li>
+            <li><strong>Taints and tolerations</strong>: a node can put up a “keep out” sign (taint). Only pods carrying a matching pass (toleration) may land there. Used to keep ordinary pods off expensive GPU nodes.</li>
+            <li><strong>Affinity / anti-affinity</strong>: “run near” or “run away from” other pods, e.g. spread copies across nodes so one failure can't take them all out.</li>
+          </ul>
+        </div>
+      </details>
+      <label class="chapter-done"><input type="checkbox" data-done="health"> Mark chapter done</label>
+    </section>
+
+    <!-- ===================== PART 3 ===================== -->
+    <div class="part-banner"><p>Part 3</p><h2>How network traffic moves</h2></div>
+
+    <section class="chapter" id="netbasics" data-min="20" data-title="Networking basics first" data-part="Part 3 · How network traffic moves">
+      <div class="ch-head"><span class="ch-num">07</span><h2>Networking basics you need first</h2><span class="ch-time">20 min</span></div>
+      <p>Kubernetes networking is built on everyday internet ideas. Four of them are enough: <em>IP address</em>, <em>port</em>, <em>DNS</em> and <em>load balancer</em>.</p>
+
+      <h3>IP address, port and DNS</h3>
+      <ul>
+        <li>An <strong>IP address</strong> is a computer's street address on a network, like <code>10.0.0.5</code>. To send anything to a computer, you need its address.</li>
+        <li>A <strong>port</strong> is a numbered door on that computer. One computer can run several programs, each listening at its own door. Web servers usually use door 80 (or 443 for secure https); a PostgreSQL database uses 5432.</li>
+        <li><strong>DNS</strong> is the internet's phone book. People remember names like <code>shop.example.com</code>; DNS turns them into IP addresses.</li>
+      </ul>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 230" role="img" aria-label="A browser asks DNS for the address of shop.example.com, gets 10.0.0.5, then connects to port 80 on that computer, where the web app listens">
+            <rect class="hot" x="20" y="120" width="140" height="56" rx="4"/>
+            <text class="t tb" x="90" y="144" text-anchor="middle">your browser</text>
+            <text class="ts" x="90" y="162" text-anchor="middle">wants shop.example.com</text>
+            <rect class="box" x="230" y="14" width="250" height="56" rx="4"/>
+            <text class="t tb" x="355" y="36" text-anchor="middle">DNS (the phone book)</text>
+            <text class="ts" x="355" y="56" text-anchor="middle">shop.example.com → 10.0.0.5</text>
+            <rect class="zone" x="460" y="100" width="240" height="116" rx="6"/>
+            <text class="th" x="474" y="120">COMPUTER AT 10.0.0.5</text>
+            <rect class="good" x="474" y="132" width="100" height="66" rx="4"/>
+            <text class="t tb" x="524" y="156" text-anchor="middle">door 80</text>
+            <text class="ts" x="524" y="176" text-anchor="middle">web app</text>
+            <rect class="box" x="586" y="132" width="100" height="66" rx="4"/>
+            <text class="t tb" x="636" y="156" text-anchor="middle">door 5432</text>
+            <text class="ts" x="636" y="176" text-anchor="middle">database</text>
+            <path class="path" d="M110 120 L228 50" marker-end="url(#ap)"/>
+            <circle class="step" cx="160" cy="80" r="10"/><text class="stept" x="160" y="84" text-anchor="middle">1</text>
+            <text class="ts" x="176" y="102">"what's the address?"</text>
+            <line class="path" x1="160" y1="165" x2="472" y2="165" marker-end="url(#ap)"/>
+            <circle class="step" cx="300" cy="165" r="10"/><text class="stept" x="300" y="169" text-anchor="middle">2</text>
+            <text class="ts" x="316" y="190">connect to 10.0.0.5, door 80</text>
+          </svg>
+        </div>
+        <figcaption><b>Name → address → door.</b> Kubernetes uses exactly these three steps inside the cluster too, with its own private phone book (chapter 9). An address plus a door is written <code>10.0.0.5:80</code>.</figcaption>
+      </figure>
+
+      <h3>Private addresses and translation (NAT)</h3>
+      <p>Most addresses inside a company or cloud network are <strong>private</strong> (they start with <code>10.</code>, <code>172.16–31.</code> or <code>192.168.</code>). They work inside that network but mean nothing on the public internet. Your home Wi-Fi works the same way: your laptop has a private address, and your router swaps in the home's single public address on the way out. That swapping is called <strong>NAT</strong> (network address translation). Keep it in mind; Kubernetes uses address swapping in a clever way in chapter 9.</p>
+
+      <h3>Load balancer</h3>
+      <p>A <strong>load balancer</strong> is a traffic splitter. Clients connect to one address; the load balancer passes each connection on to one of several identical servers behind it, so no single server gets overwhelmed and a broken one can be skipped.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 170" role="img" aria-label="Many users connect to one load balancer address, which spreads connections across three identical servers">
+            <rect class="box" x="20" y="20" width="120" height="34" rx="4"/><text class="t" x="80" y="42" text-anchor="middle">user</text>
+            <rect class="box" x="20" y="68" width="120" height="34" rx="4"/><text class="t" x="80" y="90" text-anchor="middle">user</text>
+            <rect class="box" x="20" y="116" width="120" height="34" rx="4"/><text class="t" x="80" y="138" text-anchor="middle">user</text>
+            <rect class="hot" x="270" y="55" width="170" height="60" rx="4"/>
+            <text class="t tb" x="355" y="80" text-anchor="middle">load balancer</text>
+            <text class="ts" x="355" y="98" text-anchor="middle">one address</text>
+            <rect class="box" x="570" y="20" width="130" height="34" rx="4"/><text class="t" x="635" y="42" text-anchor="middle">server 1</text>
+            <rect class="box" x="570" y="68" width="130" height="34" rx="4"/><text class="t" x="635" y="90" text-anchor="middle">server 2</text>
+            <rect class="box" x="570" y="116" width="130" height="34" rx="4"/><text class="t" x="635" y="138" text-anchor="middle">server 3</text>
+            <line class="ln" x1="140" y1="37" x2="268" y2="72" marker-end="url(#am)"/>
+            <line class="ln" x1="140" y1="85" x2="268" y2="85" marker-end="url(#am)"/>
+            <line class="ln" x1="140" y1="133" x2="268" y2="98" marker-end="url(#am)"/>
+            <line class="path" x1="440" y1="72" x2="568" y2="37" marker-end="url(#ap)"/>
+            <line class="path" x1="440" y1="85" x2="568" y2="85" marker-end="url(#ap)"/>
+            <line class="path" x1="440" y1="98" x2="568" y2="133" marker-end="url(#ap)"/>
+          </svg>
+        </div>
+        <figcaption><b>One front door, many workers behind it.</b> A Kubernetes Service (chapter 9) is a built-in load balancer for pods.</figcaption>
+      </figure>
+      <label class="chapter-done"><input type="checkbox" data-done="netbasics"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="podnet" data-min="20" data-title="How pods talk to each other" data-part="Part 3 · How network traffic moves">
+      <div class="ch-head"><span class="ch-num">08</span><h2>How pods talk to each other</h2><span class="ch-time">20 min</span></div>
+      <p>Kubernetes has one simple promise about networking. Everything else is built on it.</p>
+      <div class="idea"><span class="tag">The promise</span><p>Every pod gets its own IP address. Any pod can reach any other pod directly at that address, even when they're on different nodes, with no address swapping in between.</p></div>
+      <p>In practice: each node is handed a block of addresses for its pods. Node 1 might hand out <code>10.244.1.x</code>, node 2 <code>10.244.2.x</code>. When a pod starts, it gets the next free address from its node's block.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 210" role="img" aria-label="Node 1 gives its pods addresses 10.244.1.x and node 2 gives 10.244.2.x. A pod on node 1 talks directly to a pod on node 2 using its address.">
+            <rect class="zone" x="20" y="20" width="300" height="160" rx="6"/>
+            <text class="th" x="34" y="42">NODE 1 · hands out 10.244.1.x</text>
+            <rect class="hot" x="36" y="80" width="126" height="56" rx="4"/>
+            <text class="t tb" x="99" y="103" text-anchor="middle">pod web</text>
+            <text class="ts" x="99" y="122" text-anchor="middle">10.244.1.5</text>
+            <rect class="hot" x="178" y="80" width="126" height="56" rx="4"/>
+            <text class="t tb" x="241" y="103" text-anchor="middle">pod api</text>
+            <text class="ts" x="241" y="122" text-anchor="middle">10.244.1.6</text>
+            <rect class="zone" x="400" y="20" width="300" height="160" rx="6"/>
+            <text class="th" x="414" y="42">NODE 2 · hands out 10.244.2.x</text>
+            <rect class="hot" x="416" y="80" width="126" height="56" rx="4"/>
+            <text class="t tb" x="479" y="103" text-anchor="middle">pod db</text>
+            <text class="ts" x="479" y="122" text-anchor="middle">10.244.2.7</text>
+            <rect class="hot" x="558" y="80" width="126" height="56" rx="4"/>
+            <text class="t tb" x="621" y="103" text-anchor="middle">pod cache</text>
+            <text class="ts" x="621" y="122" text-anchor="middle">10.244.2.8</text>
+            <line class="path" x1="304" y1="108" x2="414" y2="108" marker-end="url(#ap)"/>
+            <text class="ts" x="360" y="98" text-anchor="middle">direct</text>
+            <path class="ln" d="M99 136 V160 H241 V138" marker-end="url(#am)"/>
+            <text class="ts" x="170" y="174" text-anchor="middle">same node: also direct</text>
+          </svg>
+        </div>
+        <figcaption><b>A flat network.</b> The database pod sees the request coming from <code>10.244.1.6</code>, the api pod's real address. It behaves as if every pod were its own small computer.</figcaption>
+      </figure>
+      <p>Containers inside the <em>same pod</em> share one address. They talk to each other over <code>localhost</code> (“this same computer”), like two programs on your laptop.</p>
+
+      <h3>Who builds this network?</h3>
+      <p>Kubernetes states the promise but doesn't build the network itself. A plug-in called a <strong>CNI plugin</strong> (Container Network Interface) does. You pick one when the cluster is set up. Common ones: <strong>AWS VPC CNI</strong> (the default on Amazon EKS, gives pods real AWS network addresses), <strong>Calico</strong>, <strong>Cilium</strong> and <strong>Flannel</strong>. They all keep the same promise; they differ in speed and extra features.</p>
+      <p>Getting pod traffic from node 1 to node 2 works one of two ways:</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 200" role="img" aria-label="Two ways to cross between nodes. Routed: the network knows pod addresses and delivers the packet directly. Overlay: the packet is wrapped in an outer envelope addressed node to node, then unwrapped.">
+            <rect class="zone" x="20" y="14" width="330" height="176" rx="6"/>
+            <text class="th" x="34" y="36">ROUTED</text>
+            <rect class="hot" x="40" y="70" width="120" height="44" rx="4"/>
+            <text class="ts" x="100" y="88" text-anchor="middle">to: 10.244.2.7</text>
+            <text class="ts" x="100" y="104" text-anchor="middle">from: 10.244.1.6</text>
+            <line class="path" x1="160" y1="92" x2="208" y2="92" marker-end="url(#ap)"/>
+            <rect class="box" x="210" y="62" width="122" height="60" rx="4"/>
+            <text class="t" x="271" y="86" text-anchor="middle">network knows</text>
+            <text class="t" x="271" y="104" text-anchor="middle">pod addresses</text>
+            <text class="ts" x="185" y="160" text-anchor="middle">packet travels as-is</text>
+            <text class="ts" x="185" y="176" text-anchor="middle">used by AWS VPC CNI, Calico (BGP)</text>
+
+            <rect class="zone" x="370" y="14" width="330" height="176" rx="6"/>
+            <text class="th" x="384" y="36">OVERLAY (TUNNEL)</text>
+            <rect class="box" x="390" y="56" width="180" height="76" rx="4"/>
+            <text class="ts" x="400" y="74">outer envelope:</text>
+            <text class="ts" x="400" y="88">node 1 → node 2</text>
+            <rect class="hot" x="400" y="96" width="160" height="30" rx="3"/>
+            <text class="ts" x="480" y="115" text-anchor="middle">pod 1.6 → pod 2.7</text>
+            <line class="path" x1="570" y1="94" x2="608" y2="94" marker-end="url(#ap)"/>
+            <rect class="box" x="610" y="70" width="76" height="48" rx="4"/>
+            <text class="t" x="648" y="90" text-anchor="middle">unwrap</text>
+            <text class="t" x="648" y="108" text-anchor="middle">at node 2</text>
+            <text class="ts" x="535" y="160" text-anchor="middle">works on any network</text>
+            <text class="ts" x="535" y="176" text-anchor="middle">used by Flannel (VXLAN)</text>
+          </svg>
+        </div>
+        <figcaption><b>Letter vs. letter-in-an-envelope.</b> An overlay puts the pod's packet inside a second envelope addressed node-to-node, because the network between nodes doesn't know pod addresses. Either way, the pod address inside is unchanged.</figcaption>
+      </figure>
+
+      <details class="deep">
+        <summary>Go deeper: the Linux plumbing inside a node <span>(optional)</span></summary>
+        <div class="inner">
+          <p>Each pod gets its own <strong>network namespace</strong>: a private copy of the computer's network settings, so pods can't see each other's network cards. A <strong>veth pair</strong> is a virtual cable: one end appears inside the pod as <code>eth0</code>, the other end sits on the node. The node's routing table then says which addresses live where.</p>
+          <figure>
+            <div class="diagram">
+              <svg viewBox="0 0 760 310" role="img" aria-label="Packet path from Pod A on node 1 through its virtual cable, the node's routing table and network card, across the network, into node 2 and down to Pod C">
+                <rect class="zone" x="20" y="20" width="330" height="230" rx="6"/>
+                <text class="th" x="34" y="40">NODE 1 · 192.168.1.10</text>
+                <rect class="zone" x="410" y="20" width="330" height="230" rx="6"/>
+                <text class="th" x="424" y="40">NODE 2 · 192.168.1.11</text>
+                <rect class="hot" x="40" y="55" width="140" height="58" rx="4"/>
+                <text class="t tb" x="110" y="78" text-anchor="middle">Pod A</text>
+                <text class="ts" x="110" y="98" text-anchor="middle">eth0 10.244.1.5</text>
+                <rect class="box" x="195" y="55" width="140" height="58" rx="4"/>
+                <text class="t" x="265" y="78" text-anchor="middle">Pod B</text>
+                <text class="ts" x="265" y="98" text-anchor="middle">eth0 10.244.1.6</text>
+                <rect class="box" x="40" y="148" width="295" height="40" rx="4"/>
+                <text class="t" x="187" y="166" text-anchor="middle">node's routing table</text>
+                <text class="ts" x="187" y="181" text-anchor="middle">10.244.2.x → send to 192.168.1.11</text>
+                <rect class="box" x="195" y="206" width="140" height="32" rx="4"/>
+                <text class="ts" x="265" y="227" text-anchor="middle">network card</text>
+                <rect class="hot" x="580" y="55" width="140" height="58" rx="4"/>
+                <text class="t tb" x="650" y="78" text-anchor="middle">Pod C</text>
+                <text class="ts" x="650" y="98" text-anchor="middle">eth0 10.244.2.7</text>
+                <rect class="box" x="425" y="148" width="295" height="40" rx="4"/>
+                <text class="t" x="572" y="166" text-anchor="middle">node's routing table</text>
+                <text class="ts" x="572" y="181" text-anchor="middle">10.244.2.7 → Pod C's cable</text>
+                <rect class="box" x="425" y="206" width="140" height="32" rx="4"/>
+                <text class="ts" x="495" y="227" text-anchor="middle">network card</text>
+                <line class="ln" x1="265" y1="113" x2="265" y2="148"/>
+                <line class="path" x1="110" y1="113" x2="110" y2="146" marker-end="url(#ap)"/>
+                <text class="ts" x="117" y="134">virtual cable</text>
+                <path class="path" d="M150 188 L230 204" marker-end="url(#ap)"/>
+                <path class="path" d="M335 222 L423 222" marker-end="url(#ap)"/>
+                <path class="path" d="M530 204 L620 190" marker-end="url(#ap)"/>
+                <line class="path" x1="650" y1="148" x2="650" y2="115" marker-end="url(#ap)"/>
+                <text class="ts" x="657" y="134">virtual cable</text>
+                <text class="t" x="380" y="285" text-anchor="middle">between the network cards: routed or tunneled (previous figure)</text>
+              </svg>
+            </div>
+            <figcaption>Pod A → Pod C, one hop at a time. A tiny placeholder container called <code>pause</code> holds the pod's network namespace open while the real containers start and restart.</figcaption>
+          </figure>
+          <p>When a pod is created, the container runtime calls the CNI plugin with the command “ADD”. The plugin makes the virtual cable, picks an address from the node's block, and sets the routes. When the pod is deleted, it's called with “DEL” to clean up.</p>
+        </div>
+      </details>
+      <div class="lab"><span class="tag">Try it</span>
+<pre><code>kubectl run a --image=nicolaka/netshoot -- sleep infinity    <span class="c"># a pod full of network tools</span>
+kubectl get pods -o wide            <span class="c"># the IP column shows each pod's own address</span>
+kubectl exec a -- ip addr           <span class="c"># look inside pod a: its eth0 and address</span>
+kubectl exec a -- curl -s &lt;IP of a web pod&gt;    <span class="c"># talk to another pod directly</span></code></pre>
+      </div>
+      <label class="chapter-done"><input type="checkbox" data-done="podnet"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="services" data-min="20" data-title="Services: a stable name" data-part="Part 3 · How network traffic moves">
+      <div class="ch-head"><span class="ch-num">09</span><h2>Services: a stable name for changing pods</h2><span class="ch-time">20 min</span></div>
+      <p>Pod addresses work, but they have a problem: pods are temporary (chapter 3). Every time a pod is replaced, it gets a new address. And there are usually several copies. How is the front-end supposed to know where the API pods are right now?</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 250" role="img" aria-label="Without a Service, an app must track changing pod addresses and one has disappeared. With a Service, the app calls one fixed name and the Service forwards to whichever pods exist.">
+            <rect class="zone" x="20" y="14" width="330" height="222" rx="6"/>
+            <text class="th" x="34" y="36">WITHOUT A SERVICE</text>
+            <rect class="box" x="36" y="112" width="100" height="46" rx="4"/>
+            <text class="t tb" x="86" y="140" text-anchor="middle">your app</text>
+            <rect class="hot" x="214" y="54" width="122" height="44" rx="4"/>
+            <text class="t" x="275" y="73" text-anchor="middle">api pod</text>
+            <text class="ts" x="275" y="89" text-anchor="middle">10.244.1.5</text>
+            <rect class="warm" x="214" y="113" width="122" height="44" rx="4"/>
+            <text class="t tw" x="275" y="132" text-anchor="middle">api pod (gone)</text>
+            <text class="ts tw" x="275" y="148" text-anchor="middle">10.244.2.7</text>
+            <rect class="hot dashbox" x="214" y="172" width="122" height="44" rx="4"/>
+            <text class="t" x="275" y="191" text-anchor="middle">new api pod</text>
+            <text class="ts" x="275" y="207" text-anchor="middle">10.244.3.9 ?</text>
+            <line class="ln" x1="136" y1="125" x2="212" y2="80" marker-end="url(#am)"/>
+            <line class="lnw" x1="136" y1="135" x2="212" y2="135" marker-end="url(#aw)"/>
+            <line class="ln dash" x1="136" y1="145" x2="212" y2="190" marker-end="url(#am)"/>
+            <text class="ts tw" x="174" y="128" text-anchor="middle">fails</text>
+
+            <rect class="zone" x="370" y="14" width="330" height="222" rx="6"/>
+            <text class="th" x="384" y="36">WITH A SERVICE</text>
+            <rect class="box" x="384" y="112" width="86" height="46" rx="4"/>
+            <text class="t tb" x="427" y="140" text-anchor="middle">your app</text>
+            <rect class="hot" x="494" y="98" width="96" height="74" rx="4"/>
+            <text class="t tb" x="542" y="120" text-anchor="middle">Service</text>
+            <text class="ts" x="542" y="138" text-anchor="middle">name: api</text>
+            <text class="ts" x="542" y="154" text-anchor="middle">never changes</text>
+            <rect class="box" x="614" y="54" width="76" height="40" rx="4"/><text class="t" x="652" y="79" text-anchor="middle">api pod</text>
+            <rect class="box" x="614" y="115" width="76" height="40" rx="4"/><text class="t" x="652" y="140" text-anchor="middle">api pod</text>
+            <rect class="good" x="614" y="176" width="76" height="40" rx="4"/><text class="t" x="652" y="201" text-anchor="middle">new pod</text>
+            <line class="path" x1="470" y1="135" x2="492" y2="135" marker-end="url(#ap)"/>
+            <line class="path" x1="590" y1="120" x2="612" y2="76" marker-end="url(#ap)"/>
+            <line class="path" x1="590" y1="135" x2="612" y2="135" marker-end="url(#ap)"/>
+            <line class="path" x1="590" y1="150" x2="612" y2="194" marker-end="url(#ap)"/>
+          </svg>
+        </div>
+        <figcaption><b>The Service is the fixed phone number.</b> Your app always calls “api”. The Service keeps an up-to-date list of the healthy pods (found by their sticker) and passes each connection to one of them.</figcaption>
+      </figure>
+<pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: api               <span class="c"># other apps will call this name</span>
+spec:
+  selector:
+    app: api              <span class="c"># send traffic to pods with sticker app=api</span>
+  ports:
+  - port: 80              <span class="c"># the door callers knock on</span>
+    targetPort: 8080      <span class="c"># the door the app inside the pod actually uses</span></code></pre>
+
+      <h3>Who can reach a Service: the three main types</h3>
+      <p>Each Service gets a fixed private address called its <strong>ClusterIP</strong>. The <code>type</code> setting decides how far beyond the cluster it can be reached:</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 270" role="img" aria-label="ClusterIP: only other pods inside the cluster can reach the Service. NodePort: open a door on every node. LoadBalancer: the cloud adds a public load balancer in front of the node doors so internet users can reach it.">
+            <rect class="zone" x="240" y="14" width="460" height="240" rx="6"/>
+            <text class="th" x="254" y="36">INSIDE THE CLUSTER</text>
+            <rect class="box" x="262" y="52" width="140" height="48" rx="4"/>
+            <text class="t" x="332" y="74" text-anchor="middle">another pod</text>
+            <text class="ts" x="332" y="90" text-anchor="middle">calls "web"</text>
+            <rect class="box" x="250" y="176" width="170" height="54" rx="4"/>
+            <text class="t tb" x="335" y="198" text-anchor="middle">node door 30080</text>
+            <text class="ts" x="335" y="216" text-anchor="middle">open on every node</text>
+            <rect class="hot" x="470" y="110" width="110" height="60" rx="4"/>
+            <text class="t tb" x="525" y="135" text-anchor="middle">Service</text>
+            <text class="ts" x="525" y="153" text-anchor="middle">ClusterIP</text>
+            <rect class="box" x="614" y="60" width="70" height="40" rx="4"/><text class="t" x="649" y="85" text-anchor="middle">pod</text>
+            <rect class="box" x="614" y="120" width="70" height="40" rx="4"/><text class="t" x="649" y="145" text-anchor="middle">pod</text>
+            <rect class="box" x="614" y="180" width="70" height="40" rx="4"/><text class="t" x="649" y="205" text-anchor="middle">pod</text>
+            <line class="ln" x1="580" y1="128" x2="612" y2="82" marker-end="url(#am)"/>
+            <line class="ln" x1="580" y1="140" x2="612" y2="140" marker-end="url(#am)"/>
+            <line class="ln" x1="580" y1="152" x2="612" y2="198" marker-end="url(#am)"/>
+
+            <rect class="box" x="20" y="40" width="180" height="46" rx="4"/>
+            <text class="t" x="110" y="68" text-anchor="middle">someone on the internet</text>
+            <rect class="good" x="20" y="176" width="180" height="54" rx="4"/>
+            <text class="t tb" x="110" y="198" text-anchor="middle">cloud load balancer</text>
+            <text class="ts" x="110" y="216" text-anchor="middle">public address</text>
+            <line class="lng" x1="110" y1="86" x2="110" y2="174" marker-end="url(#ag)"/>
+            <line class="lng" x1="200" y1="203" x2="248" y2="203" marker-end="url(#ag)"/>
+            <line class="path" x1="402" y1="80" x2="468" y2="122" marker-end="url(#ap)"/>
+            <line class="ln" x1="420" y1="196" x2="468" y2="160" marker-end="url(#am)"/>
+            <text class="ts" x="452" y="92">ClusterIP</text>
+            <text class="ts" x="122" y="134">LoadBalancer</text>
+            <text class="ts" x="122" y="148">type adds this</text>
+          </svg>
+        </div>
+        <figcaption><b>Each type adds a layer on the outside.</b> Blue arrow: <em>ClusterIP</em>, reachable only from inside. Grey from the door: <em>NodePort</em> opens the same door number (30000–32767) on every node. Green: <em>LoadBalancer</em> asks the cloud for a real load balancer with a public address that sends traffic to those doors.</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Type</th><th>Reachable from</th><th>Use it for</th></tr></thead>
+        <tbody>
+          <tr><td><code>ClusterIP</code> (default)</td><td>Only inside the cluster</td><td>Apps talking to each other: front-end → API → database</td></tr>
+          <tr><td><code>NodePort</code></td><td>Any node's address, on a door between 30000 and 32767</td><td>Testing; rarely used directly</td></tr>
+          <tr><td><code>LoadBalancer</code></td><td>Outside, via a cloud load balancer</td><td>Exposing one service to the internet or to your company network</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The cluster's own phone book</h3>
+      <p>Kubernetes runs its own DNS, called <strong>CoreDNS</strong>. Every Service automatically gets a name in it. Inside the cluster, a pod can just call <code>http://api</code>. The full name is <code>api.&lt;namespace&gt;.svc.cluster.local</code>, which you only need when calling a Service in a different namespace (folder). For example, <code>api.shop</code> reaches the <code>api</code> Service in the <code>shop</code> namespace.</p>
+
+      <h3>What really happens when a pod calls a Service</h3>
+      <p>Here's the surprising part: there's no actual load-balancer program sitting at the Service's address. Instead, every node gets <em>traffic rules</em> that quietly swap the Service address for a real pod address as the request leaves. This is the address swapping (NAT) from chapter 7.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 270" role="img" aria-label="Step 1: the client pod looks up the name in CoreDNS and gets the Service address. Step 2: it sends to that address. Step 3: traffic rules on its own node swap the Service address for one healthy pod's address. A list of healthy pods keeps the rules up to date.">
+            <rect class="hot" x="20" y="100" width="150" height="62" rx="4"/>
+            <text class="t tb" x="95" y="126" text-anchor="middle">client pod</text>
+            <text class="ts" x="95" y="145" text-anchor="middle">calls http://web</text>
+            <rect class="box" x="226" y="14" width="250" height="52" rx="4"/>
+            <text class="t tb" x="351" y="35" text-anchor="middle">CoreDNS (phone book)</text>
+            <text class="ts" x="351" y="54" text-anchor="middle">web → 10.96.12.34</text>
+            <rect class="box" x="226" y="102" width="250" height="60" rx="4"/>
+            <text class="t tb" x="351" y="124" text-anchor="middle">traffic rules on the node</text>
+            <text class="ts" x="351" y="144" text-anchor="middle">swap 10.96.12.34 → a real pod</text>
+            <rect class="box" x="226" y="200" width="250" height="52" rx="4"/>
+            <text class="t tb" x="351" y="222" text-anchor="middle">list of healthy pods</text>
+            <text class="ts" x="351" y="240" text-anchor="middle">updated automatically</text>
+            <rect class="good" x="540" y="40" width="160" height="44" rx="4"/>
+            <text class="ts" x="620" y="67" text-anchor="middle">web pod · 10.244.1.8</text>
+            <rect class="box" x="540" y="110" width="160" height="44" rx="4"/>
+            <text class="ts" x="620" y="137" text-anchor="middle">web pod · 10.244.2.3</text>
+            <rect class="box" x="540" y="180" width="160" height="44" rx="4"/>
+            <text class="ts" x="620" y="207" text-anchor="middle">web pod · 10.244.3.9</text>
+            <path class="path" d="M120 100 L224 52" marker-end="url(#ap)"/>
+            <circle class="step" cx="160" cy="70" r="10"/><text class="stept" x="160" y="74" text-anchor="middle">1</text>
+            <line class="path" x1="170" y1="132" x2="224" y2="132" marker-end="url(#ap)"/>
+            <circle class="step" cx="197" cy="118" r="10"/><text class="stept" x="197" y="122" text-anchor="middle">2</text>
+            <path class="path" d="M476 122 L538 66" marker-end="url(#ap)"/>
+            <circle class="step" cx="505" cy="88" r="10"/><text class="stept" x="505" y="92" text-anchor="middle">3</text>
+            <path class="ln dash" d="M476 132 L538 132" marker-end="url(#am)"/>
+            <path class="ln dash" d="M476 142 L538 196" marker-end="url(#am)"/>
+            <line class="ln dash" x1="351" y1="200" x2="351" y2="164" marker-end="url(#am)"/>
+          </svg>
+        </div>
+        <figcaption><b>The Service address is a placeholder.</b> 1: look up the name. 2: send to the Service address. 3: the node's rules pick one healthy pod (dashed = the other possible choices) and rewrite the destination. The program that writes these rules on each node is <code>kube-proxy</code>.</figcaption>
+      </figure>
+      <div class="warn"><span class="tag">Common mistake</span><p>If a Service “doesn't work”, check whether it found any pods: <code>kubectl get endpointslices</code> (the official name for the “list of healthy pods”). An empty list almost always means the sticker (label) in the Service doesn't match the pods, or the pods are failing their readiness check.</p></div>
+
+      <details class="deep">
+        <summary>Go deeper: the actual rules, and two classic surprises <span>(optional)</span></summary>
+        <div class="inner">
+          <p>On Linux, kube-proxy writes these rules using a built-in kernel firewall called <strong>iptables</strong> (newer clusters use its successor, <strong>nftables</strong>; the plug-in Cilium uses a faster technology called <strong>eBPF</strong> instead). For a Service with 3 pods, the rules look roughly like this:</p>
+<pre><code><span class="c"># traffic to the Service address, door 80 → go to the "web" rule list</span>
+-A KUBE-SERVICES -d 10.96.12.34 -p tcp --dport 80 -j KUBE-SVC-WEB
+<span class="c"># pick pod A one time in three; otherwise pod B half the time; else pod C</span>
+-A KUBE-SVC-WEB -m statistic --mode random --probability 0.333 -j POD-A
+-A KUBE-SVC-WEB -m statistic --mode random --probability 0.500 -j POD-B
+-A KUBE-SVC-WEB -j POD-C
+<span class="c"># rewrite the destination to the real pod address</span>
+-A POD-A -p tcp -j DNAT --to-destination 10.244.1.8:8080</code></pre>
+          <p>The kernel remembers the choice for the whole connection (a feature called <em>conntrack</em>), so replies find their way back.</p>
+          <p><strong>Surprise 1: one busy pod.</strong> The choice is made once per <em>connection</em>, not per request. Some protocols (like gRPC) open one connection and send thousands of requests over it, so all of them land on the same pod. Fixes include smarter clients or a service mesh (chapter 10).</p>
+          <p><strong>Surprise 2: slow lookups for outside names.</strong> To make short names like <code>web</code> work, each pod's DNS settings try adding cluster suffixes first. A lookup for <code>api.stripe.com</code> is first tried as <code>api.stripe.com.shop.svc.cluster.local</code>, then a couple of other variations, before the real name. Each extra attempt adds a little delay. Writing the name with a final dot (<code>api.stripe.com.</code>) skips the guessing.</p>
+        </div>
+      </details>
+      <div class="lab"><span class="tag">Try it</span>
+<pre><code>kubectl expose deployment web --port=80            <span class="c"># make a Service for the web pods</span>
+kubectl get service web                             <span class="c"># note its CLUSTER-IP</span>
+kubectl get endpointslices                          <span class="c"># the list of pod addresses it found</span>
+kubectl exec a -- curl -s http://web | head -n 4    <span class="c"># call it by name from pod a</span></code></pre>
+      </div>
+      <label class="chapter-done"><input type="checkbox" data-done="services"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="edge" data-min="20" data-title="Letting traffic in, keeping it out" data-part="Part 3 · How network traffic moves">
+      <div class="ch-head"><span class="ch-num">10</span><h2>Letting the world in, and keeping the wrong traffic out</h2><span class="ch-time">20 min</span></div>
+
+      <h3>One front door for many websites: Ingress and Gateway</h3>
+      <p>A <code>LoadBalancer</code> Service per app works, but each one costs money and only forwards raw connections. For websites, you usually want <em>one</em> public entry point that reads the web address and sends each request to the right app. It also handles the padlock (HTTPS security certificates) in one place.</p>
+      <p>Kubernetes has two ways to describe that front door. The older one is <strong>Ingress</strong>. The newer, more capable one is <strong>Gateway API</strong>. Both work the same way in principle:</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 240" role="img" aria-label="A user reaches one cloud load balancer, then a Gateway that reads the web address and sends shop slash api to the api service, shop slash to the web service, and blog to the blog service">
+            <rect class="box" x="20" y="96" width="110" height="48" rx="4"/>
+            <text class="t" x="75" y="124" text-anchor="middle">user</text>
+            <rect class="box" x="160" y="96" width="120" height="48" rx="4"/>
+            <text class="t" x="220" y="116" text-anchor="middle">cloud load</text>
+            <text class="t" x="220" y="132" text-anchor="middle">balancer</text>
+            <rect class="hot" x="310" y="40" width="190" height="160" rx="4"/>
+            <text class="t tb" x="405" y="64" text-anchor="middle">Gateway / Ingress</text>
+            <text class="ts" x="405" y="82" text-anchor="middle">reads the web address</text>
+            <line class="ln" x1="326" y1="94" x2="484" y2="94"/>
+            <text class="ts" x="326" y="118">shop…/api  → api</text>
+            <text class="ts" x="326" y="146">shop…/     → web</text>
+            <text class="ts" x="326" y="174">blog…      → blog</text>
+            <rect class="box" x="550" y="24" width="150" height="46" rx="4"/>
+            <text class="t" x="625" y="52" text-anchor="middle">api Service</text>
+            <rect class="box" x="550" y="97" width="150" height="46" rx="4"/>
+            <text class="t" x="625" y="125" text-anchor="middle">web Service</text>
+            <rect class="box" x="550" y="170" width="150" height="46" rx="4"/>
+            <text class="t" x="625" y="198" text-anchor="middle">blog Service</text>
+            <line class="path" x1="130" y1="120" x2="158" y2="120" marker-end="url(#ap)"/>
+            <line class="path" x1="280" y1="120" x2="308" y2="120" marker-end="url(#ap)"/>
+            <line class="path" x1="500" y1="114" x2="548" y2="47" marker-end="url(#ap)"/>
+            <line class="path" x1="500" y1="142" x2="548" y2="120" marker-end="url(#ap)"/>
+            <line class="path" x1="500" y1="170" x2="548" y2="193" marker-end="url(#ap)"/>
+          </svg>
+        </div>
+        <figcaption><b>A receptionist for web traffic.</b> The Gateway checks each request's address and path, then passes it to the right Service. Many apps share one load balancer and one set of certificates.</figcaption>
+      </figure>
+      <p>Writing the rules down isn't enough by itself: the cluster also needs a <strong>controller</strong>, a program that reads your rules and does the routing. Examples are the AWS Load Balancer Controller on EKS, Envoy Gateway, or Traefik. For new setups, prefer Gateway API; the most popular older Ingress controller, ingress-nginx, has been retired by the Kubernetes project.</p>
+<pre><code><span class="c"># A Gateway API route, in plain words: "for shop.example.com/api, send 90% to v1 and 10% to v2"</span>
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata: { name: api }
+spec:
+  parentRefs: [{ name: public-gateway }]     <span class="c"># attach to the shared front door</span>
+  hostnames: [shop.example.com]
+  rules:
+  - matches: [{ path: { type: PathPrefix, value: /api } }]
+    backendRefs:
+    - { name: api-v1, port: 80, weight: 90 }   <span class="c"># most traffic to the old version</span>
+    - { name: api-v2, port: 80, weight: 10 }   <span class="c"># a little to the new one, to test it</span></code></pre>
+
+      <h3>Keeping the wrong traffic out: NetworkPolicy</h3>
+      <p>By default, <strong>any pod can talk to any other pod</strong>. That's convenient but risky: if a hacker breaks into the front-end, they can reach the database directly. A <strong>NetworkPolicy</strong> is a firewall rule for pods: “only pods with sticker X may talk to pods with sticker Y on door Z.”</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 230" role="img" aria-label="Without a policy, the frontend, api and database can all reach each other. With a policy, frontend can reach api and api can reach database, but frontend to database is blocked.">
+            <rect class="zone" x="20" y="14" width="330" height="204" rx="6"/>
+            <text class="th" x="34" y="36">NO POLICY · everyone can talk</text>
+            <rect class="box" x="36" y="56" width="110" height="40" rx="4"/><text class="t" x="91" y="81" text-anchor="middle">frontend</text>
+            <rect class="box" x="224" y="56" width="110" height="40" rx="4"/><text class="t" x="279" y="81" text-anchor="middle">api</text>
+            <rect class="box" x="130" y="160" width="110" height="40" rx="4"/><text class="t" x="185" y="185" text-anchor="middle">database</text>
+            <line class="ln" x1="146" y1="76" x2="222" y2="76" marker-end="url(#am)"/>
+            <line class="ln" x1="270" y1="96" x2="212" y2="158" marker-end="url(#am)"/>
+            <line class="ln" x1="100" y1="96" x2="158" y2="158" marker-end="url(#am)"/>
+
+            <rect class="zone" x="370" y="14" width="330" height="204" rx="6"/>
+            <text class="th" x="384" y="36">WITH A POLICY ON THE DATABASE</text>
+            <rect class="box" x="386" y="56" width="110" height="40" rx="4"/><text class="t" x="441" y="81" text-anchor="middle">frontend</text>
+            <rect class="box" x="574" y="56" width="110" height="40" rx="4"/><text class="t" x="629" y="81" text-anchor="middle">api</text>
+            <rect class="hot" x="480" y="160" width="110" height="40" rx="4"/><text class="t" x="535" y="185" text-anchor="middle">database</text>
+            <line class="lng" x1="496" y1="76" x2="572" y2="76" marker-end="url(#ag)"/>
+            <line class="lng" x1="620" y1="96" x2="562" y2="158" marker-end="url(#ag)"/>
+            <line class="lnw dash" x1="450" y1="96" x2="490" y2="140"/>
+            <line class="lnw" x1="460" y1="112" x2="482" y2="128"/>
+            <line class="lnw" x1="482" y1="112" x2="460" y2="128"/>
+            <text class="ts tw" x="400" y="142">blocked</text>
+            <text class="ts tg" x="640" y="138">allowed:</text>
+            <text class="ts tg" x="640" y="152">api only</text>
+          </svg>
+        </div>
+        <figcaption><b>Allow lists for pods.</b> Once a policy applies to the database, everything not on its allow list is refused.</figcaption>
+      </figure>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: db-only-from-api }
+spec:
+  podSelector:
+    matchLabels: { app: database }    <span class="c"># this rule protects the database pods</span>
+  ingress:                            <span class="c"># "ingress" here means incoming traffic</span>
+  - from:
+    - podSelector:
+        matchLabels: { app: api }     <span class="c"># only api pods may come in</span>
+    ports:
+    - port: 5432                      <span class="c"># and only to the database door</span></code></pre>
+      <div class="warn"><span class="tag">Common mistake</span><p>NetworkPolicy only works if the cluster's network plug-in (chapter 8) supports it. Calico and Cilium do. Some simple setups (Flannel alone, or a default practice cluster) quietly ignore the rules. Also, if you block <em>outgoing</em> traffic, remember to still allow DNS (door 53), or no pod can look up any name.</p></div>
+
+      <details class="deep">
+        <summary>Go deeper: service mesh, and who sees the real visitor address <span>(optional)</span></summary>
+        <div class="inner">
+          <p>A <strong>service mesh</strong> (Istio, Linkerd) adds a small helper proxy next to every app. All traffic between apps goes through these helpers, which add encryption between pods, automatic retries, and detailed traffic graphs, without changing app code. It's powerful but adds a lot to run. Most teams don't need one at first.</p>
+          <p><strong>Visitor addresses.</strong> When traffic arrives from a load balancer, a node may forward it to a pod on another node, swapping in its own address on the way. Then your app sees the node's address, not the visitor's. Setting <code>externalTrafficPolicy: Local</code> on the Service keeps the real visitor address. Web gateways usually pass it along in a header called <code>X-Forwarded-For</code> instead.</p>
+          <p><strong>Pods reaching the internet.</strong> When a pod calls something outside the cluster, its node usually swaps in the node's own address (NAT), because the outside world doesn't know pod addresses. On AWS, private nodes then go out through a “NAT gateway”, which charges per gigabyte, a common source of surprise bills.</p>
+        </div>
+      </details>
+
+      <h3>Networking cheat sheet</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>I want to…</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Let two containers in one pod talk</td><td><code>localhost</code></td></tr>
+          <tr><td>Give a group of pods one stable name</td><td>A Service (type ClusterIP)</td></tr>
+          <tr><td>Put one non-web service on the internet</td><td>A Service of type LoadBalancer</td></tr>
+          <tr><td>Put several websites behind one address</td><td>Gateway API (or Ingress)</td></tr>
+          <tr><td>Peek at an app from my laptop, temporarily</td><td><code>kubectl port-forward svc/web 8080:80</code>, then open <code>localhost:8080</code></td></tr>
+          <tr><td>Stop pods talking to things they shouldn't</td><td>NetworkPolicy</td></tr>
+        </tbody>
+      </table></div>
+      <label class="chapter-done"><input type="checkbox" data-done="edge"> Mark chapter done</label>
+    </section>
+
+    <!-- ===================== PART 4 ===================== -->
+    <div class="part-banner"><p>Part 4</p><h2>Using it for real</h2></div>
+
+    <section class="chapter" id="when" data-min="10" data-title="Should you use it?" data-part="Part 4 · Using it for real">
+      <div class="ch-head"><span class="ch-num">11</span><h2>Should you use Kubernetes?</h2><span class="ch-time">10 min</span></div>
+      <p>Kubernetes is powerful but has real running costs: upgrades a few times a year, and someone who understands it when things break. For small projects, simpler services do the job with far less effort.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 210" role="img" aria-label="Decision: if you run just one or two simple apps, use something simpler. Otherwise, if nobody can look after a cluster, use something simpler. Otherwise, use a cloud-managed Kubernetes.">
+            <rect class="box" x="20" y="86" width="200" height="66" rx="4"/>
+            <text class="t tb" x="120" y="112" text-anchor="middle">Just 1–2 simple apps?</text>
+            <text class="ts" x="120" y="132" text-anchor="middle">e.g. a website + database</text>
+            <rect class="warm" x="270" y="14" width="200" height="66" rx="4"/>
+            <text class="t tb" x="370" y="40" text-anchor="middle">Use something simpler</text>
+            <text class="ts" x="370" y="60" text-anchor="middle">Render, Cloud Run, AWS ECS</text>
+            <rect class="box" x="270" y="124" width="200" height="66" rx="4"/>
+            <text class="t tb" x="370" y="150" text-anchor="middle">Someone can look after it?</text>
+            <text class="ts" x="370" y="170" text-anchor="middle">upgrades, fixing problems</text>
+            <rect class="good" x="520" y="124" width="180" height="66" rx="4"/>
+            <text class="t tb" x="610" y="150" text-anchor="middle">Use Kubernetes</text>
+            <text class="ts" x="610" y="170" text-anchor="middle">a managed one: EKS, GKE</text>
+            <line class="ln" x1="220" y1="105" x2="268" y2="58" marker-end="url(#am)"/>
+            <text class="ts" x="232" y="76">yes</text>
+            <line class="ln" x1="220" y1="136" x2="268" y2="152" marker-end="url(#am)"/>
+            <text class="ts" x="236" y="160">no</text>
+            <line class="ln" x1="370" y1="124" x2="370" y2="82" marker-end="url(#am)"/>
+            <text class="ts" x="378" y="108">no</text>
+            <line class="ln" x1="470" y1="157" x2="518" y2="157" marker-end="url(#am)"/>
+            <text class="ts" x="484" y="150">yes</text>
+          </svg>
+        </div>
+        <figcaption><b>A quick rule of thumb.</b> “Managed” means the cloud company runs the brain (control plane) for you. Almost nobody should run their own from scratch.</figcaption>
+      </figure>
+      <p>Kubernetes is a good fit when you have many services or several teams, traffic that rises and falls, or a mix of web apps, batch jobs and GPU work sharing the same machines. That last case is why it's popular for AI and research computing.</p>
+      <h3>Example: Ray on Kubernetes</h3>
+      <p>Kubernetes can be taught new kinds of objects. Add-ons that do this are called <strong>operators</strong>. <strong>KubeRay</strong> is the operator for Ray: you write a short file saying “a Ray head plus 0–8 GPU workers”, and it creates and removes the pods for you. Paired with a node autoscaler, GPU machines are rented only while workers need them and released afterwards, so idle GPUs stop costing money.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 190" role="img" aria-label="You write a RayCluster file. The KubeRay operator reads it and creates a Ray head pod and GPU worker pods, adding or removing workers as Ray asks.">
+            <rect class="box" x="20" y="64" width="160" height="62" rx="4"/>
+            <text class="t tb" x="100" y="90" text-anchor="middle">RayCluster file</text>
+            <text class="ts" x="100" y="110" text-anchor="middle">head + 0–8 GPU workers</text>
+            <rect class="hot" x="230" y="64" width="160" height="62" rx="4"/>
+            <text class="t tb" x="310" y="90" text-anchor="middle">KubeRay operator</text>
+            <text class="ts" x="310" y="110" text-anchor="middle">a reconcile loop for Ray</text>
+            <rect class="box" x="450" y="14" width="250" height="44" rx="4"/>
+            <text class="t" x="575" y="41" text-anchor="middle">Ray head pod</text>
+            <rect class="good" x="450" y="74" width="120" height="44" rx="4"/>
+            <text class="t" x="510" y="101" text-anchor="middle">GPU worker</text>
+            <rect class="good" x="580" y="74" width="120" height="44" rx="4"/>
+            <text class="t" x="640" y="101" text-anchor="middle">GPU worker</text>
+            <rect class="box dashbox" x="450" y="134" width="250" height="40" rx="4"/>
+            <text class="ts" x="575" y="159" text-anchor="middle">more workers added when Ray needs them</text>
+            <line class="ln" x1="180" y1="95" x2="228" y2="95" marker-end="url(#am)"/>
+            <text class="ts" x="204" y="86" text-anchor="middle">reads</text>
+            <line class="path" x1="390" y1="85" x2="448" y2="38" marker-end="url(#ap)"/>
+            <line class="path" x1="390" y1="96" x2="448" y2="96" marker-end="url(#ap)"/>
+            <line class="ln dash" x1="390" y1="108" x2="448" y2="152" marker-end="url(#am)"/>
+          </svg>
+        </div>
+        <figcaption><b>An operator is a custom reconcile loop.</b> Same idea as chapter 2, taught about Ray. Other operators manage databases, certificates or ML training jobs.</figcaption>
+      </figure>
+      <label class="chapter-done"><input type="checkbox" data-done="when"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="handson" data-min="10" data-title="Your first session" data-part="Part 4 · Using it for real">
+      <div class="ch-head"><span class="ch-num">12</span><h2>Your first hands-on session</h2><span class="ch-time">10 min</span></div>
+      <p>You control Kubernetes with a command-line tool called <strong>kubectl</strong> (say “cube control”). It reads a settings file on your laptop (<code>~/.kube/config</code>) that says which cluster to talk to and proves who you are. Then it sends your requests to the API server.</p>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 130" role="img" aria-label="kubectl on your laptop reads the kubeconfig file to learn which cluster and which credentials, then sends requests to that cluster's API server">
+            <rect class="hot" x="20" y="40" width="170" height="54" rx="4"/>
+            <text class="t tb" x="105" y="63" text-anchor="middle">kubectl</text>
+            <text class="ts" x="105" y="81" text-anchor="middle">on your laptop</text>
+            <rect class="box" x="260" y="40" width="200" height="54" rx="4"/>
+            <text class="t tb" x="360" y="63" text-anchor="middle">~/.kube/config</text>
+            <text class="ts" x="360" y="81" text-anchor="middle">which cluster + your key</text>
+            <rect class="box" x="530" y="40" width="170" height="54" rx="4"/>
+            <text class="t tb" x="615" y="63" text-anchor="middle">API server</text>
+            <text class="ts" x="615" y="81" text-anchor="middle">of that cluster</text>
+            <line class="ln" x1="190" y1="67" x2="258" y2="67" marker-end="url(#am)"/>
+            <text class="ts" x="224" y="58" text-anchor="middle">reads</text>
+            <line class="path" x1="460" y1="67" x2="528" y2="67" marker-end="url(#ap)"/>
+            <text class="ts" x="494" y="58" text-anchor="middle">sends</text>
+          </svg>
+        </div>
+        <figcaption><b>kubectl is just a messenger.</b> For Amazon EKS, <code>aws eks update-kubeconfig --name &lt;cluster&gt;</code> writes the settings file for you.</figcaption>
+      </figure>
+      <h3>The commands you'll use 90% of the time</h3>
+<pre><code><span class="c"># LOOK</span>
+kubectl get pods                 <span class="c"># list pods in the current namespace</span>
+kubectl get pods -A              <span class="c"># ...in all namespaces</span>
+kubectl get deploy,svc           <span class="c"># list Deployments and Services</span>
+kubectl describe pod &lt;name&gt;      <span class="c"># full details; the "Events" at the bottom explain problems</span>
+kubectl logs &lt;pod-name&gt;          <span class="c"># what the app printed</span>
+kubectl logs &lt;pod-name&gt; --previous   <span class="c"># what it printed before it last crashed</span>
+
+<span class="c"># CHANGE</span>
+kubectl apply -f web.yaml        <span class="c"># "make it look like this file" (create or update)</span>
+kubectl delete -f web.yaml       <span class="c"># remove what the file describes</span>
+kubectl scale deploy web --replicas=5
+kubectl rollout undo deploy/web  <span class="c"># go back to the previous version</span>
+
+<span class="c"># GET INSIDE</span>
+kubectl exec -it &lt;pod-name&gt; -- sh       <span class="c"># open a shell inside a pod</span>
+kubectl port-forward svc/web 8080:80    <span class="c"># reach a Service at localhost:8080</span>
+
+<span class="c"># LEARN (works offline)</span>
+kubectl explain deployment.spec  <span class="c"># built-in docs for any field</span></code></pre>
+      <p>A friendly extra tool is <strong>k9s</strong>, a full-screen terminal view of your cluster you can browse with arrow keys.</p>
+      <h3>How teams usually ship changes</h3>
+      <ol class="trace">
+        <li><div>Build a new image of the app and upload it to a registry.</div></li>
+        <li><div>Change the image version in the YAML file, and save that change in Git.</div></li>
+        <li><div>A tool (a CI pipeline, or one called Argo CD that watches Git) runs <code>kubectl apply</code> for you.</div></li>
+        <li><div>Kubernetes does a rolling update (chapter 6). If something looks wrong, undo.</div></li>
+      </ol>
+      <label class="chapter-done"><input type="checkbox" data-done="handson"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="debug" data-min="10" data-title="When things break" data-part="Part 4 · Using it for real">
+      <div class="ch-head"><span class="ch-num">13</span><h2>When things break</h2><span class="ch-time">10 min</span></div>
+      <p>The first command is always <code>kubectl get pods</code>, then <code>kubectl describe pod &lt;name&gt;</code> and read the Events at the bottom. The STATUS column tells you where to look:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Status you see</th><th>What it means</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td><code>Pending</code></td><td>Waiting for a node with enough room (chapter 6)</td><td>Read Events: “Insufficient cpu” or similar. Ask for less, or add nodes.</td></tr>
+          <tr><td><code>ImagePullBackOff</code></td><td>Can't download the image</td><td>Check the image name and version for typos; check registry login.</td></tr>
+          <tr><td><code>CrashLoopBackOff</code></td><td>The app keeps starting and crashing; Kubernetes waits longer between each retry</td><td><code>kubectl logs &lt;pod&gt; --previous</code> shows the error.</td></tr>
+          <tr><td><code>OOMKilled</code></td><td>Used more memory than its limit</td><td>Raise the memory limit or fix the memory use.</td></tr>
+          <tr><td><code>Running</code> but <code>0/1</code> ready</td><td>Running, but failing its readiness check, so it gets no traffic</td><td>Check the health check's path and port.</td></tr>
+        </tbody>
+      </table></div>
+      <h3>“I can't reach my app”: check from the inside out</h3>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 720 150" role="img" aria-label="Check in order: is the app listening, can you reach the pod by address, does the Service have pods, does the name resolve, then the outside entry">
+            <rect class="good" x="10" y="40" width="128" height="70" rx="4"/>
+            <text class="t tb" x="74" y="66" text-anchor="middle">1. App</text>
+            <text class="ts" x="74" y="84" text-anchor="middle">listening on</text>
+            <text class="ts" x="74" y="98" text-anchor="middle">the right door?</text>
+            <rect class="box" x="152" y="40" width="128" height="70" rx="4"/>
+            <text class="t tb" x="216" y="66" text-anchor="middle">2. Pod</text>
+            <text class="ts" x="216" y="84" text-anchor="middle">reachable by</text>
+            <text class="ts" x="216" y="98" text-anchor="middle">its address?</text>
+            <rect class="box" x="294" y="40" width="128" height="70" rx="4"/>
+            <text class="t tb" x="358" y="66" text-anchor="middle">3. Service</text>
+            <text class="ts" x="358" y="84" text-anchor="middle">found any</text>
+            <text class="ts" x="358" y="98" text-anchor="middle">pods?</text>
+            <rect class="box" x="436" y="40" width="128" height="70" rx="4"/>
+            <text class="t tb" x="500" y="66" text-anchor="middle">4. Name</text>
+            <text class="ts" x="500" y="84" text-anchor="middle">does DNS</text>
+            <text class="ts" x="500" y="98" text-anchor="middle">find it?</text>
+            <rect class="box" x="578" y="40" width="128" height="70" rx="4"/>
+            <text class="t tb" x="642" y="66" text-anchor="middle">5. Outside</text>
+            <text class="ts" x="642" y="84" text-anchor="middle">load balancer</text>
+            <text class="ts" x="642" y="98" text-anchor="middle">and Gateway?</text>
+            <line class="ln" x1="138" y1="75" x2="150" y2="75" marker-end="url(#am)"/>
+            <line class="ln" x1="280" y1="75" x2="292" y2="75" marker-end="url(#am)"/>
+            <line class="ln" x1="422" y1="75" x2="434" y2="75" marker-end="url(#am)"/>
+            <line class="ln" x1="564" y1="75" x2="576" y2="75" marker-end="url(#am)"/>
+            <text class="ts" x="358" y="136" text-anchor="middle">the first step that fails is where the problem is</text>
+          </svg>
+        </div>
+        <figcaption><b>Work outward from the app.</b> A classic step-1 bug: the app listens only on <code>127.0.0.1</code> (itself) instead of <code>0.0.0.0</code> (everyone), so it works inside the pod but nowhere else.</figcaption>
+      </figure>
+<pre><code><span class="c"># a temporary pod full of network tools; it's deleted when you exit</span>
+kubectl run tmp --rm -it --image=nicolaka/netshoot -- bash
+  curl &lt;pod-ip&gt;:8080          <span class="c"># step 2</span>
+  nslookup web                <span class="c"># step 4</span>
+  curl http://web             <span class="c"># the whole path</span>
+kubectl get endpointslices    <span class="c"># step 3 (run from your laptop)</span></code></pre>
+      <label class="chapter-done"><input type="checkbox" data-done="debug"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="quiz" data-min="10" data-title="Check yourself" data-part="Part 4 · Using it for real">
+      <div class="ch-head"><span class="ch-num">14</span><h2>Check yourself</h2><span class="ch-time">10 min</span></div>
+      <p>Answer in your head, then tap to reveal.</p>
+      <details class="q"><summary>What's the difference between an image and a container?</summary><p>An image is the frozen package on the shelf. A container is an image that's been started and is running. One image can start many containers.</p></details>
+      <details class="q"><summary>Put these in order from biggest to smallest: pod, cluster, container, node.</summary><p>Cluster → node → pod → container.</p></details>
+      <details class="q"><summary>You delete one of the 3 pods in a Deployment. What happens?</summary><p>The reconcile loop sees 2 instead of 3 and creates a new pod. It gets a new name and a new address.</p></details>
+      <details class="q"><summary>Which part decides which node a pod runs on? Which part actually starts it?</summary><p>The scheduler decides. The kubelet on that node starts it, using the container runtime.</p></details>
+      <details class="q"><summary>Why do we need Services if every pod has an address?</summary><p>Pod addresses change whenever pods are replaced, and there are usually several copies. A Service gives one fixed name and address and spreads traffic across whichever healthy pods exist right now.</p></details>
+      <details class="q"><summary>A Service exists but calling it fails. What's the first thing to check?</summary><p>Whether it found any pods: <code>kubectl get endpointslices</code>. If the list is empty, the label in the Service probably doesn't match the pods' labels, or the pods aren't passing their readiness check.</p></details>
+      <details class="q"><summary>Pod A on node 1 calls pod C on node 2 directly. Whose address does pod C see as the sender?</summary><p>Pod A's own address. Kubernetes promises pod-to-pod traffic without address swapping.</p></details>
+      <details class="q"><summary>What's the difference between ClusterIP and LoadBalancer?</summary><p>ClusterIP can only be reached from inside the cluster. LoadBalancer adds a cloud load balancer with an outside address, so people outside can reach it.</p></details>
+      <details class="q"><summary>You have five websites. Why use a Gateway instead of five LoadBalancer Services?</summary><p>One load balancer and one place for certificates, with rules that route by web address and path. It's cheaper and easier to manage.</p></details>
+      <details class="q"><summary>A pod shows CrashLoopBackOff. Which command shows you why?</summary><p><code>kubectl logs &lt;pod&gt; --previous</code> shows what the app printed before its last crash.</p></details>
+      <details class="q"><summary>You wrote a NetworkPolicy and nothing changed. Why might that be?</summary><p>The cluster's network plug-in doesn't enforce NetworkPolicy (for example Flannel alone). The rule is saved but nobody acts on it.</p></details>
+      <details class="q"><summary>In one sentence, what is an operator such as KubeRay?</summary><p>An add-on that teaches Kubernetes a new kind of object (like a Ray cluster) and runs its own reconcile loop to keep it the way you described.</p></details>
+      <label class="chapter-done"><input type="checkbox" data-done="quiz"> Mark chapter done</label>
+    </section>
+
+    <section class="chapter" id="gloss" data-min="0" data-title="Glossary">
+      <div class="ch-head"><span class="ch-num">A</span><h2>Glossary in plain words</h2><span class="ch-time">reference</span></div>
+      <dl class="gloss">
+        <dt>API server</dt><dd>The front desk of Kubernetes. Every request goes through it.</dd>
+        <dt>CNI plugin</dt><dd>The add-on that gives pods their network addresses and connects them.</dd>
+        <dt>ClusterIP</dt><dd>A Service's fixed private address, reachable only inside the cluster.</dd>
+        <dt>Cluster</dt><dd>All the computers Kubernetes manages, working as one.</dd>
+        <dt>ConfigMap</dt><dd>Stored settings handed to pods.</dd>
+        <dt>Container</dt><dd>A running app sealed with everything it needs.</dd>
+        <dt>Control plane</dt><dd>The brain: API server, etcd, scheduler, controllers.</dd>
+        <dt>Controller</dt><dd>A helper that keeps one kind of thing matching what you asked for.</dd>
+        <dt>CoreDNS</dt><dd>The cluster's own phone book for Service names.</dd>
+        <dt>DaemonSet</dt><dd>“Run one copy on every node.”</dd>
+        <dt>Deployment</dt><dd>“Keep N identical copies running, and update them safely.”</dd>
+        <dt>DNS</dt><dd>The phone book that turns names into IP addresses.</dd>
+        <dt>EndpointSlice</dt><dd>The list of healthy pod addresses behind a Service.</dd>
+        <dt>etcd</dt><dd>The reliable notebook where Kubernetes stores everything.</dd>
+        <dt>Gateway / Ingress</dt><dd>The front door that routes web requests to Services by address and path.</dd>
+        <dt>Image</dt><dd>The frozen package a container is started from.</dd>
+        <dt>IP address</dt><dd>A computer's (or pod's) address on a network.</dd>
+        <dt>Job</dt><dd>Work that runs once to completion.</dd>
+        <dt>kube-proxy</dt><dd>Writes the traffic rules on each node that make Services work.</dd>
+        <dt>kubectl</dt><dd>The command-line tool you use to talk to Kubernetes.</dd>
+        <dt>kubelet</dt><dd>The helper on each node that starts and watches its pods.</dd>
+        <dt>Label</dt><dd>A sticky note like <code>app=web</code> that other objects use to find things.</dd>
+        <dt>Load balancer</dt><dd>Spreads incoming connections across several servers.</dd>
+        <dt>Namespace</dt><dd>A folder inside the cluster to keep teams or projects apart.</dd>
+        <dt>NAT</dt><dd>Swapping one address for another as traffic passes through.</dd>
+        <dt>NetworkPolicy</dt><dd>A firewall rule saying which pods may talk to which.</dd>
+        <dt>Node</dt><dd>One computer in the cluster.</dd>
+        <dt>Operator</dt><dd>An add-on that teaches Kubernetes to manage a new kind of thing.</dd>
+        <dt>Pod</dt><dd>One or a few containers that live together and share an address.</dd>
+        <dt>Port</dt><dd>A numbered door on a computer where a program listens.</dd>
+        <dt>Readiness check</dt><dd>“Can this pod take traffic yet?” Failing means no traffic, no restart.</dd>
+        <dt>Liveness check</dt><dd>“Is this pod stuck?” Failing means restart.</dd>
+        <dt>Scheduler</dt><dd>Decides which node each new pod runs on.</dd>
+        <dt>Secret</dt><dd>Stored sensitive settings such as passwords.</dd>
+        <dt>Service</dt><dd>A fixed name and address in front of a changing group of pods.</dd>
+        <dt>StatefulSet</dt><dd>Like a Deployment, but each copy keeps a fixed name and its own disk.</dd>
+        <dt>YAML</dt><dd>The simple text format Kubernetes files are written in.</dd>
+      </dl>
+    </section>
+
+    <p class="foot">Written October 2026. Kubernetes releases a new version about three times a year, so small details change; the core ideas in this guide don't. On a real cluster, <code>kubectl explain</code> is the most reliable reference and works offline.</p>
+  </main>
+</div>
+
+<script>
+(function () {
+  var KEY = "k8s-field-guide-done-v2";
+  var done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { done = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+
+  var chapters = Array.prototype.slice.call(document.querySelectorAll("section.chapter"))
+    .filter(function (s) { return +s.dataset.min > 0; });
+  var toc = document.getElementById("toc");
+  var lastPart = "";
+
+  chapters.forEach(function (s) {
+    if (s.dataset.part && s.dataset.part !== lastPart) {
+      lastPart = s.dataset.part;
+      var pr = document.createElement("li");
+      pr.className = "partrow";
+      pr.innerHTML = '<span class="part"></span>';
+      pr.firstChild.textContent = lastPart;
+      toc.appendChild(pr);
+    }
+    var li = document.createElement("li");
+    var cb = document.createElement("input");
+    cb.type = "checkbox"; cb.id = "toc-" + s.id; cb.dataset.done = s.id;
+    cb.setAttribute("aria-label", "Mark " + s.dataset.title + " done");
+    var a = document.createElement("a");
+    a.href = "#" + s.id; a.textContent = s.dataset.title;
+    var m = document.createElement("span");
+    m.className = "min"; m.textContent = s.dataset.min + "m";
+    li.appendChild(cb); li.appendChild(a); li.appendChild(m);
+    li.dataset.id = s.id;
+    toc.appendChild(li);
+  });
+  var g = document.createElement("li");
+  g.innerHTML = '<span></span><a href="#gloss">Glossary</a><span class="min">ref</span>';
+  toc.appendChild(g);
+
+  function render() {
+    var total = 0, left = 0, n = 0;
+    chapters.forEach(function (s) {
+      var m = +s.dataset.min; total += m;
+      if (done[s.id]) n++; else left += m;
+    });
+    document.querySelectorAll("input[data-done]").forEach(function (cb) { cb.checked = !!done[cb.dataset.done]; });
+    toc.querySelectorAll("li[data-id]").forEach(function (li) { li.classList.toggle("done", !!done[li.dataset.id]); });
+    document.getElementById("meter-fill").style.width = (100 * (total - left) / total) + "%";
+    document.getElementById("meter-label").textContent =
+      n + " of " + chapters.length + " chapters · about " + left + " min left";
+  }
+
+  document.addEventListener("change", function (e) {
+    var cb = e.target;
+    if (!cb.dataset || !cb.dataset.done) return;
+    done[cb.dataset.done] = cb.checked; save(); render();
+  });
+
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    document.getElementById("rail-details").open = false;
+  }
+  render();
+})();
+</script>
+
+</body>
+</html>

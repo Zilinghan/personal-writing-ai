@@ -1,0 +1,136 @@
+==============================================================
+1. To: Kara MacGregor <kmacgreg@illinois.edu>
+==============================================================
+
+Subject: Request for Employment Verification Letter – Fall 2022 CS 440 Teaching Assistant
+
+Dear Kara,
+
+I hope you are doing well. I was a teaching assistant for CS 440 (Artificial Intelligence) under Professor Fleck in Fall 2022, while I was an M.S. student in Computer Science. I graduated in May 2024 and now work as a Machine Learning Engineer at Argonne National Laboratory.
+
+I am currently applying for U.S. permanent residence, and my immigration attorney has asked me to provide a letter confirming my past employment, including my TA appointment in the department. I have attached a draft letter with the dates of my appointment and a description of my duties, along with your Fall 2022 TA course assignment email for reference. Would you be able to review it, put it on department letterhead, and sign and date it?
+
+If any of the details in the draft do not match the department's records, please feel free to correct them. If someone else in the department would be the more appropriate person to sign this type of letter, I would really appreciate it if you could point me to them.
+
+Thank you very much for your time and help!
+
+Best regards,
+Zilinghan Li
+
+
+==============================================================
+1b. To: grad@siebelschool.illinois.edu (Kara has retired)
+==============================================================
+
+Subject: Request for Employment Verification Letter – Former TA, CS 440 (Fall 2022)
+
+Dear Siebel School Graduate Programs Team,
+
+I hope this message finds you well. I am a former M.S. in Computer Science student (graduated May 2024) and was a teaching assistant for CS 440 (Artificial Intelligence) under Professor Margaret Fleck in Fall 2022. I first reached out to Kara MacGregor, but I received an automatic reply saying she has retired and directing questions to this address.
+
+I am currently applying for U.S. permanent residence, and my immigration attorney has asked me to provide a letter confirming my past employment, including my TA appointment in the department. I have attached a draft letter with the dates of my appointment and a description of my duties, along with my Fall 2022 TA course assignment email for reference. Would someone be able to review it, put it on department letterhead, and sign and date it?
+
+If any of the details in the draft do not match the department's records, please feel free to correct them. If another office (for example, the school's HR or payroll office) would be the more appropriate one to handle this request, I would really appreciate it if you could point me to the right contact.
+
+Thank you very much for your time and help!
+
+Best regards,
+Zilinghan Li
+Machine Learning Engineer, Argonne National Laboratory
+zilinghan.li@anl.gov
+
+
+==============================================================
+1c. To: cs-hr@mx.uillinois.edu (referred by the Graduate Academic Advising Office)
+==============================================================
+
+Subject: Employment Verification Letter Request – Former Teaching Assistant, CS 440 (Fall 2022)
+
+Dear Siebel School HR Team,
+
+I hope you are doing well. I was referred to you by the Siebel School Graduate Academic Advising Office regarding an employment verification request.
+
+I am a former M.S. in Computer Science student (graduated May 2024), and I was employed as a Teaching Assistant for CS 440 (Artificial Intelligence) under Professor Margaret Fleck in Fall 2022. I am currently applying for U.S. permanent residence, and my immigration attorney has asked me to provide a letter confirming this employment, including the dates of my appointment and a description of my duties.
+
+I have attached a draft letter (Word document) for your convenience, along with my Fall 2022 TA course assignment email for reference. Would you be able to review the draft, correct anything that does not match your records, and provide a signed and dated version on school letterhead? If your office uses its own standard verification letter instead, I would be grateful if it could include my position title, the appointment dates, the appointment percentage, and a brief description of my duties.
+
+Please let me know if you need any additional information from me, such as my UIN.
+
+Thank you very much for your time and help!
+
+Best regards,
+Zilinghan Li
+Machine Learning Engineer, Argonne National Laboratory
+zilinghan.li@anl.gov
+
+
+==============================================================
+1d. Reply to the Graduate Academic Advising Office
+==============================================================
+
+Hello,
+
+Thank you very much for the quick reply and for pointing me to Siebel School HR. I will reach out to them about the employment verification letter.
+
+Best regards,
+Zilinghan Li
+
+
+==============================================================
+1e. Follow-up to cs-hr@mx.uillinois.edu (reply on the original thread)
+==============================================================
+
+Subject: RE: Employment Verification Letter Request – Former Teaching Assistant, CS 440 (Fall 2022)
+
+Dear Siebel School HR Team,
+
+I hope you are doing well. I am following up on my email from last week (below) about an employment verification letter for my Fall 2022 Teaching Assistant position for CS 440. Outlook was experiencing an outage on the day I sent it, so I wanted to make sure the message reached you. I have attached the draft letter and my TA course assignment email again for your convenience.
+
+I understand that you may be busy, and I would really appreciate any update when you have a chance. If this request should go to a different office, please let me know and I will reach out to them.
+
+Thank you very much for your time and help!
+
+Best regards,
+Zilinghan Li
+Machine Learning Engineer, Argonne National Laboratory
+zilinghan.li@anl.gov
+
+
+==============================================================
+2. To: Professor Volodymyr Kindratenko
+==============================================================
+
+Subject: Request for Employment Verification Letter – NCSA Graduate Research Assistant
+
+Dear Vlad,
+
+It has been a while since we last caught up, and I hope you are doing great! The research we started together on federated learning has continued to grow since I joined Argonne. APPFL is now used by several DOE national laboratories, and the FedCompass and APPFLx papers we worked on together continue to be well cited. I am very grateful for your guidance and support during my M.S. studies, which laid the foundation for much of my current work.
+
+I am writing with a small request. I am currently applying for U.S. permanent residence, and my immigration attorney has asked me to provide letters confirming my past employment, including my three semesters as a Graduate Research Assistant at NCSA (Spring 2023, Fall 2023, and Spring 2024). I have attached a draft letter with the appointment dates and a description of my duties, along with my three NCSA offer letters for reference.
+
+Would you be willing to review it, put it on NCSA or university letterhead, and sign and date it? Please feel free to edit anything you think should be changed. If you think someone else, such as NCSA HR, would be more appropriate to sign it, I would really appreciate it if you could suggest who I should contact.
+
+Thank you so much, and I hope to catch up with you soon!
+
+Best regards,
+Zilinghan
+
+
+==============================================================
+3. To: Frank Jiang
+==============================================================
+
+Subject: Request for Employment Verification Letter – AWS IoT SDE Internship (Summer 2023)
+
+Hi Frank,
+
+I hope you are doing well! It has been a while since my internship on the AWS IoT team in summer 2023, and I still remember it as a great experience. Thank you again for your mentorship during that time. After finishing my M.S. at UIUC, I joined Argonne National Laboratory as a Machine Learning Engineer, where I now work on federated learning and large language models for science.
+
+I am writing with a small request. I am currently applying for U.S. permanent residence, and my immigration attorney has asked me to provide letters confirming my past employment, including my Software Development Engineer internship at Amazon (May 22 to August 11, 2023). I have attached a draft letter with the dates and a description of the work I did on the AWS IoT Device Location demo app, along with my original internship offer letter for reference.
+
+Would you be willing to review it, put it on Amazon letterhead if possible, and sign and date it? Please feel free to change anything that does not look right. If you think someone else, such as HR, would be more appropriate to sign it, I would really appreciate it if you could suggest who I should contact.
+
+Thank you so much, and I hope everything is going well with you and the team!
+
+Best regards,
+Zilinghan

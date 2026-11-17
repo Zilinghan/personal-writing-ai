@@ -1,0 +1,66 @@
+SOFTX 103195 - Proof responses and corrections
+=============================================
+
+AUTHOR QUERIES
+--------------
+
+AQ1 (regular issue)
+  Confirmed. The article is a regular item and does not belong to a Special Issue/Collection.
+
+AQ2 (author names)
+  Confirmed. Given names and surnames are tagged correctly for all four authors.
+
+AQ3 (corresponding author address)
+  Please use the full address:
+  "Data Science and Learning Division, Argonne National Laboratory, 9700 S. Cass Avenue, Lemont, IL 60439, USA."
+
+AQ4 (Table 1 unnumbered, tables renumbered)
+  Confirmed. The code metadata table can be unnumbered. The renumbered Tables 1-3 and their in-text references are correct.
+
+AQ5 (reference hoang2025enabling, Ref. [4])
+  Please update to:
+  Hoang T-H, Fuhrman J, Klarqvist M, Li M, Chaturvedi P, Li Z, Kim K, Ryu M, Chard R, Huerta EA, Giger M, Madduri R. Enabling end-to-end secure federated learning in biomedical research on heterogeneous computing environments with APPFLx. Comput Struct Biotechnol J 2025;28:29-39. https://doi.org/10.1016/j.csbj.2024.12.001
+
+AQ6 (reference wandb, Ref. [16])
+  Please update to:
+  Biewald L. Experiment tracking with Weights and Biases. 2020. Software available from https://www.wandb.com/
+
+
+ADDITIONAL CORRECTIONS
+----------------------
+
+References
+  [21] The author name is garbled and the title is missing. Please change to:
+       Beutel DJ, Topal T, Mathur A, Qiu X, Fernandez-Marques J, Gao Y, Sani L, Li KH, Parcollet T, de Gusmão PPB, et al. Flower: a friendly federated learning research framework. arXiv preprint arXiv:2007.14390. 2020.
+  [22] The title is missing. Please change to:
+       Roth HR, Cheng Y, Wen Y, Yang I, Xu Z, Hsieh Y-T, Kersten K, Harouni A, Zhao C, Lu K, et al. NVIDIA FLARE: federated learning from simulation to real-world. arXiv preprint arXiv:2210.13291. 2022.
+  [28] The venue is broken ("(OSDI, vol. 21;"). Please change to:
+       ... In: 15th USENIX symposium on operating systems design and implementation (OSDI 21). 2021. p. 19-35.
+  [1]  "Y Arcas BA" -> "Agüera y Arcas B"; "Pmlr" -> "PMLR".
+  [11] Add "et al." after "McMahan HB" (the paper has many more authors).
+  Capitalization of proper names in titles:
+       [4] appflx -> APPFLx; [8] Ruralai -> RuralAI; [17] mlflow -> MLflow;
+       [18] tensorflow -> TensorFlow; [19] Appfl -> APPFL; [20] appfl -> APPFL;
+       [26] Fedcompass -> FedCompass; [27] ga4gh -> GA4GH.
+  Optional, years: [14] IEEE Trans Commun vol. 73(1) is the 2025 volume, so 2024 -> 2025.
+       [29] IEEE Trans Wirel Commun vol. 23(1) is the 2024 volume, so 2023 -> 2024.
+
+Keywords
+  "Weights and biases" -> "Weights & Biases".
+
+Section 1, page 2, lines 6 and 18 (left column)
+  Remove the double spaces in "new project  or framework" and "logging facilities,  and".
+
+Section 3.1, page 4
+  "HiveWatch can be installed from PyPI via a single command:" -> "HiveWatch can be installed from PyPI as shown in Listing 1." (Listing 1 shows two commands and is not placed right after this sentence.)
+
+Section 3.3, page 5, right column
+  "approximately 64ms" -> "approximately 64 ms".
+  "approximately 3.0-3.5 ms" -> "approximately 3.0–3.5 ms" (en dash, as in Section 5).
+  "1,935.2μs" -> "1935.2 μs" (to match the other numbers).
+  "(usually take at least seconds to minutes)" -> "(which typically last from seconds to minutes)".
+
+Declarations (page 6): CHECK WITH CO-AUTHORS BEFORE SUBMITTING
+  Declaration of competing interests: the proof lists DOE funding and AWS "equipment, drugs, or supplies" as competing interests. Our manuscript stated that there are no competing interests, and the funding is already acknowledged. Suggest replacing the section with:
+    "The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper."
+  CRediT statement: the roles differ from the submitted manuscript (for example, Ravi now has "Writing – original draft", "Investigation" and "Project administration"). They probably came from the submission form; confirm they are what you want.

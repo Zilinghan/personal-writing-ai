@@ -1,0 +1,16 @@
+[Please insert date of signature and official letterhead]
+
+Dear Sir/Madam,
+Please accept this letter as confirmation of Zilinghan Li’s employment at Amazon.com, Inc. I am [Name] and I am the [Title] at [Employer]. I was [relationship with client] and am therefore able to confirm the dates of employment and duties performed by Zilinghan Li.
+Zilinghan Li was employed full-time as a Software Development Engineer Intern on the AWS IoT team at Amazon.com, Inc. in Sunnyvale, California from May 22, 2023 through August 11, 2023. In this position, Zilinghan Li designed and developed a cross-platform mobile application for Android and iOS that demonstrates the AWS IoT Device Location API, which determines the location of IoT devices that do not have built-in GPS. Zilinghan Li was responsible for the application’s design, implementation, and testing, and worked closely with experienced software development engineers on the team. Zilinghan Li also identified and resolved technical challenges in integrating the application with AWS IoT services, and presented the technical design and results to the team. The application gives customers a working example of how to use the Device Location API in their own products.
+Please do not hesitate to contact me if additional information is needed.
+
+With thanks, 
+
+
+[Please sign by hand or with a verified electronic version of your official signature]
+
+[Name]
+[Title]
+[Contact Information, including complete employment address]
+

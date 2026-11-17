@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APPFL · Federated learning as a service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="#">
+                <!-- hub + spokes: one server, many clients -->
+                <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+                    <circle cx="16" cy="16" r="4.2" fill="currentColor"/>
+                    <circle cx="6" cy="7" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="26" cy="7" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="6" cy="25" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="26" cy="25" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 9l5 4.5M24 9l-5 4.5M8 23l5-4.5M24 23l-5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>APPFL</span>
+            </a>
+            <nav class="nav">
+                <a class="nav-link active" href="#">Overview</a>
+                <a class="nav-link" href="#demo">Demo</a>
+                <a class="nav-link" href="#modes">Modes</a>
+                <a class="nav-link" href="#how">How it works</a>
+                <a class="nav-link nav-ext" href="https://appfl.ai/en/latest/" target="_blank" rel="noopener">Docs</a>
+                <a class="nav-link nav-ext" href="https://github.com/APPFL/APPFL" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+            <div class="auth-bar">
+                <button class="btn btn-primary btn-sm" type="button" data-action="signin">Sign in</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ===================== HERO ===================== -->
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <span class="eyebrow">Federated learning as a service</span>
+                    <h1>Train together.<br>Keep data where it lives.</h1>
+                    <p class="lead">
+                        Launch a ready-to-run APPFL federated learning server in one click. You get a
+                        private Jupyter notebook and a public gRPC endpoint, so collaborators can join
+                        from anywhere without moving their data.
+                    </p>
+                    <div class="row gap-12 wrap">
+                        <a class="btn btn-primary btn-lg" href="#" data-action="signin">Launch a server</a>
+                        <a class="btn btn-ghost btn-lg" href="#how">See how it works</a>
+                    </div>
+                </div>
+
+                <!-- Mock of a launched session; the switch swaps the diagram and the details -->
+                <div class="hero-visual card">
+                    <div class="hero-visual-head">
+                        <span class="label">Your session</span>
+                        <div class="seg" role="tablist" aria-label="Federation mode">
+                            <button class="seg-btn active" role="tab" aria-selected="true" data-mode="grpc" type="button">gRPC server</button>
+                            <button class="seg-btn" role="tab" aria-selected="false" data-mode="globus" type="button">Globus Compute</button>
+                        </div>
+                    </div>
+
+                    <div class="fed-diagram">
+                        <!-- gRPC: clients dial in to the proxied server -->
+                        <svg class="fed-svg" data-mode-panel="grpc" viewBox="0 0 480 250" role="img" aria-label="Four clients connect over gRPC through a proxy to the APPFL server">
+                            <g class="links">
+                                <path class="link link-in" d="M84 52 C150 52 170 110 205 118"/>
+                                <path class="link link-in" d="M84 198 C150 198 170 140 205 132"/>
+                                <path class="link link-in" d="M396 52 C330 52 310 110 275 118"/>
+                                <path class="link link-in" d="M396 198 C330 198 310 140 275 132"/>
+                            </g>
+                            <g class="node node-server">
+                                <rect x="176" y="88" width="128" height="74" rx="14"/>
+                                <text x="240" y="121" class="t-strong">APPFL server</text>
+                                <text x="240" y="140" class="t-small">behind gRPC proxy</text>
+                            </g>
+                            <g class="node node-client"><rect x="14" y="30" width="80" height="44" rx="10"/><text x="54" y="50" class="t-strong">Client 1</text><text x="54" y="65" class="t-small">hospital</text></g>
+                            <g class="node node-client"><rect x="14" y="176" width="80" height="44" rx="10"/><text x="54" y="196" class="t-strong">Client 2</text><text x="54" y="211" class="t-small">university lab</text></g>
+                            <g class="node node-client"><rect x="386" y="30" width="80" height="44" rx="10"/><text x="426" y="50" class="t-strong">Client 3</text><text x="426" y="65" class="t-small">laptop</text></g>
+                            <g class="node node-client"><rect x="386" y="176" width="80" height="44" rx="10"/><text x="426" y="196" class="t-strong">Client 4</text><text x="426" y="211" class="t-small">cloud VM</text></g>
+                            <text x="240" y="232" class="t-caption">Clients send model updates, never raw data</text>
+                        </svg>
+
+                        <!-- Globus Compute: server pushes training tasks to endpoints -->
+                        <svg class="fed-svg" data-mode-panel="globus" viewBox="0 0 480 250" role="img" aria-label="The APPFL server sends training tasks through Globus Compute to three remote endpoints" hidden>
+                            <g class="links">
+                                <path class="link link-out" d="M240 74 C240 110 90 120 90 156"/>
+                                <path class="link link-out" d="M240 74 L240 156"/>
+                                <path class="link link-out" d="M240 74 C240 110 390 120 390 156"/>
+                            </g>
+                            <g class="node node-server">
+                                <rect x="170" y="16" width="140" height="58" rx="14"/>
+                                <text x="240" y="40" class="t-strong">APPFL server</text>
+                                <text x="240" y="58" class="t-small">dispatches via Globus</text>
+                            </g>
+                            <g class="node node-client"><rect x="40" y="156" width="100" height="48" rx="10"/><text x="90" y="177" class="t-strong">Endpoint A</text><text x="90" y="193" class="t-small">HPC cluster</text></g>
+                            <g class="node node-client"><rect x="190" y="156" width="100" height="48" rx="10"/><text x="240" y="177" class="t-strong">Endpoint B</text><text x="240" y="193" class="t-small">GPU workstation</text></g>
+                            <g class="node node-client"><rect x="340" y="156" width="100" height="48" rx="10"/><text x="390" y="177" class="t-strong">Endpoint C</text><text x="390" y="193" class="t-small">campus server</text></g>
+                            <text x="240" y="232" class="t-caption">Training runs on each endpoint; only results return</text>
+                        </svg>
+                    </div>
+
+                    <div class="session-fields" data-mode-panel="grpc">
+                        <div class="field-row">
+                            <span class="stat-k">Status</span>
+                            <span class="status"><span class="dot"></span>Running</span>
+                        </div>
+                        <div class="field-row">
+                            <span class="stat-k">Clients</span>
+                            <code class="field-v">4 connected</code>
+                        </div>
+                        <div class="field-row">
+                            <span class="stat-k">Algorithm</span>
+                            <code class="field-v">FedAvg</code>
+                        </div>
+                    </div>
+                    <div class="session-fields" data-mode-panel="globus" hidden>
+                        <div class="field-row">
+                            <span class="stat-k">Status</span>
+                            <span class="status"><span class="dot"></span>Round 4 of 10</span>
+                        </div>
+                        <div class="field-row">
+                            <span class="stat-k">Endpoints</span>
+                            <code class="field-v">3 connected</code>
+                        </div>
+                        <div class="field-row">
+                            <span class="stat-k">Algorithm</span>
+                            <code class="field-v">FedAvg</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== DEMO ===================== -->
+        <!-- Scripted walkthrough: a server notebook and two MNIST clients (app.js drives it) -->
+        <section class="section" id="demo">
+            <div class="section-inner">
+                <h2 class="section-title">See a federation run</h2>
+                <p class="section-sub">A notebook runs the APPFL server. Two clients, each holding half of MNIST, train one shared model for five rounds.</p>
+
+                <div class="demo card" aria-label="Animated demo of federated training on MNIST">
+                    <div class="demo-bar">
+                        <ol class="demo-steps">
+                            <li data-stage="0">Configure</li>
+                            <li data-stage="1">Start server</li>
+                            <li data-stage="2">Clients join</li>
+                            <li data-stage="3">Train 5 rounds</li>
+                            <li data-stage="4">Results</li>
+                        </ol>
+                        <div class="row gap-8">
+                            <button class="btn btn-primary btn-sm" id="demoPlay" type="button">Play</button>
+                            <button class="btn btn-ghost btn-sm" id="demoReplay" type="button">Replay</button>
+                        </div>
+                    </div>
+
+                    <div class="demo-stage">
+                        <!-- server notebook -->
+                        <div class="nb-window">
+                            <div class="win-head">
+                                <span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                <span class="win-title">fl_server.ipynb</span>
+                                <span class="kernel" id="nbKernel"><span class="kernel-dot"></span>Python 3 · idle</span>
+                            </div>
+                            <div class="nb-body" id="nbBody">
+                                <div class="nb-cell" data-cell="1">
+                                    <div class="nb-in">
+                                        <span class="nb-prompt">In [ ]:</span>
+<pre class="nb-code"><span class="k">from</span> omegaconf <span class="k">import</span> OmegaConf
+<span class="k">from</span> appfl.agent <span class="k">import</span> ServerAgent
+
+config = OmegaConf.load(<span class="s">"server_fedavg.yaml"</span>)
+config.server_configs.num_clients = <span class="n">2</span>
+config.server_configs.num_global_epochs = <span class="n">5</span>
+server_agent = ServerAgent(server_agent_config=config)</pre>
+                                    </div>
+                                    <div class="nb-out"><div class="nb-out-body"></div></div>
+                                </div>
+
+                                <div class="nb-cell" data-cell="2">
+                                    <div class="nb-in">
+                                        <span class="nb-prompt">In [ ]:</span>
+<pre class="nb-code"><span class="k">from</span> appfl.comm.grpc <span class="k">import</span> GRPCServerCommunicator, serve
+
+grpc_cfg = config.server_configs.comm_configs.grpc_configs
+comm = GRPCServerCommunicator(server_agent, **grpc_cfg)
+serve(comm, **grpc_cfg)  <span class="c"># blocks until training ends</span></pre>
+                                    </div>
+                                    <div class="nb-out"><div class="nb-out-body"></div></div>
+                                </div>
+
+                                <div class="nb-cell" data-cell="3">
+                                    <div class="nb-in">
+                                        <span class="nb-prompt">In [ ]:</span>
+<pre class="nb-code"><span class="c"># test accuracy of the global model after each round</span>
+plt.plot(rounds, test_acc, marker=<span class="s">"o"</span>)</pre>
+                                    </div>
+                                    <div class="nb-out"><div class="nb-out-body"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- traffic between server and each client -->
+                        <div class="wire" data-wire="1" aria-hidden="true"><span class="wire-dot"></span><span class="wire-label"></span></div>
+                        <div class="wire" data-wire="2" aria-hidden="true"><span class="wire-dot"></span><span class="wire-label"></span></div>
+
+                        <!-- clients -->
+                        <div class="term" data-term="1">
+                            <div class="win-head">
+                                <span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                <span class="win-title">client 1 · digits 0–4</span>
+                                <span class="term-state">idle</span>
+                            </div>
+                            <div class="term-body"></div>
+                        </div>
+                        <div class="term" data-term="2">
+                            <div class="win-head">
+                                <span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                <span class="win-title">client 2 · digits 5–9</span>
+                                <span class="term-state">idle</span>
+                            </div>
+                            <div class="term-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== MODES ===================== -->
+        <section class="section" id="modes">
+            <div class="section-inner">
+                <h2 class="section-title">Two ways to federate</h2>
+                <p class="section-sub">Pick how your collaborators connect. Both run the same APPFL server code.</p>
+                <div class="modes-grid">
+                    <article class="mode-card card">
+                        <div class="mode-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="19" cy="17" r="2" fill="currentColor"/></svg>
+                        </div>
+                        <span class="mode-tag">Clients connect to you</span>
+                        <h3>gRPC server in Jupyter</h3>
+                        <p>We start a private Jupyter server with a notebook that runs the APPFL gRPC server. We put a secure proxy in front of it so clients anywhere can reach it.</p>
+                        <ul class="bullets">
+                            <li>A Jupyter URL with its own one-time password</li>
+                            <li>A public gRPC endpoint to share with clients</li>
+                            <li>Change the algorithm, rounds or model right in the notebook</li>
+                        </ul>
+                        <p class="mode-best"><strong>Best for:</strong> partners who run their own client script.</p>
+                    </article>
+
+                    <article class="mode-card card">
+                        <div class="mode-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.5 12h17M12 3.5c2.6 2.4 3.8 5.2 3.8 8.5s-1.2 6.1-3.8 8.5c-2.6-2.4-3.8-5.2-3.8-8.5S9.4 5.9 12 3.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        </div>
+                        <span class="mode-tag">You reach out to clients</span>
+                        <h3>Globus Compute</h3>
+                        <p>The server sends training tasks to each client's Globus Compute endpoint and collects the results. Clients don't keep a long-lived connection open, which suits shared clusters.</p>
+                        <ul class="bullets">
+                            <li>Works with HPC clusters and firewalled machines</li>
+                            <li>Clients just register a Globus Compute endpoint</li>
+                            <li>The server coordinates every round for you</li>
+                        </ul>
+                        <p class="mode-best"><strong>Best for:</strong> research computing sites and supercomputers.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== HOW IT WORKS ===================== -->
+        <section class="section section-alt" id="how">
+            <div class="section-inner">
+                <h2 class="section-title">From zero to a running federation</h2>
+                <p class="section-sub">The gRPC path, step by step.</p>
+                <ol class="steps-grid">
+                    <li class="step-card">
+                        <span class="step-num">1</span>
+                        <h3>Launch</h3>
+                        <p>Sign in and click <strong>Launch</strong>. In a moment you get a Jupyter URL, its password, and the gRPC endpoint for your session.</p>
+                    </li>
+                    <li class="step-card">
+                        <span class="step-num">2</span>
+                        <h3>Start the server</h3>
+                        <p>Open the notebook, set the model and the algorithm (for example FedAvg), and run it. The APPFL server starts behind our proxy.</p>
+                    </li>
+                    <li class="step-card">
+                        <span class="step-num">3</span>
+                        <h3>Invite clients</h3>
+                        <p>Send the endpoint to your collaborators. They point their APPFL client config at it and start training on their own data.</p>
+                    </li>
+                </ol>
+
+                <div class="client-snippet card">
+                    <div class="snippet-copy">
+                        <h3>What a client changes</h3>
+                        <p>One block in the client's APPFL config: replace the local address with your session's endpoint. Everything else (model, data loader, trainer) stays on the client's side.</p>
+                        <a class="link-arrow" href="https://appfl.ai/en/latest/" target="_blank" rel="noopener">APPFL client docs</a>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head">
+                            <span>client_config.yaml</span>
+                            <button class="icon-btn icon-btn-dark" type="button" data-copy-target="clientYaml">Copy</button>
+                        </div>
+<pre id="clientYaml"><code><span class="c-key">comm_configs</span>:
+  <span class="c-key">grpc_configs</span>:
+    <span class="c-key">server_uri</span>: <span class="c-str">sci-f317ce0b-82c5-44df-bfc3-e03778bcf132-grpc.trac.appflx.link:443</span>
+    <span class="c-key">use_ssl</span>: <span class="c-bool">True</span>
+    <span class="c-key">max_message_size</span>: <span class="c-num">1048576</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== FEATURES ===================== -->
+        <section class="section">
+            <div class="section-inner">
+                <h2 class="section-title">Everything APPFL can do, without the setup</h2>
+                <p class="section-sub">No servers to provision, ports to open or certificates to manage.</p>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>Private sessions</h3>
+                        <p>Each launch gets its own Jupyter server and a unique password.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Reachable from anywhere</h3>
+                        <p>The gRPC proxy gives your server a public address, so clients don't need a VPN.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Many algorithms</h3>
+                        <p>Use APPFL's synchronous and asynchronous aggregators, such as FedAvg, FedAsync and FedCompass.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Privacy options</h3>
+                        <p>Turn on APPFL's privacy and compression features from the server config.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Your model, your data</h3>
+                        <p>Bring any PyTorch model. Data never leaves the client machine.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>From laptop to HPC</h3>
+                        <p>Mix clients over gRPC, or reach supercomputers through Globus Compute.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== CTA ===================== -->
+        <section class="section">
+            <div class="section-inner">
+                <div class="cta-card card">
+                    <div>
+                        <h2>Ready to start a federation?</h2>
+                        <p>Sign in to launch your first server. It takes about a minute to get an endpoint you can share.</p>
+                    </div>
+                    <a class="btn btn-primary btn-lg" href="#" data-action="signin">Sign in to launch</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="section-inner row space-between wrap gap-12">
+                <span>APPFL · Federated learning as a service. Supported by Argonne National Laboratory.</span>
+                <span class="row gap-16">
+                    <a href="https://appfl.ai/en/latest/" target="_blank" rel="noopener">Docs</a>
+                    <a href="https://github.com/APPFL/APPFL" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://ai.biom3.net/" target="_blank" rel="noopener">BioM3</a>
+                </span>
+            </div>
+        </footer>
+    </main>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+</body>
+</html>

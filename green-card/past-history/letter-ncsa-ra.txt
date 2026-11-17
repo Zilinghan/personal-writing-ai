@@ -1,0 +1,16 @@
+[Please insert date of signature and official letterhead]
+
+Dear Sir/Madam,
+Please accept this letter as confirmation of Zilinghan Li’s employment at the National Center for Supercomputing Applications, University of Illinois Urbana-Champaign. I am [Name] and I am the [Title] at [Employer]. I was [relationship with client] and am therefore able to confirm the dates of employment and duties performed by Zilinghan Li.
+Zilinghan Li was employed as a Graduate Research Assistant (50% appointment) at the National Center for Supercomputing Applications, University of Illinois Urbana-Champaign, for three semesters: January 1, 2023 through May 15, 2023; August 16, 2023 through December 31, 2023; and January 1, 2024 through May 15, 2024. In this position, Zilinghan Li conducted research on privacy-preserving federated learning in collaboration with Argonne National Laboratory. Zilinghan Li designed APPFLx, a web platform that provides privacy-preserving cross-silo federated learning as a service, allowing domain scientists at different institutions to train AI models together without sharing their private data. Zilinghan Li also developed efficient federated learning algorithms for clients with heterogeneous computing power, including FedCompass, a computing power-aware scheduling algorithm published at the International Conference on Learning Representations (ICLR 2024). Zilinghan Li further built secure federated learning workflows that span cloud and high-performance computing resources, demonstrated through the federated fine-tuning of the LLaMA 2 large language model. This research resulted in several peer-reviewed publications, including papers at IEEE e-Science 2023 and in Computing in Science & Engineering.
+Please do not hesitate to contact me if additional information is needed.
+
+With thanks, 
+
+
+[Please sign by hand or with a verified electronic version of your official signature]
+
+[Name]
+[Title]
+[Contact Information, including complete employment address]
+
