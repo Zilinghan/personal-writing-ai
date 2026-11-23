@@ -1,0 +1,53 @@
+% One-page summary attached to the PESOSE program-officer inquiry.
+% Build: pdflatex -jobname=APPFL_PESOSE_summary summary.tex
+% Placeholders are marked \todo{...} (rendered in red); remove all before sending.
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.8in]{geometry}
+\usepackage{times}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{empty}
+\newcommand{\todo}[1]{\textcolor{red}{[#1]}}
+\newcommand{\sect}[1]{\vspace{3pt}\textbf{#1}\quad}
+
+\begin{document}
+
+{\large\textbf{APPFL: Building an Open, Secure Ecosystem for Privacy-Preserving Federated Learning}}\\
+PESOSE Track 2 (pre-submission inquiry) \hfill \todo{PI name, institution} \;|\; \href{https://github.com/APPFL/APPFL}{github.com/APPFL/APPFL}
+
+\sect{Need.}
+Many datasets that could advance health care, energy, science and public services cannot be shared because of privacy, security or regulatory limits. Federated learning (FL) trains a shared model where the data already lives and exchanges only model updates. To be trusted across institutions, an FL system needs open, auditable, community-governed software: participants must be able to inspect exactly what runs on their data.
+
+\sect{The product.}
+APPFL (Advanced Privacy-Preserving Federated Learning) is an open-source Python framework for running FL across institutions, from laptops to supercomputers. It supports several communication backends (gRPC, MPI, Globus Compute), privacy-preserving and robust aggregation algorithms, model compression, and data-readiness reporting.
+\begin{itemize}
+  \item Public since October 2021; MIT license; current release v1.12.0 (Oct.\ 2026), with regular releases.
+  \item 185 GitHub stars, 47 forks, $\sim$600 PyPI downloads/month, 91 pull requests merged in the past 12 months.
+  \item Continuous integration, documentation on ReadTheDocs, Zenodo DOI, contributing guide and security policy.
+  \item Used by \todo{2--4 named external users/deployments, e.g., institution + domain}.
+\end{itemize}
+
+\sect{The gap: strong product, narrow ecosystem.}
+About 85\% of commits come from three developers, almost all at a single lab. There is no formal governance or path from contributor to maintainer, no fiscal sponsor, no public roadmap process, and no plan to sustain the project after current funding ends. APPFL's development has been funded by DOE research programs for \todo{research goals / features}. Those funds have not covered community building, governance, onboarding outside contributors or sustainability. Neither APPFL nor any team member has received a POSE or SafeOSC award.
+
+\sect{Proposed Track 2 activities (2 years).}
+\begin{itemize}
+  \item \textbf{Governance:} a multi-organization steering committee with external seats, a documented maintainer ladder, an open roadmap process, and a fiscal sponsor \todo{candidate, e.g., NumFOCUS / LF AI \& Data}.
+  \item \textbf{Ecosystem growth:} recruit users in \todo{domains} through partner institutions, industry, and international collaborators; publish adopter case studies.
+  \item \textbf{Community building:} onboarding tracks, mentored contributor fellowships, hackathons and tutorials at \todo{venues}, training material with \todo{partner}.
+  \item \textbf{Security \& continuous development:} an FL-specific threat model (e.g., data reconstruction from model updates, poisoned updates from malicious participants, untrusted plug-ins), signed releases and software bills of materials (SBOMs), OpenSSF Scorecard, a vulnerability-disclosure process, and multi-site integration testing.
+  \item \textbf{Sustainability \& evaluation:} post-award funding targets \todo{sources}, and baseline-to-target metrics for external contributors, adopting organizations, contributor concentration (``bus factor''), and response times.
+\end{itemize}
+
+\sect{Team.}
+\todo{PI} (lead developer, APPFL); \todo{co-PI(s), ideally including one from outside Argonne}; \todo{community / open-source ecosystem lead or partner organization}.
+
+\sect{Questions for the program.}
+(1) Is Track 2 the appropriate track for this profile? \;
+(2) Given APPFL's DOE research funding history, would it be considered ``already well-resourced''?
+
+\end{document}
