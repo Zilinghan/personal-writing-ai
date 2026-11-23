@@ -60,3 +60,21 @@ Thank you very much for your help!
 
 Best regards,
 Zilinghan Li
+
+
+==============================================================
+4. Update to Mikala after Amazon HR's reply
+==============================================================
+
+Hi Mikala,
+
+I followed up with Amazon HR about the signature on the AWS letter and asked whether they could provide a hand-signed version or one with a verified electronic signature. Amazon replied that they can only provide their standard work reference letter on official Amazon letterhead, and that "the signature has been added as per the guidelines." They closed the case without changing the letter, so it seems this signature format is Amazon's standard policy and they are not able to sign it differently. I have attached a screenshot of their response.
+
+Given this, how would you recommend we proceed? Would it be acceptable to use the current letter, perhaps together with Amazon's response and my original internship offer letter as supporting documents? I can also try to get my 2023 W-2 from Amazon if that would help.
+
+Since the letter covers only a 12-week summer internship, I also wanted to ask whether the AWS letter is necessary for the petition, or whether my other experience letters are sufficient.
+
+Thank you!
+
+Best,
+Zilinghan
